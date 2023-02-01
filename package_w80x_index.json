@@ -95,8 +95,8 @@
                         },
                         {
                             "host": "x86_64-pc-linux-gnu",
-                            "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.2a/w80x_tool_x86_64-pc-linux-gnu-v1.0.tgz",
-                            "archiveFileName": "w80x_tool_x86_64-pc-linux-gnu-v1.0.tgz"
+                            "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.2a/w80x_tool_x86_64-pc-linux-gnu-v1.0.tar.gz",
+                            "archiveFileName": "w80x_tool_x86_64-pc-linux-gnu-v1.0.tar.gz"
                             
                         }
                     ]
