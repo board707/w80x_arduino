@@ -8,7 +8,7 @@ menu.erase=Erase Flash
 
 ##############################################################
 
-w80x.name=w80x_duino
+w80x.name=w806/w805
 w80x.upload.tool=serial_upload
 w80x.upload.protocol=xmodem
 w80x.upload.maximum_size=1048576
