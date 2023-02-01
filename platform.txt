@@ -69,6 +69,7 @@ sec_img_header=8002000
 sec_img_pos=8002400
 
 build.tools.path.windows={runtime.tools.w80x_tool.path}/win/
+build.tools.path.linux={runtime.tools.w80x_tool.path}/lin/
 
 # w806 compile patterns
 # --------------------
@@ -95,7 +96,10 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.f
 recipe.objcopy.bin.pattern="{compiler.path}{compiler.elf2bin.cmd}" {compiler.elf2bin.flags} {compiler.elf2bin.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
 #recipe.objcopy.eep.pattern="{runtime.tools.w80x_tool.path}/wm_tool.exe" -b {build.path}/{build.project_name}.bin -o {build.path}/{build.project_name} -it {img_type} -fc 0 -ra {run_img_pos} -ih {run_img_header} -ua {upd_img_pos} -nh 0  -un 0
 #recipe.objcopy.img.pattern="{runtime.tools.w80x_tool.path}/wm_tool.exe" -b {build.tools.path}/W806_secboot.bin -o {build.path}/{build.project_name}_secboot -it 0 -fc 0 -ra {sec_img_pos} -ih {sec_img_header} -ua {upd_img_pos} -nh {run_img_header} -un 0 & type "{build.path}\{build.project_name}_secboot.img" {build.path}\{build.project_name}.img > {build.path}\{build.project_name}.fls
-recipe.objcopy.fls.pattern="{build.tools.path}/build" "{build.tools.path}/wm_tool.exe" {build.path}\{build.project_name} {build.tools.path}\W806_secboot.bin
+recipe.objcopy.eep.pattern.linux="{build.tools.path}/wm_tool" -b {build.path}/{build.project_name}.bin -o {build.path}/{build.project_name} -it {img_type} -fc 0 -ra {run_img_pos} -ih {run_img_header} -ua {upd_img_pos} -nh 0  -un 0
+recipe.objcopy.img.pattern.linux="{build.tools.path}/wm_tool" -b {build.tools.path}/W806_secboot.bin -o {build.path}/{build.project_name}_secboot -it 0 -fc 0 -ra {sec_img_pos} -ih {sec_img_header} -ua {upd_img_pos} -nh {run_img_header} -un 0 
+recipe.hooks.objcopy.postobjcopy.1.pattern.linux="{build.tools.path}/wm_tool.sh" -s "{build.path}/{build.project_name}_secboot.img" -i {build.path}/{build.project_name}.img -o {build.path}/{build.project_name}.fls
+recipe.hooks.objcopy.postobjcopy.1.pattern.windows="{build.tools.path}/build" "{build.tools.path}/wm_tool.exe" {build.path}\{build.project_name} {build.tools.path}\W806_secboot.bin
 
 ## Save bin
 recipe.output.tmp_file={build.project_name}.bin
@@ -118,12 +122,16 @@ recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {co
 # W806 Uploader tools
 # ------------------------------
 
-tools.serial_upload.path={runtime.tools.w80x_tool.path}/win/
-tools.serial_upload.cmd.path={path}/wm_tool.exe
+tools.serial_upload.path.windows={runtime.tools.w80x_tool.path}/win/
+tools.serial_upload.cmd.path.windows={path}/wm_tool.exe
+tools.serial_upload.path.linux={runtime.tools.w80x_tool.path}/lin/
+tools.serial_upload.cmd.path.linux={path}/wm_toold
 
-tools.serial_upload.upload.params.verbose=-c
+tools.serial_upload.upload.params.verbose.windows=-c
+tools.serial_upload.upload.params.verbose.linux=-cc
 tools.serial_upload.upload.params.quiet=-q -q
 # tools.avrdude.upload.verify is needed for backwards compatibility with IDE 1.6.8 or older, IDE 1.6.9 or newer overrides this value
 tools.serial_upload.upload.verify=
 tools.serial_upload.upload.params.noverify=-V
-tools.serial_upload.upload.pattern="{cmd.path}" {upload.params.verbose} {serial.port} -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
+tools.serial_upload.upload.pattern.windows="{cmd.path}" {upload.params.verbose} {serial.port} -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
+tools.serial_upload.upload.pattern.linux="{cmd.path}" {upload.params.verbose} {serial.port} -rs rts -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
