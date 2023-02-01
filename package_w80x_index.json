@@ -14,8 +14,8 @@
                     "architecture": "XT804",
                     "version": "0.0.2",
                     "category": "Contributed",
-                    "url": "https://github.com/Hi-LinkDuino/w80x_arduino/releases/download/v0.0.2/w80x_arduino-0.0.2.zip",
-                    "archiveFileName": "w80x_arduino-0.0.2.zip",
+                    "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.2a/w80x_arduino-0.0.2a.tar.gz",
+                    "archiveFileName": "w80x_arduino-0.0.2a.tar.gz",
                     "help": {
                     "online": "https://github.com/Hi-LinkDuino/w80x_arduino/issues"
                     },
@@ -95,8 +95,8 @@
                         },
                         {
                             "host": "x86_64-pc-linux-gnu",
-                            "url": "https://github.com/Hi-LinkDuino/w80x_arduino/releases/download/v0.0.1/w80x_tool-mingw32-v1.0.zip",
-                            "archiveFileName": "w80x_tool-mingw32-v1.0.zip"
+                            "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.2a/w80x_tool_x86_64-pc-linux-gnu-v1.0.tgz",
+                            "archiveFileName": "w80x_tool_x86_64-pc-linux-gnu-v1.0.tgz"
                             
                         }
                     ]
