@@ -1,3 +1,13 @@
+// For HLK-806-KIT HAL v "0.4.0"
+
+#include <stdio.h>
+#include <Arduino.h>
+
+#define DUTY_MAX 99
+#define DUTY_MIN 49
+
+PWM_HandleTypeDef pwm[3];
+
 static void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel);
 
 void setup() {
