@@ -2,6 +2,7 @@
 
 menu.cpu_frq=CPU Frequency
 menu.cpu_variant=CPU
+menu.opt=Build mode
 menu.upload_speed=Upload Speed
 menu.erase=Erase Flash
 #menu.os_variant=OS
@@ -44,6 +45,14 @@ w80x.menu.cpu_variant.w801.build.variant=w801
 w80x.menu.cpu_variant.w801.build.core=w806
 w80x.menu.cpu_variant.w801.upload.maximum_size=2048576
 
+##############################################################
+# Release /Optimise
+w80x.menu.opt.release=Release ( -Os)
+w80x.menu.opt.release.build.flags.optimize=-Os -flto
+w80x.menu.opt.debug=Debug (-g)
+w80x.menu.opt.debug.build.flags.optimize=-Og
+
+##############################################################
 # Upload Speed
 w80x.menu.upload_speed.baud115200=115200
 w80x.menu.upload_speed.baud115200.upload.speed=115200
