@@ -39,6 +39,10 @@ w80x.menu.cpu_variant.w806.build.core=w806
 w80x.menu.cpu_variant.w805=w805
 w80x.menu.cpu_variant.w805.build.variant=w805
 w80x.menu.cpu_variant.w806.build.core=w806
+w80x.menu.cpu_variant.w801=w801
+w80x.menu.cpu_variant.w801.build.variant=w801
+w80x.menu.cpu_variant.w801.build.core=w806
+w80x.menu.cpu_variant.w801.upload.maximum_size=2048576
 
 # Upload Speed
 w80x.menu.upload_speed.baud115200=115200
