@@ -242,23 +242,19 @@ void analogWrite(uint32_t pin, uint32_t val)
     if (g_APinDescription[pin].ulPinAttribute & PIN_ATTR_PWM) /*this pin has pwm attr*/
     {
         channel_index = (uint16_t)g_APinDescription[pin].ulPWMChannel;
-        if (g_pinStatus[pin] != PWM_OUT) /*need init this pin first*/
-        {
-            g_pinStatus[pin] = PWM_OUT;
-            pwmPinState[channel_index].pin = pin;
-            pwmPinState[channel_index].hpwm.Instance = PWM;
-            pwmPinState[channel_index].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
-            pwmPinState[channel_index].hpwm.Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
-
-            pwmPinState[channel_index].hpwm.Init.Prescaler = 312;                    //40M / 312 = 12.8K						//分频 1M
-            pwmPinState[channel_index].hpwm.Init.Period = 255;                       // 12.8K / 256 = 500HZ
-            pwmPinState[channel_index].hpwm.Init.Pulse = 100;                        // (100/256)% DUTY
-            pwmPinState[channel_index].hpwm.Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
-            pwmPinState[channel_index].hpwm.Channel = channel_index;
-            HAL_PWM_Init(&(pwmPinState[channel_index].hpwm));
-            HAL_PWM_Start(&(pwmPinState[channel_index].hpwm), channel_index);
-        }
-        HAL_PWM_Duty_Set(&(pwmPinState[channel_index].hpwm), channel_index, val);
+        g_pinStatus[pin] = PWM_OUT;
+        pwmPinState[channel_index].pin = pin;
+        pwmPinState[channel_index].hpwm.Instance = PWM;
+        pwmPinState[channel_index].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
+        pwmPinState[channel_index].hpwm.Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
+        pwmPinState[channel_index].hpwm.Init.Prescaler = 312;                    //40M / 312 = 12.8K						//分频 1M
+        pwmPinState[channel_index].hpwm.Init.Period = 255;                       // 12.8K / 256 = 500HZ
+        pwmPinState[channel_index].hpwm.Init.Pulse = 100;                        // (100/256)% DUTY
+        pwmPinState[channel_index].hpwm.Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
+        pwmPinState[channel_index].hpwm.Channel = channel_index;
+        HAL_PWM_Init(&(pwmPinState[channel_index].hpwm));
+        HAL_PWM_Start(&(pwmPinState[channel_index].hpwm));
+        HAL_PWM_Duty_Set(&(pwmPinState[channel_index].hpwm), val);
     }
     else /*this pin is not pwm pin*/
     {
@@ -279,7 +275,7 @@ void disable_pwm(uint8_t pin) /*disable pin's ADC channel function*/
        hpwm.Instance = PWM;
        hpwm.Channel = channel_index;
     }
-    HAL_PWM_Stop(&hpwm, channel_index);
+    HAL_PWM_Stop(&hpwm);
 }
 
 

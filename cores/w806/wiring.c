@@ -28,7 +28,7 @@ unsigned long millis()
     return 1;
 }
 */
-
+uint32_t HAL_Get_Micros();
 
 /* Delay for the given number of microseconds.  Assumes a 1, 8, 12, 16, 20 or 24 MHz clock. */
 void delayMicroseconds(uint32_t us)

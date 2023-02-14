@@ -561,6 +561,108 @@
 													__AFIO_REMAP_SET_OPT7(__HANDLE__, __IOPOSITION__);		\
 												}													\
 											}while (0)
+
+#define __HAL_AFIO_REMAP_I2S_EXT_MCK(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_7))	\
+												{													\
+													__AFIO_REMAP_SET_OPT3(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_17))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_I2S_MCK(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_0))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_7))	\
+												{													\
+													__AFIO_REMAP_SET_OPT3(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_17))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_I2S_WS(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_1))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_9))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_9))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_13))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_I2S_CK(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_4))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_8))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_8))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_12))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_I2S_MOSI(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_0))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_11))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_10))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_14))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_I2S_MISO(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_7))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_10))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_11))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_15))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
 												
 #define __HAL_AFIO_REMAP_SWJ_ENABLE	do {									\
 										__AFIO_REMAP_SET_OPT1(GPIOA, GPIO_PIN_1);	\

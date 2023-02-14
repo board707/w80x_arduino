@@ -7,7 +7,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name= W80x Boards
-version=0.1.0
+version=0.1.2
 
 #runtime.tools.csky.path={runtime.hardware.path}/tools/csky-abiv2-elf-toolchain
 #runtime.tools.w80x_tool.path={runtime.hardware.path}/tools/w80x_tool
@@ -59,6 +59,7 @@ compiler.elf2bin.extra_flags=
 compiler.includes="-I{runtime.tools.csky.path}/csky-elfabiv2/include" "-I{build.core.path}/include" "-I{build.core.path}/include/arch/{build.arch}" "-I{build.core.path}/include/arch/{build.arch}/csi_dsp" "-I{build.core.path}/include/arch/{build.arch}/csi_core" "-I{build.core.path}/include/driver" 
 #compiler.libs={build.core.path}/lib/libdsp.a {build.core.path}/lib/arch/{build.arch}/bsp/startup.o {build.core.path}/lib/arch/{build.arch}/bsp/__rt_entry.o {build.core.path}/lib/arch/{build.arch}/bsp/vectors.o
 compiler.libs={build.core.path}/lib/libdsp.a 
+
 
 # Build image
 img_type=1

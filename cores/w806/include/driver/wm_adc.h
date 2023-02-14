@@ -3,57 +3,50 @@
 
 #include "wm_hal.h"
 
-#ifdef __cplusplus 
-extern "C" {
-#endif
-
 typedef struct
 {
-	uint32_t channel;	/* ADC_CHANNEL_0 	: channel 0
-						 * ADC_CHANNEL_1 	: channel 1
-						 * ADC_CHANNEL_2 	: channel 2
-						 * ADC_CHANNEL_3 	: channel 3
-						 * ADC_CHANNEL_0_1 	: channel 0 and channel 1 differential input
-						 * ADC_CHANNEL_2_3 	: channel 2 and channel 3 differential input */
-	
-	uint32_t freq;		/* 307hz ~ 2khz */
-	
-	uint32_t cmp_val;	/* compare value */
-	
-	uint32_t cmp_pol;	/* CMP_POL_0 :  when adc_result >= cmp_val interrupt
-						 * CMP_POL_1 :  whrn adc_result < cmp_val interrtup */
-	
+    uint32_t channel;    /* ADC_CHANNEL_0 ~ channel 0
+                         * ADC_CHANNEL_1 ~ channel 1
+                         * ADC_CHANNEL_2 ~ channel 2
+                         * ADC_CHANNEL_3 ~ channel 3
+                         * ADC_CHANNEL_0_1 	: channel 0 and channel 1 differential input
+                         * ADC_CHANNEL_2_3 	: channel 2 and channel 3 differential input */
+    
+    uint32_t freq;       /* 307hz ~ 2khz */
+    
+    uint32_t cmp_val;    /* compare value */
+    
+    uint32_t cmp_pol;    /* CMP_POL_0 :  when adc_result >= cmp_val interrupt
+                         * CMP_POL_1 :  whrn adc_result < cmp_val interrtup */
+
 }ADC_InitTypeDef;
 
 typedef struct __ADC_HandleTypeDef
 {
-	ADC_TypeDef                   *Instance;
-	
-	ADC_InitTypeDef               Init;
-	
-	HAL_LockTypeDef               Lock;
-	
-	int				  	  		  offset;
-	
+    ADC_TypeDef                   *Instance;
+    ADC_InitTypeDef               Init;
+    HAL_LockTypeDef               Lock;
+    int                           offset;
+    
 }ADC_HandleTypeDef;
 
 
 #define ADC                ((ADC_TypeDef *)ADC_BASE)
 
-#define ADC_CHANNEL_0		ADC_ANA_CR_CH_0
-#define ADC_CHANNEL_1		ADC_ANA_CR_CH_1
-#define ADC_CHANNEL_2		ADC_ANA_CR_CH_2
-#define ADC_CHANNEL_3		ADC_ANA_CR_CH_3
-#define ADC_CHANNEL_0_1		ADC_ANA_CR_CH_8
-#define ADC_CHANNEL_2_3		ADC_ANA_CR_CH_9
-#define ADC_CHANNEL_TEMP	ADC_ANA_CR_CH_TEMP
-#define ADC_CHANNEL_OFFSET	ADC_ANA_CR_CH_OFFSET
+#define ADC_CHANNEL_0        ADC_ANA_CR_CH_0
+#define ADC_CHANNEL_1        ADC_ANA_CR_CH_1
+#define ADC_CHANNEL_2        ADC_ANA_CR_CH_2
+#define ADC_CHANNEL_3        ADC_ANA_CR_CH_3
+#define ADC_CHANNEL_0_1      ADC_ANA_CR_CH_8
+#define ADC_CHANNEL_2_3      ADC_ANA_CR_CH_9
+#define ADC_CHANNEL_TEMP     ADC_ANA_CR_CH_TEMP
+#define ADC_CHANNEL_OFFSET   ADC_ANA_CR_CH_OFFSET
 
-#define ADC_FREQ_MIN		307
-#define ADC_FREQ_MAX		2000
+#define ADC_FREQ_MIN        307
+#define ADC_FREQ_MAX        2000
 
-#define CMP_POL_0	0x0UL
-#define CMP_POL_1	ADC_ADC_CR_CMPPOL
+#define CMP_POL_0    0x0UL
+#define CMP_POL_1    ADC_ADC_CR_CMPPOL
 
 #define HAL_ADC_STATE_RESET             0x00000000U
 #define HAL_ADC_STATE_READY             0x00000001U
@@ -67,26 +60,26 @@ typedef struct __ADC_HandleTypeDef
                                  ((CHANNEL) == ADC_CHANNEL_1)           || \
                                  ((CHANNEL) == ADC_CHANNEL_2)           || \
                                  ((CHANNEL) == ADC_CHANNEL_3)           || \
-                                 ((CHANNEL) == ADC_CHANNEL_0_1)           || \
+                                 ((CHANNEL) == ADC_CHANNEL_0_1)         || \
                                  ((CHANNEL) == ADC_CHANNEL_2_3)            )
-								 
-#define IS_ADC_CMP_POL(POL)		(((POL) == CMP_POL_0) || \
-								 ((POL) == CMP_POL_1))
-								 
+                                 
+#define IS_ADC_CMP_POL(POL)      (((POL) == CMP_POL_0) || \
+                                 ((POL) == CMP_POL_1))
+                                 
 #define IS_ADC_FREQUENCY(FREQ)  (((FREQ) >= ADC_FREQ_MIN) && ((FREQ) <= ADC_FREQ_MAX))
 
-#define __HAL_ADC_ENABLE(__HANDLE__)	(MODIFY_REG((__HANDLE__)->Instance->ANA_CR, ADC_ANA_CR_CH | ADC_ANA_CR_PD | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN, \
-													(__HANDLE__)->Init.channel | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN))
-													
-#define __HAL_ADC_DISABLE(__HANDLE__)	(MODIFY_REG((__HANDLE__)->Instance->ANA_CR, ADC_ANA_CR_PD | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN, \
-													ADC_ANA_CR_PD))
+#define __HAL_ADC_ENABLE(__HANDLE__)    (MODIFY_REG((__HANDLE__)->Instance->ANA_CR, ADC_ANA_CR_CH | ADC_ANA_CR_PD | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN, \
+                                                    (__HANDLE__)->Init.channel | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN))
+                                                    
+#define __HAL_ADC_DISABLE(__HANDLE__)    (MODIFY_REG((__HANDLE__)->Instance->ANA_CR, ADC_ANA_CR_PD | ADC_ANA_CR_RST | ADC_ANA_CR_LDOEN, \
+                                                    ADC_ANA_CR_PD))
 
-#define __HAL_ADC_CLEAR_FLAG(__HANDLE__, __FLAG__)   	\
-		(WRITE_REG((__HANDLE__)->Instance->IF, (__FLAG__)))
-		
-#define __HAL_ADC_INT_ENABLE(__HANDLE__, __FLAG__)	(SET_BIT((__HANDLE__)->Instance->ADC_CR, __FLAG__))
+#define __HAL_ADC_CLEAR_FLAG(__HANDLE__, __FLAG__)       \
+        (WRITE_REG((__HANDLE__)->Instance->IF, (__FLAG__)))
+        
+#define __HAL_ADC_INT_ENABLE(__HANDLE__, __FLAG__)    (SET_BIT((__HANDLE__)->Instance->ADC_CR, __FLAG__))
 
-#define __HAL_ADC_INT_DISABLE(__HANDLE__, __FLAG__)	(CLEAR_BIT((__HANDLE__)->Instance->ADC_CR, __FLAG__))
+#define __HAL_ADC_INT_DISABLE(__HANDLE__, __FLAG__)    (CLEAR_BIT((__HANDLE__)->Instance->ADC_CR, __FLAG__))
 
 #define __HAL_ADC_GET_IT_SOURCE(__HANDLE__, __INTERRUPT__)                     \
   (((__HANDLE__)->Instance->ADC_CR & (__INTERRUPT__)) == (__INTERRUPT__))
@@ -96,28 +89,31 @@ typedef struct __ADC_HandleTypeDef
   
 
 
+#ifdef __cplusplus
+extern "C"{
+#endif
 HAL_StatusTypeDef       HAL_ADC_Init(ADC_HandleTypeDef* hadc);
 HAL_StatusTypeDef       HAL_ADC_DeInit(ADC_HandleTypeDef *hadc);
 void                    HAL_ADC_MspInit(ADC_HandleTypeDef* hadc);
 void                    HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc);
 
 
-// AD×ª»»¹¦ÄÜÒÔ²éÑ¯·½Ê½ÊµÏÖËù¶ÔÓ¦µÄ¿ªÊ¼¡¢Í£Ö¹¡¢²éÑ¯ÊÇ·ñ×ª»»Íê³É¡¢»ñÈ¡×ª»»½á¹û
+// ADè½¬æ¢åŠŸèƒ½ä»¥æŸ¥è¯¢æ–¹å¼å®ç°æ‰€å¯¹åº”çš„å¼€å§‹ã€åœæ­¢ã€æŸ¥è¯¢æ˜¯å¦è½¬æ¢å®Œæˆã€è·å–è½¬æ¢ç»“æœ
 HAL_StatusTypeDef       HAL_ADC_Start(ADC_HandleTypeDef* hadc);
 HAL_StatusTypeDef       HAL_ADC_Stop(ADC_HandleTypeDef* hadc);
-HAL_StatusTypeDef 		HAL_ADC_PollForConversion(ADC_HandleTypeDef* hadc);
-int                		HAL_ADC_GetValue(ADC_HandleTypeDef* hadc);
+HAL_StatusTypeDef       HAL_ADC_PollForConversion(ADC_HandleTypeDef* hadc);
+int                     HAL_ADC_GetValue(ADC_HandleTypeDef* hadc);
 
-// ¸Ã½Ó¿Úµ÷ÓÃÁËÒÔÉÏ½Ó¿Ú£¬ÊµÏÖÁËÒ»¸öÍêÕûµÄ²éÑ¯×ª»»¹ı³Ì£¬²¢·µ»Ø½á¹û£¬¿ÉÒÔÖ±½Óµ÷ÓÃ¸Ã½Ó¿Ú»ñÈ¡×ª»»½á¹û£¬·µ»ØÖµµ¥Î»mv
-int 					HAL_ADC_GET_INPUT_VOLTAGE(ADC_HandleTypeDef* hadc);
+// è¯¥æ¥å£è°ƒç”¨äº†ä»¥ä¸Šæ¥å£ï¼Œå®ç°äº†ä¸€ä¸ªå®Œæ•´çš„æŸ¥è¯¢è½¬æ¢è¿‡ç¨‹ï¼Œå¹¶è¿”å›ç»“æœï¼Œå¯ä»¥ç›´æ¥è°ƒç”¨è¯¥æ¥å£è·å–è½¬æ¢ç»“æœï¼Œè¿”å›å€¼å•ä½mv
+int                     HAL_ADC_GET_INPUT_VOLTAGE(ADC_HandleTypeDef* hadc);
 
-// AD×ª»»¹¦ÄÜÒÔÖĞ¶Ï·½Ê½ÊµÏÖËù¶ÔÓ¦µÄ¿ªÊ¼¡¢Í£Ö¹¡¢ÖĞ¶Ï»Øµ÷º¯Êı
+// ADè½¬æ¢åŠŸèƒ½ä»¥ä¸­æ–­æ–¹å¼å®ç°æ‰€å¯¹åº”çš„å¼€å§‹ã€åœæ­¢ã€ä¸­æ–­å›è°ƒå‡½æ•°
 HAL_StatusTypeDef       HAL_ADC_Start_IT(ADC_HandleTypeDef* hadc);
 HAL_StatusTypeDef       HAL_ADC_Stop_IT(ADC_HandleTypeDef* hadc);
 void                    HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc);
 
-// AD±È½Ï¹¦ÄÜÒÔÖĞ¶Ï·½Ê½ÊµÏÖËù¶ÔÓ¦µÄ¿ªÊ¼¡¢Í£Ö¹¡¢ÖĞ¶Ï»Øµ÷º¯Êı
-HAL_StatusTypeDef		HAL_ADC_Start_Compare_IT(ADC_HandleTypeDef* hadc);
+// ADæ¯”è¾ƒåŠŸèƒ½ä»¥ä¸­æ–­æ–¹å¼å®ç°æ‰€å¯¹åº”çš„å¼€å§‹ã€åœæ­¢ã€ä¸­æ–­å›è°ƒå‡½æ•°
+HAL_StatusTypeDef       HAL_ADC_Start_Compare_IT(ADC_HandleTypeDef* hadc);
 HAL_StatusTypeDef       HAL_ADC_Stop_Compare_IT(ADC_HandleTypeDef* hadc);
 void                    HAL_ADC_CompareCallback(ADC_HandleTypeDef* hadc);
 

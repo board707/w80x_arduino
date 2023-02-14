@@ -3,33 +3,32 @@
 
 #include "wm_hal.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define WDG                ((WDG_TypeDef *)WDG_BASE)
 
 typedef struct
 {
-	uint32_t Reload;	// unit: us
-	
+    uint32_t Reload;    // unit: us
+    
 } WDG_InitTypeDef;
 
 typedef struct
 {
-	WDG_TypeDef *Instance;
-	
-	WDG_InitTypeDef Init;
-	
+    WDG_TypeDef *Instance;
+    
+    WDG_InitTypeDef Init;
+    
 } WDG_HandleTypeDef;
 
 
 #define IS_WDG_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == WDG)
 
-#define IS_WDG_RELOAD(__RELOAD__)            ((__RELOAD__) <= WDG_LD)
+#define IS_WDG_RELOAD(__RELOAD__)      ((__RELOAD__) <= WDG_LD)
 
 #define __HAL_WDG_CLEAR_FLAG(__HANDLE__, __FLAG__)         ((__HANDLE__)->Instance->CLR = __FLAG__)
 
+#ifdef __cplusplus
+extern "C"{
+#endif
 HAL_StatusTypeDef     HAL_WDG_Init(WDG_HandleTypeDef *hwdg);
 
 void HAL_WDG_MspInit(WDG_HandleTypeDef* hwdg);
