@@ -37,17 +37,23 @@ static void uart0Init (int bandrate)
 {
 	unsigned int bd;
 
+#if USE_UART0_AUTO_DL
+	WRITE_REG(UART0->INTM, ~UART_RX_INT_FLAG);
+	NVIC_ClearPendingIRQ(UART0_IRQn);
+	NVIC_EnableIRQ(UART0_IRQn);
+#else
 	NVIC_DisableIRQ(UART0_IRQn);
 	NVIC_ClearPendingIRQ(UART0_IRQn);
+#endif
 
 	bd = (APB_CLK/(16*bandrate) - 1)|(((APB_CLK%(bandrate*16))*16/(bandrate*16))<<16);
 	WRITE_REG(UART0->BAUDR, bd);
 
 	WRITE_REG(UART0->LC, UART_BITSTOP_VAL | UART_TXEN_BIT | UART_RXEN_BIT);
-	WRITE_REG(UART0->FC, 0x00);   			/* Disable afc */
-	WRITE_REG(UART0->DMAC, 0x00);             		/* Disable DMA */
-	WRITE_REG(UART0->FIFOC, 0x00);             		/* one byte TX/RX */
-//	WRITE_REG(UART0->INTM, 0x00);             		/* Disable INT */
+	WRITE_REG(UART0->FC, 0x00);    /* Disable afc */
+	WRITE_REG(UART0->DMAC, 0x00);  /* Disable DMA */
+	WRITE_REG(UART0->FIFOC, 0x00); /* one byte TX/RX */
+//	WRITE_REG(UART0->INTM, 0x00);  /* Disable INT */
 
 }
 #if 0
@@ -99,8 +105,8 @@ void board_init(void)
     /* use uart0 as log output io */
     uart0Init(115200);
 #else
-    uart1_io_init();
+    //uart1_io_init();
     /* use uart1 as log output io */
-	uart1Init(115200);
+	//uart1Init(115200);
 #endif
 }

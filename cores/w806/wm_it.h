@@ -1,8 +1,6 @@
 #ifndef __WM_IT_H__
 #define __WM_IT_H__
-#ifdef __cplusplus 
-extern "C" {
-#endif
+
 void CORET_IRQHandler(void);
 void GPIOA_IRQHandler(void);
 void GPIOB_IRQHandler(void);
@@ -14,7 +12,5 @@ void TIM0_5_IRQHandler(void);
 void ADC_IRQHandler(void);
 void PMU_IRQHandler(void);
 void TOUCH_IRQHandler(void);
-#ifdef __cplusplus 
-}
-#endif
+
 #endif

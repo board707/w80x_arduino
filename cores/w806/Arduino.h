@@ -1,23 +1,3 @@
-/*
-  Arduino.h - Main include file for the Arduino SDK
-  Copyright (c) 2005-2013 Arduino Team.  All right reserved.
-
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-
 #ifndef Arduino_h
 #define Arduino_h
 
@@ -35,33 +15,8 @@
 extern "C" {
 #endif
 
-//Macro-based digital IO fucntions
-//#include "wiring_digita.h"
-
-//!!!!#include "binary.h"
-
-// FIXME: workarounds for missing features or unimplemented functions
-// cancel out the PROGMEM attribute - used only for atmel CPUs
-#define PROGMEM
-void yield(void);
-
-// we use pre-defined IRQ function the way wiring does
-#define WIRING
-
-#define HIGH 0x1
-#define LOW  0x0
-
-#define INPUT 0x0
-#define OUTPUT 0x1
-#define INPUT_PULLUP 0x2
-#define OUTPUT_OD 0x03
-#define INPUT_PULLDOWN 0x4
-#define ANALOG_INPUT 0x5
-#define PWM_OUT 0x6
-
-#define PIN_IDLE 0xff
-
-// undefine mathlib's pi if encountered
+// Блок математики
+// Переопределение числа Pi 
 #ifdef PI
 #undef PI
 #endif
@@ -79,23 +34,7 @@ void yield(void);
 #define RAD_TO_DEG 57.295779513082320876798154814105
 #define EULER 2.718281828459045235360287471352
 
-#define SERIAL  0x0
-#define DISPLAY 0x1
-
-#define LSBFIRST 0
-#define MSBFIRST 1
-
-#define FALLING 1
-
-/*
-#define INTERNAL1V1 2
-#define INTERNAL2V56 3
-#define INTERNAL 3
-#define DEFAULT 1
-#define EXTERNAL 0
-*/
-
-// undefine stdlib's abs if encountered
+// Переопределение abs()
 #ifdef abs
 #undef abs
 #endif
@@ -109,14 +48,7 @@ void yield(void);
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define interrupts() sei()
-#define noInterrupts() cli()
-
-#define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
-#define clockCyclesPerMillisecond() ( F_CPU / 1000L )
-#define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
-#define microsecondsToClockCycles(a) ( (a) * clockCyclesPerMicrosecond() )
-
+//Битовые операции
 #define byte(w) ((uint8_t)(w))
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
@@ -130,61 +62,52 @@ void yield(void);
 #define maskClear(value, mask) ((value) &= ~(mask))
 
 
-// avr-libc defines _NOP() since 1.6.2
-#ifndef _NOP
-//#define _NOP() do { __asm__ volatile ("nop"); } while (0)
-#endif
+// Флаги тактирования периферии
+static volatile bool is_gpio_clk_en ;
+static volatile bool is_pwm_clk_en ;
+static volatile bool is_adc_clk_en;
 
-#define BEGIN_CRITICAL		__critical {
-#define END_CRITICAL		}
+// Определения для DIO
+#define HIGH 			0x1
+#define LOW  			0x0
 
+#define INPUT 			0b00000001
+#define OUTPUT 			0b00000010
+#define INPUT_PULLUP 	0b00000100
+#define INPUT_PULLDOWN 	0b00001000
 
-typedef unsigned int word;
+// Определения для ШИМ/АЦП
+#define ANALOG_INPUT 	0b00010000
+#define PWM_OUT 		0b00100000
 
-#define bit(b) (1UL << (b))
-
-typedef unsigned char boolean;
-typedef unsigned char byte;
-//typedef uint8_t byte;
-
-void init(void);
-//void initVariant(void);		// weak
-
-//int atexit(void (*func)());	// __attribute__((weak));
-//void serialEvent(void);		// weak
-//extern unsigned char runSerialEvent;
-
+// Прототипы для DIO
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
-
+void digitalToggle(uint8_t pin);
 uint8_t digitalRead(uint8_t pin);
 
-#define ADC8BIT		0x01
-#define ADC16BIT	0x02
+// Прототипы для режимов ШИМ/АЦП
+void setup_pwm(void);
+void analogWrite(uint8_t pin, uint8_t val);
+void setup_adc(void);
+double analogRead(uint8_t pin);
 
-void analogReadResolution(uint8_t);
-int analogRead(uint8_t pin);
+// Прототипы для измерения времени в runtime
+uint32_t millis(void);
+uint32_t micros(void);
 
-void analogWrite(uint32_t pin, uint32_t val);
-//uint32_t millis(void);
-//uint32_t micros(void);
-//void delay(uint32_t ms);
-#define millis HAL_GetTick
-#define micros HAL_Get_Micros
-#define delay(ms) HAL_Delay(ms)
-
+// Прототипы для функций задержек
+void delay(uint32_t ms);
 void delayMicroseconds(uint32_t us);
-//unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
-//unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 
-//void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
-//uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+// Прототип для контроля вхождения в суперцикл Loop()
+bool is_loop(void) ;
+void set_loop(bool param);
 
-//void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), __xdata uint8_t mode);
-//void detachInterrupt(uint8_t interruptNum);
-
+// Прототипы для скетча Ардуино
 void setup(void);
 void loop(void);
+
 
 #ifdef __cplusplus 
 }

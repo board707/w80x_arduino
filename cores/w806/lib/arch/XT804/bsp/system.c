@@ -30,6 +30,19 @@
   * @param  None
   * @return None
   */
+extern int __dtor_end__;
+extern int __ctor_end__;
+extern int __ctor_start__;
+typedef void (*func_ptr)(void);
+__attribute__((weak)) void cxx_system_init(void)
+{
+    func_ptr *p;
+    for (p = (func_ptr *)&__ctor_end__ -1; p >= (func_ptr *)&__ctor_start__; p--)
+    {
+        (*p)();
+    }
+}
+  
 void SystemInit(void)
 {
     __set_VBR((uint32_t) & (irq_vectors));
@@ -47,7 +60,7 @@ void SystemInit(void)
     /* Clear active and pending IRQ */
     VIC->IABR[0] = 0x0;
     VIC->ICPR[0] = 0xFFFFFFFF;
-
+	cxx_system_init();
 #ifdef CONFIG_KERNEL_NONE
     __enable_excp_irq();
 #endif

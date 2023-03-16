@@ -74,16 +74,19 @@ SECTIONS
   *(.rodata*)
   *(.rodata.*)
   *(.rodata.str1.4)
+  __ctor_start__ = .;
   KEEP (*crtbegin.o(.ctors))
   KEEP (*crtbegin?.o(.ctors))
   KEEP (*(EXCLUDE_FILE (*crtend.o *crtend?.o ) .ctors))
   KEEP (*(SORT(.ctors.*)))
   KEEP (*(.ctors))
+  __ctor_end__ = .;
   KEEP (*crtbegin.o(.dtors))
   KEEP (*crtbegin?.o(.dtors))
   KEEP (*(EXCLUDE_FILE (*crtend.o *crtend?.o ) .dtors))
   KEEP (*(SORT(.dtors.*)))
   KEEP (*(.dtors))
+  __dtor_end__ = .;
   . = ALIGN(0x4) ;
   __erodata = .;
  } > REGION_RODATA

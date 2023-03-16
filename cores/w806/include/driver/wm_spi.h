@@ -74,7 +74,7 @@ typedef struct __SPI_HandleTypeDef
 } SPI_HandleTypeDef;
 
 
-#define SPI                             ((SPI_TypeDef *)SPI_BASE)
+#define SPI                             ((SPI_TypeDef *) SPI_BASE)
 
 #define HAL_SPI_ERROR_NONE              (0x00000000U)   /*!< No error                               */
 #define HAL_SPI_ERROR_TXERR             (0x00000001U)   /*!< Tx error                               */

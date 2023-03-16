@@ -49,7 +49,7 @@
 #ifdef __riscv
 #include <csi_rv32_gcc.h>
 #else
-#include <csi_gcc.h>
+#include "csi_gcc.h"
 #endif
 
 #ifdef __cplusplus
