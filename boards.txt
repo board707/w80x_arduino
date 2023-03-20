@@ -18,6 +18,7 @@ w80x.build.mcu=ck804ef
 w80x.build.board=HLK_w80x
 #w80x.build.core=w806
 w80x.build.mcpu=ck804ef
+w80x.serial.disableRTS=true
 
 ##############################################################
 # CPU Frequency
