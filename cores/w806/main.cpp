@@ -5,6 +5,13 @@
 void Error_Handler(void);
 static volatile bool _loop = false;
 
+TIM_HandleTypeDef htim0;
+TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim5;
+
 int main(void)
 {
 #if (F_CPU == 240000000)
