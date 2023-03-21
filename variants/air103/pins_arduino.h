@@ -1,6 +1,7 @@
-// Описание выводов для платы HLK-W806-KIT
+// Описание выводов для платы Air103
 
 #include "./include/driver/wm_hal.h"
+
 
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
@@ -48,13 +49,13 @@ typedef struct {
 } PIN_MAP ;
 
 const PIN_MAP pin_Map[] = {
-    { GPIOA, GPIO_PIN_0,	PA0,	DIO|PWM2},
-    { GPIOA, GPIO_PIN_1,	PA1,	DIO|ADC1|PWM3},	// JTAG_CK
+    { GPIOA, GPIO_PIN_0,	PA0,	NONE},      // Отсутствует на плате
+    { GPIOA, GPIO_PIN_1,	PA1,	DIO|ADC1},	// JTAG_CK
     { GPIOA, GPIO_PIN_2,	PA2,	DIO|ADC4|PWM0},
     { GPIOA, GPIO_PIN_3,	PA3,	DIO|ADC3|PWM1},
-    { GPIOA, GPIO_PIN_4,	PA4,	DIO|ADC2|PWM4},	// JTAG_SWO
-    { GPIOA, GPIO_PIN_5,	PA5,	DIO},
-    { GPIOA, GPIO_PIN_6,	PA6,	DIO},
+    { GPIOA, GPIO_PIN_4,	PA4,	DIO|ADC2},	// JTAG_SWO
+    { GPIOA, GPIO_PIN_5,	PA5,	NONE},      // Отсутствует на плате
+    { GPIOA, GPIO_PIN_6,	PA6,	NONE},      // Отсутствует на плате
     { GPIOA, GPIO_PIN_7,	PA7,	DIO|PWM4},
     { GPIOA, GPIO_PIN_8,	PA8,	DIO},
     { GPIOA, GPIO_PIN_9,	PA9,	DIO},
@@ -63,7 +64,7 @@ const PIN_MAP pin_Map[] = {
     { GPIOA, GPIO_PIN_12,	PA12,	DIO|PWM2},
     { GPIOA, GPIO_PIN_13,	PA13,	DIO|PWM3},    
     { GPIOA, GPIO_PIN_14,	PA14,	DIO|PWM4},
-    { GPIOA, GPIO_PIN_15,	PA15,	DIO},             
+    { GPIOA, GPIO_PIN_15,	PA15,	DIO},       // нет пина, PSRAM SCLK
 
     { GPIOB, GPIO_PIN_0,	PB0,	DIO|PWM0},
     { GPIOB, GPIO_PIN_1,	PB1,	DIO|PWM1},
@@ -85,15 +86,16 @@ const PIN_MAP pin_Map[] = {
     { GPIOB, GPIO_PIN_17,	PB17,	DIO},       
     { GPIOB, GPIO_PIN_18,	PB18,	DIO},
     { GPIOB, GPIO_PIN_19,	PB19,	NONE},	    // TX0 |Используется для загрузки прошивки и вывода на консоль
-    { GPIOB, GPIO_PIN_20,	PB20,	NONE},		// RX0 |отладочных данных через printf()
-    { GPIOB, GPIO_PIN_21,	PB21,	DIO}, 
-    { GPIOB, GPIO_PIN_22,	PB22,	DIO},
+    { GPIOB, GPIO_PIN_20,	PB20,	NONE},		  // RX0 |отладочных данных через printf()
+    { GPIOB, GPIO_PIN_21,	PB21,	NONE},      // Отсутствует на плате 
+    { GPIOB, GPIO_PIN_22,	PB22,	NONE},      // Отсутствует на плате 
     { GPIOB, GPIO_PIN_23,	PB23,	NONE},      // Отсутствует на плате 
-    { GPIOB, GPIO_PIN_24,	PB24,	DIO|PWM2},
-    { GPIOB, GPIO_PIN_25,	PB25,	DIO|PWM3},    
-    { GPIOB, GPIO_PIN_26,	PB26,	DIO|PWM4},
-    { GPIOB, GPIO_PIN_27,	PB27,	DIO}
+    { GPIOB, GPIO_PIN_24,	PB24,	DIO|PWM2},  // нет пина, LED
+    { GPIOB, GPIO_PIN_25,	PB25,	DIO|PWM3},  // нет пина, LED
+    { GPIOB, GPIO_PIN_26,	PB26,	DIO|PWM4},  // нет пина, LED
+    { GPIOB, GPIO_PIN_27,	PB27,	DIO}        // нет пина, PSRAM CS
 };
+
 
 // Additional board settings
 #include "variant.h"

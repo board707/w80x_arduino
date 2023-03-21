@@ -35,16 +35,19 @@ w80x.menu.cpu_frq.2MHZ.build.f_cpu=2000000
 
 ##############################################################
 # CPU variant
-w80x.menu.cpu_variant.w806=w806
+w80x.menu.cpu_variant.w806=W806
 w80x.menu.cpu_variant.w806.build.variant=w806
 w80x.menu.cpu_variant.w806.build.core=w806
-w80x.menu.cpu_variant.w805=w805
+w80x.menu.cpu_variant.w805=W805
 w80x.menu.cpu_variant.w805.build.variant=w805
 w80x.menu.cpu_variant.w806.build.core=w806
-w80x.menu.cpu_variant.w801=w801
+w80x.menu.cpu_variant.w801=W801
 w80x.menu.cpu_variant.w801.build.variant=w801
 w80x.menu.cpu_variant.w801.build.core=w806
 w80x.menu.cpu_variant.w801.upload.maximum_size=2048576
+w80x.menu.cpu_variant.air103=Air103
+w80x.menu.cpu_variant.air103.build.variant=air103
+w80x.menu.cpu_variant.air103.build.core=w806
 
 ##############################################################
 # Release /Optimise

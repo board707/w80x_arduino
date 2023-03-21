@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <Arduino.h>
-int led = PB0;
+int led = LED_BUILTIN_1;
 
 // the setup routine runs once when you press reset:
 void setup() {

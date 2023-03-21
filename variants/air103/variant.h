@@ -1,0 +1,8 @@
+#ifndef _VARIANT_ARDUINO_Air103_
+#define _VARIANT_ARDUINO_Air103_
+
+#define LED_BUILTIN_1 PB24
+#define LED_BUILTIN_2 PB25
+#define LED_BUILTIN_3 PB26
+
+#endif /* _VARIANT_ARDUINO_Air103_ */
