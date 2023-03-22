@@ -28,10 +28,10 @@ Default size of the internal flash storage is 2048 bytes, but you can choose dif
 
 #### **`EEPROMClass W_EEPROM( size )`**
 
-The methods provided in the EEPROMClass are similar with ones, available in standard EEPROM library for AVR boards.
-
 
 ### **Library functions**
+
+The methods provided in the EEPROMClass are similar with ones, available in standard EEPROM library for AVR boards.
 
 #### **`W_EEPROM.read( address )`**
 
