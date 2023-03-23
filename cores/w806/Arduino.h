@@ -10,6 +10,7 @@
 #include "pins_arduino.h"
 #include "./include/driver/wm_hal.h"
 
+#define TIMER_COUNT 6
 
 #ifdef __cplusplus 
 extern "C" {
