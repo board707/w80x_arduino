@@ -2,6 +2,16 @@
 #include "wm_hal.h"
 #include "pins_arduino.h"
 
+// Массив таймеров
+TIM_HandleTypeDef htim0;
+TIM_HandleTypeDef htim1;
+TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim5;
+TIM_HandleTypeDef* timer_devices[TIMER_COUNT] = {&htim0,&htim1,&htim2,&htim3,&htim4,&htim5};
+
+
 // Массив для фиксации занятых каналов PWM
 typedef struct {
     uint8_t channel;
