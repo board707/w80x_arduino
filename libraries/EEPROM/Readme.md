@@ -1,4 +1,4 @@
-## **EEPROM Library for W80x boards
+## **EEPROM Library for W80x boards**
 
 **Originally written by:** _Paul Stoffregen_.
 
@@ -24,14 +24,14 @@ void loop(){
 }
 
 ```
-Default size of the internal flash sorage is 2048 bytes, but you can choose different value by defining an EEPROMClass object with parameter:
+Default size of the internal flash storage is 2048 bytes, but you can choose different value by defining an EEPROMClass object with parameter:
 
 #### **`EEPROMClass W_EEPROM( size )`**
 
-The methods provided in the EEPROMClass are similar with ones, available in standard EEPROM library for AVR boards.
-
 
 ### **Library functions**
+
+The methods provided in the EEPROMClass are similar with ones, available in standard EEPROM library for AVR boards.
 
 #### **`W_EEPROM.read( address )`**
 
