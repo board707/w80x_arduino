@@ -49,9 +49,7 @@ HAL_StatusTypeDef HAL_TIM_Base_DeInit(TIM_HandleTypeDef *htim)
 __attribute__((weak)) void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
 {
     UNUSED(htim);
-   /* __HAL_RCC_TIM_CLK_ENABLE();
-    HAL_NVIC_SetPriority(TIM_IRQn, 0);
-    HAL_NVIC_EnableIRQ(TIM_IRQn);*/ 
+  
 }
 
 __attribute__((weak)) void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim)
@@ -118,8 +116,9 @@ HAL_TIM_StateTypeDef HAL_TIM_Base_GetState(TIM_HandleTypeDef *htim)
 
 __attribute__((weak)) void HAL_TIM_Callback(TIM_HandleTypeDef *htim)
 {
+ 
     UNUSED(htim);
-    //if (htim->Init.Callback != NULL) (* (htim->Init.Callback)) ();
+   
 }
 
 void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
