@@ -93,24 +93,24 @@ void pinMode(uint8_t pin, uint8_t mode)
 					HAL_GPIO_Init(pin_Map[pin].pPort, &GPIO_InitStruct);
 				}
 				if(mode == ANALOG_INPUT) {
-					if(pin_Map[pin].ulPinAttribute && (DIO|ADC1|PWM3||DIO|ADC4|PWM0||DIO|ADC3|PWM1||DIO|ADC2|PWM4)) {
-						switch(pin_Map[pin].ulPinAttribute) {
-							case DIO|ADC1|PWM3:
+					if(pin_Map[pin].ulPinAttribute & PIN_ADC_Msk) {
+						switch(pin_Map[pin].ulPinAttribute & PIN_ADC_Msk) {
+							case ADC1:
 								adc_channel = ADC_CHANNEL_0;
 								adc_index = 0;
 								__HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_1);
 								break;
-							case DIO|ADC2|PWM4:
+							case ADC2:
 								adc_channel = ADC_CHANNEL_1;
 								adc_index = 1;
 								__HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_4);
 								break;
-							case DIO|ADC3|PWM1:
+							case ADC3:
 								adc_channel = ADC_CHANNEL_2;
 								adc_index = 2;
 								__HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_3);
 								break;
-							case DIO|ADC4|PWM0:
+							case ADC4:
 								adc_channel = ADC_CHANNEL_3;
 								adc_index = 3;
 								__HAL_AFIO_REMAP_ADC(GPIOA, GPIO_PIN_2);
@@ -130,45 +130,29 @@ void pinMode(uint8_t pin, uint8_t mode)
 					printf("Вывод %d не работает в АЦП режиме! \n\r", pin);}
 				}
 				if(mode == PWM_OUT) {
-					if(pin_Map[pin].ulPinAttribute &&
-						(DIO|PWM0||DIO|PWM1||DIO|PWM2||DIO|PWM3||DIO|PWM4||DIO|ADC1|PWM3||DIO|ADC4|PWM0||DIO|ADC3|PWM1||DIO|ADC2|PWM4)) {
-						switch(pin_Map[pin].ulPinAttribute) {
-							case DIO | PWM0:
+					if(pin_Map[pin].ulPinAttribute & PIN_PWM_Msk) {
+						switch(pin_Map[pin].ulPinAttribute & PIN_PWM_Msk) {
+							case PWM0:
 								pwm_channel = PWM_CHANNEL_0;
 								__HAL_AFIO_REMAP_PWM0(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
-							case DIO|PWM1:
+							case PWM1:
 								pwm_channel = PWM_CHANNEL_1;
 								__HAL_AFIO_REMAP_PWM1(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
-							case DIO|PWM2:
+							case PWM2:
 								pwm_channel = PWM_CHANNEL_2;
 								__HAL_AFIO_REMAP_PWM2(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
-							case DIO|PWM3:
+							case PWM3:
 								pwm_channel = PWM_CHANNEL_3;
 								__HAL_AFIO_REMAP_PWM3(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
-							case DIO|PWM4:
+							case PWM4:
 								pwm_channel = PWM_CHANNEL_4;
 								__HAL_AFIO_REMAP_PWM4(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
-							case DIO|ADC4|PWM0:
-								pwm_channel = PWM_CHANNEL_0;
-								__HAL_AFIO_REMAP_PWM0(pin_Map[pin].pPort, pin_Map[pin].halPin);
-								break;
-							case DIO|ADC3|PWM1:
-								pwm_channel = PWM_CHANNEL_1;
-								__HAL_AFIO_REMAP_PWM1(pin_Map[pin].pPort, pin_Map[pin].halPin);
-								break;
-							case DIO|ADC2|PWM4:
-								pwm_channel = PWM_CHANNEL_4;
-								__HAL_AFIO_REMAP_PWM4(pin_Map[pin].pPort, pin_Map[pin].halPin);
-								break;
-							case DIO|ADC1|PWM3:
-								pwm_channel = PWM_CHANNEL_3;
-								__HAL_AFIO_REMAP_PWM3(pin_Map[pin].pPort, pin_Map[pin].halPin);
-								break;
+							
 							default:
 								break;
 						}
