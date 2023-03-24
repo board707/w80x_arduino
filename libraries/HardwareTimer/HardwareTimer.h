@@ -32,10 +32,20 @@
 #define _HARDWARETIMER_H_
 
 # include <Arduino.h>
-//#include <wm_tim.h>
-/** Timer mode. */
-//typedef timer_mode TimerMode;
-//#define TIMER_COUNT 6
+
+//#define TIMER_COUNT 6      // moved to Arduino.h
+
+/** timer interrupt callback type **/
+typedef void (*timer_irq_callback)();
+
+// Timer instances (defined in Arduino.c)
+extern TIM_HandleTypeDef htim0;
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
+extern TIM_HandleTypeDef htim3;
+extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim5;
+
 extern TIM_HandleTypeDef* timer_devices[TIMER_COUNT];
 extern timer_irq_callback timer_callback[TIMER_COUNT]; 
 

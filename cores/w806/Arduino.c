@@ -9,8 +9,6 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
-TIM_HandleTypeDef* timer_devices[TIMER_COUNT] = {&htim0,&htim1,&htim2,&htim3,&htim4,&htim5};
-timer_irq_callback timer_callback[TIMER_COUNT] = {0};
 
 // Массив для фиксации занятых каналов PWM
 typedef struct {
