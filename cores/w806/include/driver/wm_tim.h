@@ -11,8 +11,7 @@
 #define TIM4                4
 #define TIM5                5
 
-/** timer interrupt callback */
-typedef void (*tls_timer_irq_callback)();
+
 
 typedef enum
 {
@@ -28,7 +27,6 @@ typedef struct
     uint32_t Unit;
     uint32_t AutoReload;
     uint32_t Period;
-    tls_timer_irq_callback Callback;    /**< timeout callback function */
     
 } TIM_Base_InitTypeDef;
 

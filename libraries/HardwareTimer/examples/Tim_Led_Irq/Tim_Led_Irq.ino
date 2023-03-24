@@ -42,7 +42,7 @@ pinMode(LED_BUILTIN_3, OUTPUT);
 // Configure the timer with period 1000 milliseconds, auto reload mode
 MyTim.configure(1000, TIM_UNIT_MS, TIM_AUTORELOAD_PRELOAD_ENABLE); 
 // Enable timer interrupt and attach the handler
-MyTim.attachInterrupt( (tls_timer_irq_callback) &tim_irq_routine);
+MyTim.attachInterrupt( (timer_irq_callback) &tim_irq_routine);
 // start the timer
 MyTim.start(); 
 }
