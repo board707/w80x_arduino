@@ -11,6 +11,8 @@
 #include "./include/driver/wm_hal.h"
 
 #define TIMER_COUNT 6
+/** timer interrupt callback */
+typedef void (*timer_irq_callback)();
 
 #ifdef __cplusplus 
 extern "C" {

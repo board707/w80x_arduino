@@ -30,11 +30,17 @@
 
 #ifndef _HARDWARETIMER_H_
 #define _HARDWARETIMER_H_
+
+# include <Arduino.h>
 //#include <wm_tim.h>
 /** Timer mode. */
 //typedef timer_mode TimerMode;
 //#define TIMER_COUNT 6
 extern TIM_HandleTypeDef* timer_devices[TIMER_COUNT];
+extern timer_irq_callback timer_callback[TIMER_COUNT]; 
+
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim);
+void HAL_TIM_Callback(TIM_HandleTypeDef *htim);
 
 /**
  * @brief Interface to one of the 16-bit timer peripherals.
@@ -59,12 +65,12 @@ public:
 
     }
 	
-    uint8_t configure(uint32_t period, uint32_t units, uint32_t flags, tls_timer_irq_callback callback = NULL)
+    uint8_t configure(uint32_t period, uint32_t units, uint32_t flags, timer_irq_callback callback = NULL)
        { 
         this->dev->Instance = this->instance;
         this->dev->Init.Unit = units;
         this->dev->Init.Period = period;
-        this->dev->Init.Callback = (tls_timer_irq_callback) callback;
+        timer_callback[this->instance] = (timer_irq_callback) callback;
         this->dev->Init.AutoReload = flags;
         if (HAL_TIM_Base_Init(this->dev) != HAL_OK)  return 1;
         return 0;
@@ -77,7 +83,7 @@ public:
      * @see HardwareTimer::resume()
      */
     void stop(void) { 
-        if (this->dev->Init.Callback != NULL) HAL_TIM_Base_Stop_IT(this->dev); 
+        if (timer_callback[this->instance] != NULL) HAL_TIM_Base_Stop_IT(this->dev); 
         else HAL_TIM_Base_Stop(this->dev); }
     
     //void pause(void)  { stop(); }  
@@ -90,7 +96,7 @@ public:
      * @see HardwareTimer::pause()
      */
     void start(void) { 
-        if (this->dev->Init.Callback != NULL) HAL_TIM_Base_Start_IT(this->dev); 
+        if (timer_callback[this->instance] != NULL) HAL_TIM_Base_Start_IT(this->dev); 
         else HAL_TIM_Base_Start(this->dev); }
 
     //void resume(void)  { start(); }    
@@ -184,9 +190,9 @@ public:
      * @param handler The ISR to attach to the given channel.
      * @see voidFuncPtr
      */
-    void attachInterrupt( tls_timer_irq_callback callback) {
+    void attachInterrupt( timer_irq_callback callback) {
         this->stop();
-        this->dev->Init.Callback = (tls_timer_irq_callback) callback;
+        timer_callback[this->instance] = (timer_irq_callback) callback;
     }
 
     /**
@@ -201,7 +207,7 @@ public:
      */
     void detachInterrupt() {
         this->stop();
-        this->dev->Init.Callback = (tls_timer_irq_callback) NULL;
+        timer_callback[this->instance] = (timer_irq_callback) NULL;
     }
 
     /**
