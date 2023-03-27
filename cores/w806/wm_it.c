@@ -7,6 +7,9 @@ extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
 
+extern uint32_t GPIOA_CallbackFlag;
+extern uint32_t GPIOB_CallbackFlag;
+
 #define readl(addr) ({unsigned int __v = (*(volatile unsigned int *) (addr)); __v;})
 __attribute__((isr)) void CORET_IRQHandler(void)
 {
@@ -15,12 +18,22 @@ __attribute__((isr)) void CORET_IRQHandler(void)
 }
 __attribute__((isr)) void GPIOA_IRQHandler(void)
 {
- 	HAL_GPIO_EXTI_IRQHandler(GPIOA, GPIO_PIN_0);
+ 	if ((GPIOA->MIS & GPIOA_CallbackFlag) != 0) {
+        HAL_GPIO_EXTI_IRQHandler(GPIOA, GPIOA->MIS);
+    }
+    else {
+        HAL_GPIO_EXTI_IRQHandler(GPIOA, GPIO_PIN_ALL);
+    }
 }
 
 __attribute__((isr)) void GPIOB_IRQHandler(void)
 {
-	HAL_GPIO_EXTI_IRQHandler(GPIOB, GPIO_PIN_5);
+	if ((GPIOB->MIS & GPIOB_CallbackFlag) != 0) {
+        HAL_GPIO_EXTI_IRQHandler(GPIOB, GPIOB->MIS);
+    }
+    else {
+        HAL_GPIO_EXTI_IRQHandler(GPIOB, GPIO_PIN_ALL);
+    }
 }
 
 __attribute__((isr)) void TIM0_5_IRQHandler(void)

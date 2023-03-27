@@ -1,6 +1,6 @@
 #include "Arduino.h"
 #include "wm_hal.h"
-#include "pins_arduino.h"
+//#include "pins_arduino.h"
 
 // Массив таймеров
 TIM_HandleTypeDef htim0;
@@ -63,10 +63,13 @@ void pinMode(uint8_t pin, uint8_t mode)
     if(!is_loop()) {
 		if(pin_Map[pin].ulPinAttribute != NONE) {
 			if (check_pin()) {
-				if((mode == INPUT) || (mode == OUTPUT) || (mode == INPUT_PULLUP) || (mode == INPUT_PULLDOWN)) {
-					GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-					GPIO_InitStruct.Pin = pin_Map[pin].halPin;
-					switch(mode) {
+				if(pin_Map[pin].ulPinAttribute & PIN_DIO_Msk) {
+					if ((mode == INPUT) || (mode == OUTPUT) || (mode == INPUT_PULLUP) || (mode == INPUT_PULLDOWN))
+					{
+						GPIO_InitTypeDef GPIO_InitStruct = {0};
+						GPIO_InitStruct.Pin = pin_Map[pin].halPin;
+						switch (mode)
+						{
 						case INPUT:
 							GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
 							GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -85,12 +88,14 @@ void pinMode(uint8_t pin, uint8_t mode)
 							break;
 						default:
 							break;
+						}
+						if (!is_gpio_clk_en)
+						{
+							__HAL_RCC_GPIO_CLK_ENABLE();
+							is_gpio_clk_en = true;
+						}
+						HAL_GPIO_Init(pin_Map[pin].pPort, &GPIO_InitStruct);
 					}
-					if(!is_gpio_clk_en) {
-						__HAL_RCC_GPIO_CLK_ENABLE();
-						is_gpio_clk_en = true;
-					}
-					HAL_GPIO_Init(pin_Map[pin].pPort, &GPIO_InitStruct);
 				}
 				if(mode == ANALOG_INPUT) {
 					if(pin_Map[pin].ulPinAttribute & PIN_ADC_Msk) {
