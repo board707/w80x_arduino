@@ -1,9 +1,9 @@
 // Описание выводов для платы HLK-W806-KIT
-
-#include "./include/driver/wm_hal.h"
-
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
+
+#include "./include/driver/wm_hal.h"
+#include <GPIO_defs.h>
 
 #define PINS_COUNT          (44U)           // Количество выводов на плате. Выводы PB19,PB20,PB23 не используются
 #define ADC_COUNT           (4U)            // Количество каналов АЦП
@@ -23,29 +23,7 @@ enum pins
 #define A2	PA3
 #define A4	PA2
 
-// Атрибуты выводов
 
-#define NONE	0b0000000000000000		// Вывод не используется
-#define DIO     0b0000000000000001		// Цифровой ввод/вывод
-#define PWM0    0b0000000000000010		// Каналы ШИМ
-#define PWM1    0b0000000000000100
-#define PWM2    0b0000000000001000
-#define PWM3    0b0000000000010000
-#define PWM4    0b0000000000100000
-#define ADC1    0b0000000001000000		// Каналы АЦП
-#define ADC2    0b0000000010000000
-#define ADC3    0b0000000100000000
-#define ADC4    0b0000001000000000
-
-// Константная таблица/массив возможных альтернатив
-// Порт,Вывод порта,Пин платы,Альтернативы
-
-typedef struct {
-  GPIO_TypeDef *  pPort ;		// Указатель на порт
-  uint32_t  halPin ;			// Вывод определен в HAL
-  uint32_t  ulPin ;         	// Вывод на плате
-  uint32_t 	ulPinAttribute ;    // Аттрибуты вывода (альтернативы)                    
-} PIN_MAP ;
 
 const PIN_MAP pin_Map[] = {
     { GPIOA, GPIO_PIN_0,	PA0,	DIO|PWM2},
