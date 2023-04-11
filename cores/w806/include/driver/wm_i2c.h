@@ -36,8 +36,15 @@ HAL_StatusTypeDef HAL_I2C_DeInit(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_MspInit(I2C_HandleTypeDef *hi2c);
 void HAL_I2C_MspDeInit(I2C_HandleTypeDef *hi2c);
 
+
 HAL_StatusTypeDef HAL_I2C_Write(I2C_HandleTypeDef *hi2c, uint8_t DevAddress, uint8_t MemAddress, uint8_t *pData, uint16_t Size);
 HAL_StatusTypeDef HAL_I2C_Read(I2C_HandleTypeDef *hi2c, uint8_t DevAddress, uint8_t MemAddress, uint8_t *pData, uint16_t Size);
+
+// Низкоуровневые прототипы
+void HAL_I2C_Write_Byte(I2C_HandleTypeDef *hi2c, uint8_t dat, uint8_t ifstart);
+uint8_t HAL_I2C_Read_Byte(I2C_HandleTypeDef *hi2c, uint8_t ifack, uint8_t ifstop);
+int HAL_I2C_Wait_Ack(I2C_HandleTypeDef *hi2c);
+void HAL_I2C_Stop(I2C_HandleTypeDef *hi2c);
 
 #ifdef __cplusplus
 }

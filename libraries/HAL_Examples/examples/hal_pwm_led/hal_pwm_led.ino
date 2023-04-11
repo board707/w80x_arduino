@@ -6,7 +6,7 @@
 #define DUTY_MAX 250
 #define DUTY_MIN 50
 
-PWM_HandleTypeDef pwm[3];
+PWM_HandleTypeDef hal_pwm[3];
 
 int i, j, m[3] = { 0 }, d[3] = { DUTY_MIN, (DUTY_MIN + DUTY_MAX) / 2, DUTY_MAX - 1 };
 
@@ -25,8 +25,8 @@ void setup() {
 
   // Starting each instance of PWM channel
   for (i = 2; i >= 0; i--) {
-    PWM_Init(&pwm[i], PWM_CHANNEL_0 + i);
-    HAL_PWM_Start(&pwm[i]);
+    PWM_Init(&hal_pwm[i], PWM_CHANNEL_0 + i);
+    HAL_PWM_Start(&hal_pwm[i]);
   }
 }
 
@@ -34,19 +34,19 @@ void loop() {
   for (i = 0; i < 3; i++) {
     if (m[i] == 0)  // Increasing
     {
-      HAL_PWM_Duty_Set(&pwm[i], d[i]++);
+      HAL_PWM_Duty_Set(&hal_pwm[i], d[i]++);
       if (d[i] == DUTY_MAX) {
         m[i] = 1;
       }
     } else  // Decreasing
     {
-      HAL_PWM_Duty_Set(&pwm[i], d[i]--);
+      HAL_PWM_Duty_Set(&hal_pwm[i], d[i]--);
       if (d[i] == DUTY_MIN) {
         m[i] = 0;
       }
     }
   }
-  HAL_Delay(10);
+  delay(10);
 }
 
 static void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel) {

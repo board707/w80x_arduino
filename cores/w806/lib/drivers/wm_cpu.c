@@ -14,7 +14,7 @@
 
 #define TICK_INT_PRIORITY 7
 
-__IO uint32_t uwTick;
+__IO uint64_t uwTick;
 uint32_t uwTickPrio;
 static HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;  /* 1KHz */
 /**
@@ -103,15 +103,15 @@ __attribute__((weak)) void HAL_IncTick(void)
     uwTick += 1;
 }
 
-__attribute__((weak)) uint32_t HAL_GetTick(void)
+__attribute__((weak)) uint64_t HAL_GetTick(void)
 {
     return uwTick;
 }
 
-__attribute__((weak)) void HAL_Delay(uint32_t Delay)
+__attribute__((weak)) void HAL_Delay(uint64_t Delay)
 {
-    uint32_t tickstart = HAL_GetTick();
-    uint32_t wait = Delay;
+    uint64_t tickstart = HAL_GetTick();
+    uint64_t wait = Delay;
 
     while ((HAL_GetTick() - tickstart) < wait)
     {

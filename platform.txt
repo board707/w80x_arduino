@@ -135,5 +135,5 @@ tools.serial_upload.upload.params.quiet=-q -q
 # tools.avrdude.upload.verify is needed for backwards compatibility with IDE 1.6.8 or older, IDE 1.6.9 or newer overrides this value
 tools.serial_upload.upload.verify=
 tools.serial_upload.upload.params.noverify=-V
-tools.serial_upload.upload.pattern.windows="{cmd.path}" {upload.params.verbose} {serial.port} -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
+tools.serial_upload.upload.pattern.windows="{cmd.path}" {upload.params.verbose} {serial.port} -rs rts -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"
 tools.serial_upload.upload.pattern.linux="{cmd.path}" {upload.params.verbose} {serial.port} -rs rts -ws 115200 -ds {upload.speed} -dl "{build.path}/{build.project_name}.fls"

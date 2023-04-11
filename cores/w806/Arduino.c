@@ -260,6 +260,20 @@ void ADC_Init(ADC_HandleTypeDef* hadc, uint32_t channel) {
     hadc->Init.freq = 1000;
     HAL_ADC_Init(hadc);
 }
+
+//Встроенный криптомодуль ядра
+void trngInit(void) {
+	RCC->CLK_EN |= 1<<17;            //Тактирование 1-Вкл, 0-Выкл
+    GPSEC->KEY0 = 31415926ul;         //Загрузка какого либо числа
+    GPSEC->TRNG_CR =   (4<<3) | (0<<2) | (1<<1) | (1<<0) | 0x00;	//Магия! Все манипуляции с регистрами взяты из wm-w80x-sdk
+}
+void prngInit(void) {
+    RCC->CLK_EN |= 1<<17;            
+    GPSEC->KEY0 = 0x31415926ul;  
+    GPSEC->CFG =   (1<<30) | (1<<29) |  (1<<28) |  0x00;
+    GPSEC->TRNG_CR =   (4<<3) | (0<<2) |  (0<<1) |  (1<<0) | 0x00;
+}
+
 // ToDo: Контроль коллизий в использовании выводов платы
 bool check_pin() {
 	return true;
