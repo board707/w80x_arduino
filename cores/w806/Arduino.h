@@ -70,6 +70,47 @@ extern "C" {
 #define maskSet(value, mask) ((value) |= (mask))
 #define maskClear(value, mask) ((value) &= ~(mask))
 
+//Случайные числа
+#define randomSeed(seed)   srand(seed)
+#define random(max)         random2(0, max)
+#define random2(min, max)   ((min) + (int32_t) ((max) - (min)) * rand() / 32768)
+
+//Истинные случайные числа
+//В SDK для w806 этого нет. Подсмотрено у отцов основателей WinnerMicro
+
+#define GPSEC_BASE         0x40000600	// Адрес криптомодуля
+
+typedef struct {
+   __IOM uint32_t SRC;               //source register @ 0x00
+   __IOM uint32_t DEST;            //destination / decrypted text register @ 0x04
+   __IOM uint32_t CFG;               //configuration register @ 0x08
+   __IOM uint32_t CTRL;            //controll register @ 0x0c
+   __IOM uint32_t KEY0;            //key0 register @ 0x10
+   __IOM uint32_t KEY1;            //key1 register @ 0x14
+   __IOM uint32_t KEY2;            //key2 register @ 0x18
+   __IOM uint32_t KEY3;            //key3 register @ 0x1c
+   __IOM uint32_t KEY4;            //key4 register = crc key / result register @ 0x20
+   __IOM uint32_t KEY5;            //key5 register @ 0x24
+   __IOM uint32_t IV0;               //iv0 register @ 0x28
+   __IOM uint32_t IV1;               //iv1 register @ 0x2c
+   __IOM uint32_t STS;               //status register @ 0x30
+   __IOM uint32_t SHA1_DIGEST0;      //sha1/md5 digest0 register @ 0x34
+   __IOM uint32_t SHA1_DIGEST1;      //sha1/md5 digest1 register @ 0x38
+   __IOM uint32_t SHA1_DIGEST2;      //sha1/md5 digest2 register @ 0x3c
+   __IOM uint32_t SHA1_DIGEST3;      //sha1/md5 digest3 register # 0x40
+   __IOM uint32_t SHA1_DIGEST4;      //sha1/md5 digest4 register @ 0x44
+   __IOM uint32_t RNG_RESULT;         //random number result register # 0x48
+   __IOM uint32_t KEY6;            //key6 register @ 0x4c
+   __IOM uint32_t KEY7;            //key7 register @ 0x50
+   __IOM uint32_t TRNG_CR;            //true random number control register @ 0x54
+} GPSEC_TypeDef;
+
+#define GPSEC            ((GPSEC_TypeDef *) GPSEC_BASE)
+
+void trngInit(void);    //Инициализация истинных случайных чисел 32bit
+void prngInit(void);    //Инициализация псевдо случайных чисел 32bit
+#define rngGet()      	(GPSEC->RNG_RESULT)      // Результат
+
 
 // Флаги тактирования периферии
 static volatile bool is_gpio_clk_en ;

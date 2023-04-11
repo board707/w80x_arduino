@@ -33,7 +33,7 @@ void setup() {
 
 void loop() {
 
-    HAL_Delay(500);
+    delay(500);
     key_flag++;
     
     if (key_flag % 3 == 0)

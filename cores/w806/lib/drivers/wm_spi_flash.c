@@ -40,7 +40,7 @@ static int fls_drv_init(void)
     uint8_t buf[3];
     int err;
     
-    hspi.Instance = SPI;
+    hspi.Instance = SPI_HAL;
     hspi.Init.Mode = SPI_MODE_MASTER;
     hspi.Init.CLKPolarity = SPI_POLARITY_LOW;
     hspi.Init.CLKPhase = SPI_PHASE_1EDGE;

@@ -33,11 +33,6 @@
 
 # include <Arduino.h>
 
-//#define TIMER_COUNT 6      // moved to Arduino.h
-
-/** timer interrupt callback type **/
-typedef void (*timer_irq_callback)();
-
 // Timer instances (defined in Arduino.c)
 extern TIM_HandleTypeDef htim0;
 extern TIM_HandleTypeDef htim1;
@@ -46,11 +41,23 @@ extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
 
+#ifdef __cplusplus 
+extern "C" {
+#endif
+
+//#define TIMER_COUNT 6      // moved to Arduino.h
+
+/** timer interrupt callback type **/
+typedef void (*timer_irq_callback)();
 extern TIM_HandleTypeDef* timer_devices[TIMER_COUNT];
 extern timer_irq_callback timer_callback[TIMER_COUNT]; 
 
+
+
+
 void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim);
 void HAL_TIM_Callback(TIM_HandleTypeDef *htim);
+
 
 /**
  * @brief Interface to one of the 16-bit timer peripherals.
@@ -254,19 +261,10 @@ public:
 
 };
 
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim);
+void HAL_TIM_Callback(TIM_HandleTypeDef *htim);
 
-/**
- * @brief Deprecated.
- *
- * Pre-instantiated timer instances.
- */
-
-/*
-extern HardwareTimer Timer0;
-extern HardwareTimer Timer1;
-extern HardwareTimer Timer2;
-extern HardwareTimer Timer3;
-extern HardwareTimer Timer4;
-extern HardwareTimer Timer5;
-*/
+#ifdef __cplusplus 
+}
+#endif
 #endif
