@@ -22,7 +22,7 @@
 
 class TwoWire { 
 protected:
-    WireBase* i2c_dev;
+    WireBase* i2c_dev = NULL;
     bool i2c_type = Hard_I2C;
     bool is_initialized = false;
     uint8_t addr;

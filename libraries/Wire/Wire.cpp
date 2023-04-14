@@ -8,8 +8,8 @@ TwoWire::~TwoWire() {
 
 void TwoWire::begin(void)
 {
-
-    HardwareI2C *r_dev = new HardwareI2C();
+    if (i2c_dev != NULL) free(i2c_dev);
+    HardwareI2C *r_dev = (HardwareI2C*) malloc(sizeof(HardwareI2C));
     i2c_type = Hard_I2C;
     r_dev->begin();
     i2c_dev = (WireBase *)r_dev;
@@ -18,7 +18,8 @@ void TwoWire::begin(void)
 
 void TwoWire::begin(uint8_t Sda, uint8_t Scl)
 {
-    SoftwareI2C *r_dev = new SoftwareI2C();
+    if (i2c_dev != NULL) free(i2c_dev);
+    SoftwareI2C *r_dev = (SoftwareI2C*) malloc(sizeof(SoftwareI2C));
     i2c_type = Soft_I2C;
     r_dev->begin(Sda, Scl);
     i2c_dev = (WireBase *)r_dev;
@@ -56,32 +57,30 @@ uint8_t TwoWire::endTransmission(bool flag)
     if (!is_initialized)
     {
         // ERROR
-        return 0;
-    }
-
-    if (!tx_buf_idx)
-    {
-        // Special-case 0-len writes which are used for I2C probing
-        if (GETNAK == i2c_dev->beginTransmission(addr))
-            return 0;
-        i2c_dev->endTransmission();
         return 1;
     }
-    else
+    
+    if (GETNAK == i2c_dev->beginTransmission(addr))
+            return 1;
+    
+    
+    if (tx_buf_idx)
     {
         for (uint8_t i = 0; i < tx_buf_idx; ++i)
         {
             if (!i2c_dev->write(tx_buf[i]))
             {
                 tx_buf_idx = 0;
-                return i;
+                return 4;
             }
         }
-        uint8_t result = tx_buf_idx;
+        
+        
         tx_buf_idx = 0;
-        i2c_dev->endTransmission();
-        return result;
     }
+    
+    i2c_dev->endTransmission();
+    return tx_buf_idx;
 }
 
 uint8_t TwoWire::endTransmission(void)
