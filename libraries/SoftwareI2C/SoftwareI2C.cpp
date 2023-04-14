@@ -153,7 +153,7 @@ uchar SoftwareI2C::sendByteAck(uchar ucDta) {
     Parameters: divider – clock divider
     Return: 0: get nak  1: get ack
 *************************************************************************************************/
-uchar SoftwareI2C::beginTransmission(uchar addr) {
+uchar SoftwareI2C::beginTransmission(uchar addr)  {
     sendStart();                            // start signal
     uchar ret = sendByteAck(addr << 1);     // send write address and get ack
     //sclSet(LOW);
