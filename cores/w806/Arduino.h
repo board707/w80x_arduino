@@ -23,6 +23,15 @@ extern TIM_HandleTypeDef htim5;
 #ifdef __cplusplus 
 extern "C" {
 #endif
+ 
+#ifndef LSBFIRST
+#define LSBFIRST 0
+#endif
+#ifndef MSBFIRST
+#define MSBFIRST 1
+#endif
+typedef int8_t byte;
+typedef bool boolean;
 
 // Блок математики
 // Переопределение числа Pi 
@@ -157,6 +166,10 @@ void set_loop(bool param);
 // Прототипы для скетча Ардуино
 void setup(void);
 void loop(void);
+
+//Прототипы для wiring shiftOut/shiftIn
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder); 
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 
 
 #ifdef __cplusplus 
