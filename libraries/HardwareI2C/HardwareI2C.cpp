@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "HardwareI2C.h"
 
+//HardwareI2C::~HardwareI2C() {}
+
 void HardwareI2C::begin() {
 	
   __HAL_RCC_I2C_CLK_ENABLE();           		// Тактирование i2c контроллера
@@ -55,6 +57,7 @@ uchar HardwareI2C::requestFrom(uchar addr, uint16_t len) {
 	HAL_I2C_Write_Byte(&hi2c, ((addr << 1) | 0x01), 1); //Режим чтения
     if (HAL_I2C_Wait_Ack(&hi2c) != HAL_OK) 
 		{HAL_I2C_Stop(&hi2c); 
+		recv_len = 0;
 		return GETNAK;}
 	else
 		return GETACK;

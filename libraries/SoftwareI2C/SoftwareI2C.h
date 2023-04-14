@@ -27,7 +27,9 @@
 #define _SOFTWAREI2C_H_
 
 #include "Arduino.h"
+#include "Wire_base.h"
 
+/*
 #define  GETACK        1                      // get ack                        
 #define  GETNAK        0                      // get nak   
 
@@ -41,8 +43,9 @@
 #ifndef uchar
     #define uchar unsigned char
 #endif
+*/
 
-class SoftwareI2C {
+class SoftwareI2C : public WireBase{
   private:
 
     int pinSda;
@@ -67,14 +70,15 @@ class SoftwareI2C {
 
     //SoftwareI2C();
     void begin(int Sda, int Scl);
-    uchar beginTransmission(uchar addr);
-    uchar endTransmission();
+    uchar beginTransmission(uchar addr) ;
+    uchar endTransmission() ;
 
-    uchar write(uchar dta);
-    uchar write(uint16_t len, uchar* dta);
-    uchar requestFrom(uchar addr, uint16_t len);
-    uchar read();
-    uchar available() {return recv_len;}
+    uchar write(uchar dta) ;
+    uchar write(uint16_t len, uchar* dta) ;
+    uchar requestFrom(uchar addr, uint16_t len) ;
+    uchar read() ;
+    uchar available() {return recv_len;};
+    void setClock(int clockFrequency)     {};
 	/* NOT IMPLEMENTED YET */
 	//setClock()
 	//onReceive()
