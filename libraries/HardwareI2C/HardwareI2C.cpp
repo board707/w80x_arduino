@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "HardwareI2C.h"
 
-//HardwareI2C::~HardwareI2C() {}
+HardwareI2C::HardwareI2C() {}
+HardwareI2C::~HardwareI2C() {}
 
 void HardwareI2C::begin() {
 	

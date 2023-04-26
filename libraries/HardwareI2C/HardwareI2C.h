@@ -5,8 +5,8 @@
 #include "Wire_base.h"
 
 
-/*#define  GETACK        1                      // get ack                        
-#define  GETNAK        0                      // get nak   
+/*#define  GETACK        1                      // get ack
+#define  GETNAK        0                      // get nak
 
 
 #ifndef uchar
@@ -20,17 +20,18 @@ class HardwareI2C : public WireBase {
 	I2C_HandleTypeDef hi2c;
     unsigned int recv_len;
   private:
-  
+
   public:
-    //~HardwareI2C();
+    HardwareI2C();	
+    ~HardwareI2C();
     void begin(); // Инициализация контроллера i2c. Используются выводы PA1-SCL и PA4-SDA. Альтернативные выводы заняты под системные нужды (UART0)
-	  virtual void setClock(int clockFrequency) override;	// Установка тактовой частоты в герцах. Возможные значения от 100кГц до 1000кГц
-    virtual uchar beginTransmission(uchar addr) override;
-    virtual uchar endTransmission() override;
-    virtual uchar write(uchar dta) override;
-    virtual uchar write(uint16_t len, uchar* dta) override;
-    virtual uchar requestFrom(uchar addr, uint16_t len) override;
-    virtual uchar read() override;
+    void setClock(int clockFrequency);	// Установка тактовой частоты в герцах. Возможные значения от 100кГц до 1000кГц
+    uchar beginTransmission(uchar addr);
+    uchar endTransmission();
+    uchar write(uchar dta);
+    uchar write(uint16_t len, uchar* dta);
+    uchar requestFrom(uchar addr, uint16_t len);
+    uchar read();
     uchar available() {return recv_len;}
 	/* NOT IMPLEMENTED YET */
 	//onReceive()

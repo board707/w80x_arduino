@@ -2,27 +2,25 @@
 
 TwoWire::TwoWire() {}
 
-TwoWire::~TwoWire() {
-    if (i2c_dev != NULL) free(i2c_dev);
-}
+TwoWire::~TwoWire() {}
 
 void TwoWire::begin(void)
 {
-    if (i2c_dev != NULL) free(i2c_dev);
-    HardwareI2C *r_dev = (HardwareI2C*) malloc(sizeof(HardwareI2C));
+    if (i2c_dev != NULL) delete i2c_dev; //free(i2c_dev);
+    HardwareI2C *r_dev = new HardwareI2C(); //(HardwareI2C*) malloc(sizeof(HardwareI2C));
     i2c_type = Hard_I2C;
     r_dev->begin();
-    i2c_dev = (WireBase *)r_dev;
+    i2c_dev = r_dev;
     is_initialized = true;
 }
 
 void TwoWire::begin(uint8_t Sda, uint8_t Scl)
 {
-    if (i2c_dev != NULL) free(i2c_dev);
-    SoftwareI2C *r_dev = (SoftwareI2C*) malloc(sizeof(SoftwareI2C));
+    if (i2c_dev != NULL) delete i2c_dev;
+    SoftwareI2C *r_dev = new SoftwareI2C(); //(SoftwareI2C*) malloc(sizeof(SoftwareI2C));
     i2c_type = Soft_I2C;
     r_dev->begin(Sda, Scl);
-    i2c_dev = (WireBase *)r_dev;
+    i2c_dev = r_dev;
     is_initialized = true;
 }
 

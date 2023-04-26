@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include "../wm_type_def.h"
 #include "../wm_regs.h"
 #include "wm_cpu.h"
@@ -23,6 +24,7 @@
 #include "wm_touch.h"
 #include "wm_i2s.h"
 #include "wm_dma.h"
+#include "wm_sdio.h"
 
 #define VER "0.6.0"
 
@@ -44,9 +46,6 @@
                                     }while (0)
 										
 
-#ifdef __cplusplus
-extern "C"{
-#endif
 HAL_StatusTypeDef HAL_Init(void);
 HAL_StatusTypeDef HAL_DeInit(void);
 void HAL_MspInit(void);
@@ -57,10 +56,6 @@ void HAL_MspDeInit(void);
 void assert_failed(uint8_t* file, uint32_t line);
 #else
 #define assert_param(expr) ((void)0U)
-#endif
-
-#ifdef __cplusplus
-}
 #endif
 
 #endif
