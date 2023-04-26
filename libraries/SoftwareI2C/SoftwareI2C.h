@@ -50,9 +50,7 @@ class SoftwareI2C : public WireBase{
 
     int pinSda;
     int pinScl;
-
     int recv_len;
-
     int sda_in_out;
 
   private:
@@ -68,17 +66,19 @@ class SoftwareI2C : public WireBase{
 
   public:
 
-    //SoftwareI2C();
-    void begin(int Sda, int Scl);
-    uchar beginTransmission(uchar addr) ;
-    uchar endTransmission() ;
+    SoftwareI2C();
+    ~SoftwareI2C();
 
-    uchar write(uchar dta) ;
-    uchar write(uint16_t len, uchar* dta) ;
-    uchar requestFrom(uchar addr, uint16_t len) ;
-    uchar read() ;
+    void begin(int Sda, int Scl);
+    uchar beginTransmission(uchar addr) override;
+    uchar endTransmission() override;
+
+    uchar write(uchar dta) override;
+    uchar write(uint16_t len, uchar* dta) override;
+    uchar requestFrom(uchar addr, uint16_t len) override;
+    uchar read() override;
     uchar available() {return recv_len;};
-    void setClock(int clockFrequency)     {};
+    void setClock(int clockFrequency) override {};
 	/* NOT IMPLEMENTED YET */
 	//setClock()
 	//onReceive()

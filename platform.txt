@@ -49,7 +49,7 @@ build.extra_flags=
 
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
-compiler.c.elf.extra_flags=-Wl,--no-whole-archive -nostartfiles -mhard-float
+compiler.c.elf.extra_flags=-Wl,--no-whole-archive -nostartfiles -mhard-float -lsupc++ 
 #compiler.S.extra_flags=-I{runtime.tools.csky.path}/csky-elfabiv2/include/csi/csi_core/csi_cdk/ -ID:/C-Sky/CDK/CSKY/csi/csi_core/include/ -ID:/C-Sky/CDK/CSKY/csi/csi_driver/include/
 compiler.S.extra_flags=
 compiler.cpp.extra_flags= -fno-rtti

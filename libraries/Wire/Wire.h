@@ -20,7 +20,7 @@
 #define Soft_I2C 1
 
 
-class TwoWire { 
+class TwoWire {
 protected:
     WireBase* i2c_dev = NULL;
     bool i2c_type = Hard_I2C;
@@ -44,8 +44,8 @@ public:
      * Initialises the class interface
      */
     
-    virtual void begin(void);
-    virtual void begin(uint8_t Sda, uint8_t Scl);
+    void begin(void);
+    void begin(uint8_t Sda, uint8_t Scl);
 
     /*
      * Sets up the transmission message to be processed

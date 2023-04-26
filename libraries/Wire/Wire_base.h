@@ -24,15 +24,17 @@ class WireBase {
     public:
     
      //void begin(int Sda, int Scl);
-    virtual uchar beginTransmission(uchar addr) =0;
-    virtual uchar endTransmission() =0;
+    WireBase();
+    virtual ~WireBase();
+    virtual uchar beginTransmission(uchar addr) {return 0;};
+    virtual uchar endTransmission() {return 0;};
 
-    virtual uchar write(uchar dta)  =0;
-    virtual uchar write(uint16_t len, uchar* dta) =0;
-    virtual uchar requestFrom(uchar addr, uint16_t len) =0;
-    virtual uchar read()  =0;
+    virtual uchar write(uchar dta)  {return 0;};
+    virtual uchar write(uint16_t len, uchar* dta) {return 0;};
+    virtual uchar requestFrom(uchar addr, uint16_t len) {return 0;};
+    virtual uchar read()  {return 0;};
     //uchar available() {return recv_len;}
-    virtual void setClock(int clockFrequency) =0;// Установка тактовой частоты в герцах. Возможные значения от 100кГц до 1000кГц
+    virtual void setClock(int clockFrequency) {};// Установка тактовой частоты в герцах. Возможные значения от 100кГц до 1000кГц
 
 };
 #endif

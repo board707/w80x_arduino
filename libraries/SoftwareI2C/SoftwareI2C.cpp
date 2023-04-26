@@ -24,7 +24,10 @@
 
 #include "SoftwareI2C.h"
 
-extern void set_loop(bool param);
+extern "C" void set_loop(bool param); // from main.cpp
+
+SoftwareI2C::SoftwareI2C(){}
+SoftwareI2C::~SoftwareI2C(){}
 
 /*************************************************************************************************
     Function Name: begin

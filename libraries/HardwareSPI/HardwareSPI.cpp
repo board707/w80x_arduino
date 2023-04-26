@@ -71,7 +71,7 @@ void HardSPI::begin() {
     __HAL_AFIO_REMAP_SPI_MISO(pin_Map[_miso].pPort, pin_Map[_miso].halPin);
     __HAL_AFIO_REMAP_SPI_MOSI(pin_Map[_mosi].pPort, pin_Map[_mosi].halPin);
 	
-	hspi.Instance = SPI;
+	hspi.Instance = SPI_HAL;
 	hspi.Init.Mode = SPI_MODE_MASTER;
 	hspi.Init.CLKPolarity = clock_polarity;
 	hspi.Init.CLKPhase = clock_phase;
