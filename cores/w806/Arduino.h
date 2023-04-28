@@ -10,6 +10,12 @@
 #include "pins_arduino.h"
 #include "./include/driver/wm_hal.h"
 #include "W_interrupt.h"
+/*
+ * C++ type
+ */
+#ifdef __cplusplus
+#include "Stream.h"
+#endif
 //#include "Stream.h"
 
 #define TIMER_COUNT 6

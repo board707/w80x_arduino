@@ -77,10 +77,10 @@ build.tools.path.linux={runtime.tools.w80x_tool.path}/lin/
 # --------------------
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.c.extra_flags} {build.extra_flags} {compiler.includes} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.c.extra_flags} {build.extra_flags} {compiler.includes} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.includes} {build.extra_flags} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.includes} {build.extra_flags} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
 
 ## Compile S files
 recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.S.flags} -MMD -MP -MT {object_file} -MF {object_file}.d -o "{object_file}" {compiler.S.extra_flags} {build.extra_flags} {compiler.includes} {includes}

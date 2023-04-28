@@ -208,3 +208,9 @@ int TwoWire::read()
     else
         return -1;
 }
+
+ void TwoWire::setClock(int clockFrequency)
+ {
+
+    i2c_dev->setClock(clockFrequency);
+ }

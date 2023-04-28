@@ -88,6 +88,8 @@ public:
      * pointed to
      */
     int read();
+
+    void setClock(int clockFrequency);
 };
 
 #endif // _WIRE_H_
