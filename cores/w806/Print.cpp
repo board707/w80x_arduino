@@ -109,6 +109,11 @@ size_t Print::print(const String &s)
     return write(s.c_str(), s.length());
 }
 
+size_t Print::print(const __FlashStringHelper *rhs) {
+    String a;
+    a.concat(rhs);
+    return print(a);
+}
 /**
  * @brief       This function is used to print buffer to the interface defined by the object.
  * @param[in] s Specify the string buffer.
@@ -289,6 +294,13 @@ size_t Print::println(const char c[])
 size_t Print::println(const String &s)
 {
     size_t n = print(s);
+    n += println();
+    return n;
+}
+
+size_t Print::println(const __FlashStringHelper *rhs) 
+{
+    size_t n = print(rhs);
     n += println();
     return n;
 }

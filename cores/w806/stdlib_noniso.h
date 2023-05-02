@@ -5,7 +5,7 @@
 extern "C"{
 #endif
 // Not implemented yet
-//int atoi(const char *s);
+int atoi(const char *s);
 
 //long atol(const char* s);
 

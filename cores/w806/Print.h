@@ -106,6 +106,7 @@ public:
      * @note 
      */ 
     size_t print( const String & );
+    size_t print(const __FlashStringHelper *rhs);
     /**
      * @brief       This function is used to print buffer to the interface defined by the object.
      * @param[in] s Specify the string buffer.
@@ -212,6 +213,7 @@ public:
      * @note 
      */ 
     size_t println(const String &s);
+    size_t println(const __FlashStringHelper *rhs);
     /**
      * @brief       This function is used to print target to the interface defined by the object with carriage ret ('\r') and new line ('\n').
      * @param[in] c Specify the string buffer.

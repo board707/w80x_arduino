@@ -5,6 +5,17 @@
 #include <math.h>
 #include "stdlib_noniso.h"
 
+int atoi(const char *s) {
+   
+  unsigned int i = 0U;
+  while ((*s >= '0') && (*s <= '9')) {
+    i = i * 10U + (unsigned int)(*((s)++) - '0');
+  }
+  return i;
+
+}
+
+
 void reverse(char* begin, char* end) {
     char *is = begin;
     char *ie = end - 1;
