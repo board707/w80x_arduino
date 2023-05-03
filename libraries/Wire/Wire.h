@@ -92,4 +92,5 @@ public:
     void setClock(int clockFrequency);
 };
 
+extern TwoWire Wire;
 #endif // _WIRE_H_

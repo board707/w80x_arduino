@@ -93,7 +93,7 @@
 #endif
 
 #if (defined(ARDUINO_HLK_w80x))
-TwoWire Wire;
+//TwoWire Wire;       // not needed here, Wire instance defined in Wire.h
 #endif
 
 #include <SPI.h>
