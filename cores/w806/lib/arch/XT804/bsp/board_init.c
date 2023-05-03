@@ -56,7 +56,9 @@ static void uart0Init (int bandrate)
 //	WRITE_REG(UART0->INTM, 0x00);  /* Disable INT */
 
 }
-#if 0
+
+#define UART1_SERIAL 1
+#if UART1_SERIAL
 static void uart1_io_init(void)
 {
     uint32_t temp;
@@ -109,4 +111,11 @@ void board_init(void)
     /* use uart1 as log output io */
 	//uart1Init(115200);
 #endif
+}
+
+void uart1_serial_init(int bandrate)
+{
+	 uart1_io_init();
+    /* use uart1 as log output io */
+	uart1Init(bandrate);
 }
