@@ -10,6 +10,8 @@ extern TIM_HandleTypeDef htim5;
 extern uint32_t GPIOA_CallbackFlag;
 extern uint32_t GPIOB_CallbackFlag;
 
+extern UART_HandleTypeDef huart1;
+
 #define readl(addr) ({unsigned int __v = (*(volatile unsigned int *) (addr)); __v;})
 __attribute__((isr)) void CORET_IRQHandler(void)
 {
@@ -46,3 +48,8 @@ __attribute__((isr)) void TIM0_5_IRQHandler(void)
     HAL_TIM_IRQHandler(&htim4);
     HAL_TIM_IRQHandler(&htim5);
  }
+
+__attribute__((isr)) void UART1_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart1);
+}

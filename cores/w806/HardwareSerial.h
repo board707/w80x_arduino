@@ -66,7 +66,7 @@ public:
      * 
      * @note 
      */ 
-    HardwareSerial() {}
+    //HardwareSerial() {}
 
     /**
      * @brief       Sets the data rate in bits per second (baud)
@@ -192,8 +192,8 @@ public:
     virtual size_t write(uint8_t c); // from Print
     
 private:
-    int _uart_no;
-    bool _uart1_mul;
+    const int uart_num;
+    bool _uart_mul;
     unsigned char *_pbuf;
     int *_pbegin; 
     int *_pend;
@@ -205,5 +205,6 @@ private:
 //extern HardwareSerial Serial;
 //extern HardwareSerial Serial1;
 //extern HardwareSerial SerialM1;
-
+void HAL_UART_MspInit(UART_HandleTypeDef* huart);
+void UART1_Init(int baud);
 #endif

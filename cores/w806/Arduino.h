@@ -17,7 +17,7 @@
 #include "Stream.h"
 #endif
 //#include "Stream.h"
-
+extern UART_HandleTypeDef huart1;
 #define TIMER_COUNT 6
 // Timer instances (defined in Arduino.c)
 extern TIM_HandleTypeDef htim0;
