@@ -37,19 +37,19 @@ void ADC_Init(ADC_HandleTypeDef* hadc, uint32_t channel);
 bool check_pin(void);
 
 // Задержка в микросекундах
-void delayMicroseconds(uint32_t us) {
+void delayMicroseconds(uint64_t us) {
     HAL_Delay(us);
 }
 // Задержка в миллисекундах
-void delay(uint32_t ms) {
+void delay(uint64_t ms) {
 	delayMicroseconds(ms*1000);
 }
 // Время upTime в микросекундах
-uint32_t micros() {
+uint64_t micros() {
 	return HAL_GetTick();
 }
 // Время upTime в миллисекундах
-uint32_t millis() {
+uint64_t millis() {
 	return HAL_GetTick() / 1000;
 }
 

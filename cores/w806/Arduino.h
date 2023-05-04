@@ -37,7 +37,7 @@ extern "C" {
 #ifndef MSBFIRST
 #define MSBFIRST 1
 #endif
-typedef int8_t byte;
+typedef uint8_t byte;
 typedef bool boolean;
 
 // Блок математики
@@ -85,11 +85,6 @@ typedef bool boolean;
 
 #define maskSet(value, mask) ((value) |= (mask))
 #define maskClear(value, mask) ((value) &= ~(mask))
-
-//Случайные числа
-#define randomSeed(seed)   srand(seed)
-#define random(max)         random2(0, max)
-#define random2(min, max)   ((min) + (int32_t) ((max) - (min)) * rand() / 32768)
 
 //Истинные случайные числа
 //В SDK для w806 этого нет. Подсмотрено у отцов основателей WinnerMicro
@@ -159,12 +154,12 @@ void setup_adc(void);
 double analogRead(uint8_t pin);
 
 // Прототипы для измерения времени в runtime
-uint32_t millis(void);
-uint32_t micros(void);
+uint64_t millis(void);
+uint64_t micros(void);
 
 // Прототипы для функций задержек
-void delay(uint32_t ms);
-void delayMicroseconds(uint32_t us);
+void delay(uint64_t ms);
+void delayMicroseconds(uint64_t us);
 
 // Прототип для контроля вхождения в суперцикл Loop()
 bool is_loop(void) ;
@@ -182,6 +177,12 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 #ifdef __cplusplus 
 }
 #endif
+#ifdef __cplusplus
+// WMath prototypes //Случайные числа stdlib
+int32_t random(int32_t);
+int32_t random(int32_t, int32_t);
+void randomSeed(uint32_t);
+int32_t map(int32_t, int32_t, int32_t, int32_t, int32_t);
 #endif
-
+#endif
 
