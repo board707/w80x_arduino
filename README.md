@@ -46,7 +46,7 @@ The ticked ones have been implemented and verified, the unticked ones are under 
 - [x] PWM
 - [x] HardwareTimer lib
 - [x] I2C - HardwareI2c, SoftwareI2c
-- [x] SPI
+- [ ] SPI
 - [x] EEPROM library
 - [x] Stream, Print and String classes
 - [ ] I2S interface
