@@ -36,6 +36,25 @@ Arduino package for [WinnerMicro](http://www.winnermicro.com/) W806, Air103 and 
 - [W801 pinout](doc/W801_pinout.png) 
 - [Air_103 pinout](doc/Air_103_pinout.png) 
 
+## w80x_duino package installation in Arduino IDE
+
+1. **File -> Preferences**
+
+2. Enter the following URL in the additional development board manager URL:
+
+> https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_index.json
+
+![](doc/arduino_preferences.png)
+
+3. **Tools -> Boards -> Boards Manager...**
+Search for **w80x_duino**, select the latest version to install 
+
+![board_manager](doc/board_manager.png)
+
+4. **Tools -> Boards**
+
+![](doc/board_select.png)
+
 ## w80x_duino development
 The ticked ones have been implemented and verified, the unticked ones are under development, and more developers are expected to maintain together
 
