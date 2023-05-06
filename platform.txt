@@ -73,6 +73,10 @@ sec_img_pos=8002400
 build.tools.path.windows={runtime.tools.w80x_tool.path}/win/
 build.tools.path.linux={runtime.tools.w80x_tool.path}/lin/
 
+## Make wm_tool from source if not exists
+recipe.hooks.prebuild.1.pattern.linux=bash -c "if [ ! -f {build.tools.path}/wm_tool ]; then gcc {build.tools.path}/wm_tool.c -lpthread -o {build.tools.path}/wm_tool; fi"
+recipe.hooks.prebuild.2.pattern.linux=bash -c "if [ ! -f {build.tools.path}/wm_toold ]; then gcc {build.tools.path}/wm_toold.c -lpthread -o {build.tools.path}/wm_toold; fi"
+
 # w806 compile patterns
 # --------------------
 
