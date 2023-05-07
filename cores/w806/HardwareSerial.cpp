@@ -381,7 +381,7 @@ void UART1_Init(int baud)
     else printf("UART! started\n");
 }
 
-/*void HAL_UART_MspInit(UART_HandleTypeDef* huart)
+void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	if (huart->Instance == UART1)
 	{
@@ -395,4 +395,4 @@ void UART1_Init(int baud)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
-}*/
+}

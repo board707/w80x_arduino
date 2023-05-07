@@ -62,13 +62,13 @@ HAL_StatusTypeDef HAL_UART_DeInit(UART_HandleTypeDef *huart)
 
     return HAL_OK;
 }
-/*
+
 __attribute__((weak)) void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
     UNUSED(huart);
 }
-*/
-void HAL_UART_MspInit(UART_HandleTypeDef* huart)
+
+/*void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	if (huart->Instance == UART1)
 	{
@@ -82,7 +82,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
-}
+}*/
 __attribute__((weak)) void HAL_UART_MspDeInit(UART_HandleTypeDef *huart)
 {
     UNUSED(huart);

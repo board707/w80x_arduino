@@ -10,11 +10,17 @@
 #ifndef _HARDWARESERIAL_H_
 #define _HARDWARESERIAL_H_
 
+#include <Arduino.h>
 #include "debug.h"
-
 #include "Stream.h"
 
 #define USE_SEM 0
+#define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
+                     // greater than 0: the interrupt callback can be triggered only after receiving N length data
+
+#ifdef __cplusplus 
+extern "C" {
+#endif
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 void UART1_Init(int baud);
@@ -197,9 +203,10 @@ public:
 private:
     const int uart_num;
     bool _uart_mul;
-    unsigned char *_pbuf;
-    int *_pbegin; 
-    int *_pend;
+    uint8_t _buf[32] = {0};   // must be greater than or equal to 32 bytes
+    uint8_t _pbuf[128] = {0};
+    uint8_t *_pbegin; 
+    uint8_t *_pend;
 #if USE_SEM
     tls_os_sem_t * _psem;
 #endif
@@ -208,5 +215,7 @@ private:
 //extern HardwareSerial Serial;
 //extern HardwareSerial Serial1;
 //extern HardwareSerial SerialM1;
-
+#ifdef __cplusplus 
+}
+#endif
 #endif
