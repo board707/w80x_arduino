@@ -19,6 +19,14 @@ extern "C" {
 
 }
 UART_HandleTypeDef huart1;
+//uint8_t *_pbuf;
+uint8_t _pbegin = 0; 
+uint8_t _pend = 0;
+unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
+uint8_t _buf[32] = {0};   // must be greater than or equal to 32 bytes
+//unsigned char _serial1_buf[TLS_UART_RX_BUF_SIZE] = {0};
+//int _s_buf_begin = 0;
+//int _s_buf_end = 0;
 /*
 HardwareSerial Serial(0);
 HardwareSerial Serial1(1, false);
@@ -66,18 +74,18 @@ extern "C" signed short uart0_rx_cb(unsigned short len)
 {
     return uart_rx_cb(TLS_UART_0, len, _serial_buf, &_s_buf_end);
 }
-
-int _read_byte(unsigned char *buf, int *begin, int *end)
+*/
+uint8_t _read_byte(unsigned char *buf, int begin, int end)
 {
-    int c = 0;
-    if (*begin < TLS_UART_RX_BUF_SIZE
-        && *begin < *end)
+    uint8_t c = 0;
+    if (begin < _UART_RX_BUF_SIZE
+        && (begin < end))
     {
-        c = (int)(buf[*begin]);
+        c = (uint8_t)(buf[begin]);
     }
     return c;
 }
-*/
+
 /**
  * @brief       This constructor is used to init hardware serial.
  * @param[in] serial_no Specify serial_no
@@ -187,6 +195,7 @@ void HardwareSerial::begin(unsigned long baud, int modeChoose)
       printf("Start UART1 config with baud = %d...", baud) ;
       //uart1_serial_init(baud);
       UART1_Init(baud);
+      HAL_UART_Receive_IT(&huart1, _buf, IT_LEN); 
     }
 /*#if USE_SEM
     if (TLS_UART_0 == _uart_no)
@@ -280,14 +289,13 @@ void HardwareSerial::begin(unsigned long baud)
  */ 
 int HardwareSerial::read(void)
 {
-    int len = 0;
     int c = 0;
-/*
+
     c = _read_byte(_pbuf, _pbegin, _pend);
     if (0 != c)
     {
-        (*_pbegin) = (*_pbegin) + 1;
-    }*/
+        (_pbegin) = (_pbegin) + 1;
+    }
     return c;
 }
 
@@ -305,10 +313,10 @@ int HardwareSerial::read(void)
  */ 
 int HardwareSerial::peek()
 {
-    int len = 0;
+    
     int c = 0;
 
-   // c = _read_byte(_pbuf, _pbegin, _pend);
+   c = _read_byte(_pbuf, _pbegin, _pend);
     
     return c;
 }
@@ -358,9 +366,10 @@ size_t HardwareSerial::write(uint8_t c)
  */ 
 int HardwareSerial::available(void)
 {
-   /* if (*_pend >= *_pbegin)
-        return (*_pend - *_pbegin);
-    return TLS_UART_RX_BUF_SIZE - (*_pbegin - *_pend) - 1;*/
+    if (_pend >= _pbegin)
+        return (_pend - _pbegin);
+    
+    
     return 0;
 }
 
@@ -395,4 +404,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (_pend == _pbegin) {_pend =0; _pbegin =0;}
+    if ((_UART_RX_BUF_SIZE - _pend) >= huart->RxXferCount)
+    {
+        memcpy(huart->pRxBuffPtr,(_pbuf+_pend), huart->RxXferCount);
+        _pend += huart->RxXferCount;
+    }
 }

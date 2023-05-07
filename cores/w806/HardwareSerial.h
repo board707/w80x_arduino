@@ -17,6 +17,7 @@
 #define USE_SEM 0
 #define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
                      // greater than 0: the interrupt callback can be triggered only after receiving N length data
+#define _UART_RX_BUF_SIZE 128
 
 #ifdef __cplusplus 
 extern "C" {
@@ -24,6 +25,7 @@ extern "C" {
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 void UART1_Init(int baud);
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 class HardwareSerial : public Stream
 {
@@ -203,10 +205,10 @@ public:
 private:
     const int uart_num;
     bool _uart_mul;
-    uint8_t _buf[32] = {0};   // must be greater than or equal to 32 bytes
-    uint8_t _pbuf[128] = {0};
-    uint8_t *_pbegin; 
-    uint8_t *_pend;
+    
+    //uint8_t *_pbuf;
+    //uint8_t _pbegin = 0; 
+    //uint8_t _pend = 0;
 #if USE_SEM
     tls_os_sem_t * _psem;
 #endif
