@@ -332,10 +332,10 @@ size_t HardwareSerial::write(uint8_t c)
     static bool flag = true;
     uint8_t _buf[32];
     _buf[0] = c;
-    HAL_UART_Transmit(&huart1, _buf, 1, 1000);
-    //sendchar1(c);
+    //HAL_UART_Transmit(&huart1, _buf, 1, 1000);
+    sendchar1(c);
     if (flag) {
-        printf("Sendchar1 called!\n"); 
+        printf("write called!\n"); 
         flag = false;
     }
     /*init_uart1_cfg(_uart_no, _uart1_mul);
@@ -381,7 +381,7 @@ void UART1_Init(int baud)
     else printf("UART! started\n");
 }
 
-void HAL_UART_MspInit(UART_HandleTypeDef* huart)
+/*void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	if (huart->Instance == UART1)
 	{
@@ -395,4 +395,4 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
-}
+}*/

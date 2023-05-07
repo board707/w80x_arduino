@@ -16,6 +16,9 @@
 
 #define USE_SEM 0
 
+void HAL_UART_MspInit(UART_HandleTypeDef* huart);
+void UART1_Init(int baud);
+
 class HardwareSerial : public Stream
 {
 public:
@@ -205,6 +208,5 @@ private:
 //extern HardwareSerial Serial;
 //extern HardwareSerial Serial1;
 //extern HardwareSerial SerialM1;
-void HAL_UART_MspInit(UART_HandleTypeDef* huart);
-void UART1_Init(int baud);
+
 #endif
