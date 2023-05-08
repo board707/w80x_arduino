@@ -75,15 +75,16 @@ extern "C" signed short uart0_rx_cb(unsigned short len)
     return uart_rx_cb(TLS_UART_0, len, _serial_buf, &_s_buf_end);
 }
 */
-uint8_t _read_byte(unsigned char *buf, int begin, int end)
+int _read_byte(unsigned char *buf, int _begin, int _end)
 {
-    uint8_t c = 0;
-    if (begin < _UART_RX_BUF_SIZE
-        && (begin < end))
+    int c = -1;
+    if ((_begin < _UART_RX_BUF_SIZE)  && (_begin < _end))
     {
-        c = (uint8_t)(buf[begin]);
+        c = (uint8_t)(buf[_begin]);
     }
+    //printf("Buf start= %d, end = %d, char code %d\n", _begin, _end, c);
     return c;
+
 }
 
 /**
@@ -289,13 +290,14 @@ void HardwareSerial::begin(unsigned long baud)
  */ 
 int HardwareSerial::read(void)
 {
-    int c = 0;
+    
 
-    c = _read_byte(_pbuf, _pbegin, _pend);
-    if (0 != c)
+    int c = _read_byte(_pbuf, _pbegin, _pend);
+    if (c >= 0)
     {
-        (_pbegin) = (_pbegin) + 1;
+        _pbegin++;
     }
+    else c =0;
     return c;
 }
 
@@ -366,8 +368,7 @@ size_t HardwareSerial::write(uint8_t c)
  */ 
 int HardwareSerial::available(void)
 {
-    if (_pend >= _pbegin)
-        return (_pend - _pbegin);
+    if (_pend >= _pbegin)  return (_pend - _pbegin);
     
     
     return 0;
@@ -408,10 +409,13 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+    if (huart->Instance == UART1)
+	{
     if (_pend == _pbegin) {_pend =0; _pbegin =0;}
     if ((_UART_RX_BUF_SIZE - _pend) >= huart->RxXferCount)
     {
-        memcpy(huart->pRxBuffPtr,(_pbuf+_pend), huart->RxXferCount);
+        memcpy((_pbuf+_pend), huart->pRxBuffPtr, huart->RxXferCount);
         _pend += huart->RxXferCount;
+    }
     }
 }
