@@ -10,6 +10,13 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 
+UART_HandleTypeDef huart0;
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
+UART_HandleTypeDef huart4;
+UART_HandleTypeDef huart5;
+
 // Массив для фиксации занятых каналов PWM
 typedef struct {
     uint8_t channel;

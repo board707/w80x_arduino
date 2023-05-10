@@ -12,18 +12,14 @@
 
 //#include "pins_arduino.h"
 #include "HardwareSerial.h"
-
+static HardwareSerial* serial_ptr[6] = {NULL};
+UART_HandleTypeDef* uart_devices[UART_COUNT] = {&huart0, &huart1, &huart2, &huart3, &huart4, &huart5};
 
 extern "C" {
 #include "wm_uart.h"
 
 }
-UART_HandleTypeDef huart1;
-//uint8_t *_pbuf;
-uint8_t _pbegin = 0; 
-uint8_t _pend = 0;
-unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
-uint8_t _buf[32] = {0};   // must be greater than or equal to 32 bytes
+
 //unsigned char _serial1_buf[TLS_UART_RX_BUF_SIZE] = {0};
 //int _s_buf_begin = 0;
 //int _s_buf_end = 0;
@@ -48,8 +44,8 @@ extern int16_t uart_tx_sent_callback(struct tls_uart_port *port);
 extern struct tls_uart *tls_uart_open(uint32_t uart_no, TLS_UART_MODE_T uart_mode);
 }
 */
-extern "C" int sendchar1(int ch);
-extern "C" void uart1_serial_init(int bandrate);
+//extern "C" int sendchar1(int ch);
+//extern "C" void uart1_serial_init(int bandrate);
 /*
 extern "C" signed short uart_rx_cb(uint16_t uart_no, unsigned short len,
     unsigned char * pbuf, int *pend)
@@ -188,16 +184,19 @@ HardwareSerial::HardwareSerial(int serial_no, bool mul_flag):uart_num(serial_no)
     }
 }
 */
-void HardwareSerial::begin(unsigned long baud, int modeChoose)
+void HardwareSerial::begin(unsigned long baud, int uart_mode)
 {
 
-    printf("Method begin() called for UART number %d\n", uart_num) ;
-    if (this->uart_num == 1)  {
-      printf("Start UART1 config with baud = %d...", baud) ;
+    //printf("Method begin() called for UART number %d\n", uart_num) ;
+    serial_ptr[uart_num] = this;
+    //if (this->uart_num == 1)  {
+    
+
+     // printf("Start UART1 config with baud = %d...", baud) ;
       //uart1_serial_init(baud);
-      UART1_Init(baud);
-      HAL_UART_Receive_IT(&huart1, _buf, IT_LEN); 
-    }
+      uart_init(baud, uart_mode);
+      HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN); 
+   // }
 /*#if USE_SEM
     if (TLS_UART_0 == _uart_no)
         tls_os_sem_create(&_psem, 1);
@@ -275,7 +274,7 @@ void HardwareSerial::begin()
  */ 
 void HardwareSerial::begin(unsigned long baud)
 {
-    begin(baud, 0);
+    begin(baud, SERIAL_8N1);
 }
 
 /**
@@ -340,10 +339,10 @@ size_t HardwareSerial::write(uint8_t c)
     unsigned int reg = 0;
     */
     static bool flag = true;
-    uint8_t _buf[32];
-    _buf[0] = c;
-    //HAL_UART_Transmit(&huart1, _buf, 1, 1000);
-    sendchar1(c);
+    //uint8_t _buf[32];
+   // _buf[0] = c;
+    HAL_UART_Transmit(this->huart_handle, &c, 1, 1000);
+    //sendchar1(c);
     if (flag) {
         printf("write called!\n"); 
         flag = false;
@@ -354,6 +353,12 @@ size_t HardwareSerial::write(uint8_t c)
     return 1;
 }
 
+size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
+{
+    uint8_t* data_ptr = (uint8_t*) buffer;
+    HAL_UART_Transmit(this->huart_handle, data_ptr, size, 1000);
+    return size;
+}
 /**
  * @brief       Get the number of bytes (characters) available
  *              for reading from the serial port. This is data
@@ -369,21 +374,40 @@ size_t HardwareSerial::write(uint8_t c)
 int HardwareSerial::available(void)
 {
     if (_pend >= _pbegin)  return (_pend - _pbegin);
-    
-    
     return 0;
 }
 
-void UART1_Init(int baud)
+void HardwareSerial::process_rx(uint8_t* data, int size)
 {
-    huart1.Instance = UART1;
-    huart1.Init.BaudRate = baud;
-    huart1.Init.WordLength = UART_WORDLENGTH_8B;
-    huart1.Init.StopBits = UART_STOPBITS_1;
-    huart1.Init.Parity = UART_PARITY_NONE;
-    huart1.Init.Mode = UART_MODE_TX | UART_MODE_RX;
-    huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    int result = HAL_UART_Init(&huart1);
+     if (this-> _pend == this-> _pbegin) {this-> _pend =0; this-> _pbegin =0;}
+     if ((_UART_RX_BUF_SIZE - this-> _pend) >= size)
+        {
+            memcpy((this-> _pbuf + this-> _pend), data, size);
+            this-> _pend += size;
+        }
+
+}
+
+void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
+{
+    this->huart_handle = uart_devices[this->uart_num];
+    
+    switch (this->uart_num) {
+        case 0: this->huart_handle->Instance = UART0; break;
+        case 1:this-> huart_handle->Instance = UART1; break;
+        case 2:this-> huart_handle->Instance = UART2; break;
+        case 3:this-> huart_handle->Instance = UART3; break;
+        case 4:this-> huart_handle->Instance = UART4; break;
+        case 5:this-> huart_handle->Instance = UART5; break;
+    }
+   
+   this-> huart_handle->Init.BaudRate = baud;
+   this-> huart_handle->Init.WordLength = UART_WORDLENGTH_8B;
+   this-> huart_handle->Init.StopBits = uart_mode & UART_LC_STOP_Msk;
+   this-> huart_handle->Init.Parity = uart_mode & ( ~UART_LC_STOP_Msk) ;
+   this-> huart_handle->Init.Mode = UART_MODE_TX | UART_MODE_RX;
+   this-> huart_handle->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    int result = HAL_UART_Init(this->huart_handle);
     if ( result != HAL_OK)
     {
        printf("Error initialize UART1, error code = %d\n", result);
@@ -393,10 +417,12 @@ void UART1_Init(int baud)
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
+    __HAL_RCC_GPIO_CLK_ENABLE();
+
 	if (huart->Instance == UART1)
 	{
 		__HAL_RCC_UART1_CLK_ENABLE();
-		__HAL_RCC_GPIO_CLK_ENABLE();
+		
 		
 	//	PB6: UART1_TX
 	//	PB7: UART1_RX
@@ -405,17 +431,34 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
+    else if (huart->Instance == UART2)
+	{
+		__HAL_RCC_UART2_CLK_ENABLE();
+		
+		
+	//	PB2: UART2_TX
+	//	PB3: UART2_RX
+		__HAL_AFIO_REMAP_UART2_TX(GPIOB, GPIO_PIN_2);
+		__HAL_AFIO_REMAP_UART2_RX(GPIOB, GPIO_PIN_3);
+		HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
+		HAL_NVIC_EnableIRQ(UART2_5_IRQn);
+	}
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if (huart->Instance == UART1)
-	{
-    if (_pend == _pbegin) {_pend =0; _pbegin =0;}
-    if ((_UART_RX_BUF_SIZE - _pend) >= huart->RxXferCount)
+    int uart_num = -1;
+   
+    if (huart->Instance == UART0) uart_num = 0;
+    if (huart->Instance == UART1) uart_num = 1;
+    if (huart->Instance == UART2) uart_num = 2;
+    if (huart->Instance == UART3) uart_num = 3;
+    if (huart->Instance == UART4) uart_num = 4;
+    if (huart->Instance == UART5) uart_num = 5;
+	
+    if ((uart_num > 0) && (uart_num < UART_COUNT) && (serial_ptr[uart_num] != NULL))
     {
-        memcpy((_pbuf+_pend), huart->pRxBuffPtr, huart->RxXferCount);
-        _pend += huart->RxXferCount;
-    }
+       serial_ptr[uart_num]->process_rx(huart->pRxBuffPtr, huart->RxXferCount);
+       
     }
 }

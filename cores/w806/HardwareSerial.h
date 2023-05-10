@@ -19,12 +19,24 @@
                      // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
 
+// Define config for Serial.begin(baud, config);
+// Note. w80x doesn't support as many different Serial modes as AVR or SAM cores.
+
+#define SERIAL_8N1	(UART_STOPBITS_1 | UART_PARITY_NONE )
+#define SERIAL_8N2	(UART_STOPBITS_2 | UART_PARITY_NONE )
+
+#define SERIAL_8E1	( UART_STOPBITS_1 | UART_PARITY_EVEN )
+#define SERIAL_8E2	( UART_STOPBITS_2 | UART_PARITY_EVEN )
+
+#define SERIAL_8O1	( UART_STOPBITS_1 | UART_PARITY_ODD )
+#define SERIAL_8O2	( UART_STOPBITS_2 | UART_PARITY_ODD )
+
 #ifdef __cplusplus 
 extern "C" {
 #endif
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
-void UART1_Init(int baud);
+//void UART1_Init(int baud);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 class HardwareSerial : public Stream
@@ -201,11 +213,23 @@ public:
      * @note 
      */ 
     virtual size_t write(uint8_t c); // from Print
+    virtual size_t write(const uint8_t *buffer, size_t size) override;
     
+    void process_rx(uint8_t* data, int size);
 private:
+
+
+    void uart_init(unsigned long baud, int uart_mode);
+    
+
     const int uart_num;
     bool _uart_mul;
-    
+    UART_HandleTypeDef* huart_handle;
+//uint8_t *_pbuf;
+uint8_t _pbegin = 0; 
+uint8_t _pend = 0;
+unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
+uint8_t _hal_buf[32] = {0};   // must be greater than or equal to 32 bytes
     //uint8_t *_pbuf;
     //uint8_t _pbegin = 0; 
     //uint8_t _pend = 0;
@@ -217,7 +241,16 @@ private:
 //extern HardwareSerial Serial;
 //extern HardwareSerial Serial1;
 //extern HardwareSerial SerialM1;
+
 #ifdef __cplusplus 
 }
+extern UART_HandleTypeDef huart0;
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart4;
+extern UART_HandleTypeDef huart5;
+
+extern UART_HandleTypeDef* uart_devices[UART_COUNT];
 #endif
 #endif
