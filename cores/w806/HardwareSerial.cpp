@@ -12,11 +12,16 @@
 
 //#include "pins_arduino.h"
 #include "HardwareSerial.h"
-static HardwareSerial* serial_ptr[6] = {NULL};
+static HardwareSerial* serial_ptr[UART_COUNT] = {NULL};
 UART_HandleTypeDef* uart_devices[UART_COUNT] = {&huart0, &huart1, &huart2, &huart3, &huart4, &huart5};
+
+
+
+//HardwareSerial Serial(0);
 
 extern "C" {
 #include "wm_uart.h"
+int wm_printf(const char *fmt,...);
 int wm_vprintf(const char *fmt, va_list arg_ptr);
 int wm_vsnprintf(char* buffer, size_t count, const char* format, va_list va);
 }
@@ -109,10 +114,10 @@ HardwareSerial::HardwareSerial(uint8_t serial_no):HardwareSerial(serial_no, fals
  */ 
 HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):uart_num(serial_no), _uart_mul(mul_flag)
 {
-    printf("Serial created for UART number %d\n", serial_no) ;
+    wm_printf("Serial created for UART%d\n", this->uart_num) ;
     //_uart_no = serial_no;
    // _uart1_mul = mul_flag;
-    printf("Internal UART number %d\n", uart_num) ;
+    wm_printf("Internal UART number %d\n", this->uart_num) ;
     /*
 #if USE_SEM
     tls_os_sem_create(&_psem, _uart_no);
@@ -188,15 +193,20 @@ HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):uart_num(serial
 void HardwareSerial::begin(unsigned long baud, int uart_mode)
 {
 
-    //printf("Method begin() called for UART number %d\n", uart_num) ;
+     
+     if (uart_num < UART_COUNT) {
+
+     
+    wm_printf("Method begin() called for UART%d\n", uart_num) ;
     serial_ptr[uart_num] = this;
     //if (this->uart_num == 1)  {
     
 
-     // printf("Start UART1 config with baud = %d...", baud) ;
+     wm_printf("Start UART config with baud = %d...", baud) ;
       //uart1_serial_init(baud);
       uart_init(baud, uart_mode);
       HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN); 
+     }
    // }
 /*#if USE_SEM
     if (TLS_UART_0 == _uart_no)
@@ -297,7 +307,7 @@ int HardwareSerial::read(void)
     {
         _pbegin++;
     }
-    else c =0;
+    //else c =0;
     return c;
 }
 
@@ -318,7 +328,7 @@ int HardwareSerial::peek()
     
     int c = 0;
 
-   c = _read_byte(_pbuf, _pbegin, _pend);
+    c = _read_byte(_pbuf, _pbegin, _pend);
     
     return c;
 }
@@ -345,7 +355,7 @@ size_t HardwareSerial::write(uint8_t c)
     HAL_UART_Transmit(this->huart_handle, &c, 1, 1000);
     //sendchar1(c);
     if (flag) {
-        printf("write called!\n"); 
+        //wm_printf("write called!\n"); 
         flag = false;
     }
     /*init_uart1_cfg(_uart_no, _uart1_mul);
@@ -388,20 +398,26 @@ int HardwareSerial::printf(const char *fmt,...) {
      }
     else {
      char * buf2;
-     char buf[32];
+     char buf[SERIAL_PRINTF_BUFFER_SIZE];
 
-     len = wm_vsnprintf(buf,32,fmt, args) + 1;
-     if (len > 32) {
-        len = 32;
+     len = wm_vsnprintf(buf,SERIAL_PRINTF_BUFFER_SIZE,fmt, args) + 1;
+     //wm_printf("len1 = %d\n", len); 
+     if (len > SERIAL_PRINTF_BUFFER_SIZE) {
+        
         buf2 = (char *) malloc( len * sizeof(char) );
         if ( NULL != buf2 )
          {
          len = wm_vsnprintf(buf2,len,fmt, args) + 1;
+      //   wm_printf("len2 = %d\n", len); 
          this->write((uint8_t*)buf2, len);
          free( buf2 );
+         va_end( args );
+         return len;
          }
+
+         else len = SERIAL_PRINTF_BUFFER_SIZE;
        }
-       else this->write((uint8_t*)buf, len);
+       this->write((uint8_t*)buf, len);
      }
 
 
@@ -444,19 +460,29 @@ void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
     int result = HAL_UART_Init(this->huart_handle);
     if ( result != HAL_OK)
     {
-       printf("Error initialize UART1, error code = %d\n", result);
+       wm_printf("Error initialize UART%d, error code = %d\n", this->uart_num, result);
     }
-    else printf("UART! started\n");
+    else wm_printf("UART%d started\n", this->uart_num);
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
     __HAL_RCC_GPIO_CLK_ENABLE();
+    if (huart->Instance == UART0)
+	{
+		__HAL_RCC_UART0_CLK_ENABLE();
+		
+	//	PB19: UART0_TX
+	//	PB20: UART0_RX
+		__HAL_AFIO_REMAP_UART0_TX(GPIOB, GPIO_PIN_19);
+		__HAL_AFIO_REMAP_UART0_RX(GPIOB, GPIO_PIN_20);
+		HAL_NVIC_SetPriority(UART0_IRQn, 0);
+		HAL_NVIC_EnableIRQ(UART0_IRQn);
+	}
 
-	if (huart->Instance == UART1)
+	else if (huart->Instance == UART1)
 	{
 		__HAL_RCC_UART1_CLK_ENABLE();
-		
 		
 	//	PB6: UART1_TX
 	//	PB7: UART1_RX
@@ -465,18 +491,51 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
-    else if (huart->Instance == UART2)
+
+    else {
+     if (huart->Instance == UART2)
 	{
 		__HAL_RCC_UART2_CLK_ENABLE();
-		
 		
 	//	PB2: UART2_TX
 	//	PB3: UART2_RX
 		__HAL_AFIO_REMAP_UART2_TX(GPIOB, GPIO_PIN_2);
 		__HAL_AFIO_REMAP_UART2_RX(GPIOB, GPIO_PIN_3);
-		HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
-		HAL_NVIC_EnableIRQ(UART2_5_IRQn);
 	}
+     
+     else if (huart->Instance == UART3)
+	{
+		__HAL_RCC_UART3_CLK_ENABLE();
+		
+	//	PB0: UART3_TX
+	//	PB1: UART3_RX
+		__HAL_AFIO_REMAP_UART3_TX(GPIOB, GPIO_PIN_0);
+		__HAL_AFIO_REMAP_UART3_RX(GPIOB, GPIO_PIN_1);
+	}
+
+     else if (huart->Instance == UART4)
+	{
+		__HAL_RCC_UART4_CLK_ENABLE();
+		
+	//	PB4: UART4_TX
+	//	PB5: UART4_RX
+		__HAL_AFIO_REMAP_UART4_TX(GPIOB, GPIO_PIN_4);
+		__HAL_AFIO_REMAP_UART4_RX(GPIOB, GPIO_PIN_5);
+	}
+
+    else if (huart->Instance == UART5)
+	{
+		__HAL_RCC_UART5_CLK_ENABLE();
+		
+	//	PA12: UART5_TX
+	//	PA13: UART5_RX
+		__HAL_AFIO_REMAP_UART5_TX(GPIOA, GPIO_PIN_12);
+		__HAL_AFIO_REMAP_UART5_RX(GPIOA, GPIO_PIN_13);
+	}
+
+        HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
+		HAL_NVIC_EnableIRQ(UART2_5_IRQn);
+    }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)

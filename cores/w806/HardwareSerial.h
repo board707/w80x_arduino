@@ -14,10 +14,12 @@
 #include "debug.h"
 #include "Stream.h"
 
-#define USE_SEM 0
+// UART RX interrupt settings 
 #define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
                      // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
+
+#define SERIAL_PRINTF_BUFFER_SIZE  64   // Automatically expands on longer output
 
 // Define config for Serial.begin(baud, config);
 // Note. w80x doesn't support as many different Serial modes as AVR or SAM cores.
@@ -194,7 +196,7 @@ public:
      */ 
     virtual int peek();             // from Stream
 
-    int printf(const char *fmt,...);
+   int printf(const char *fmt,...);
 
 /**
  * @}
@@ -214,7 +216,7 @@ public:
      * 
      * @note 
      */ 
-    virtual size_t write(uint8_t c); // from Print
+    virtual size_t write(uint8_t c) override; // from Print
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     
     void process_rx(uint8_t* data, int size);
@@ -240,9 +242,8 @@ uint8_t _hal_buf[32] = {0};   // must be greater than or equal to 32 bytes
 #endif
 };
 
-//extern HardwareSerial Serial;
-//extern HardwareSerial Serial1;
-//extern HardwareSerial SerialM1;
+extern HardwareSerial Serial;
+extern HardwareSerial Serial4;
 
 #ifdef __cplusplus 
 }
