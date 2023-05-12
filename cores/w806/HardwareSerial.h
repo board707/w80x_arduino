@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 #include "debug.h"
-#include "Stream.h"
+
 
 // UART RX interrupt settings 
 #define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
@@ -44,6 +44,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 class HardwareSerial : public Stream
 {
 public:
+using Stream::write;
 /**
  * @defgroup Serial Serial
  * @brief Serial
@@ -205,7 +206,7 @@ public:
 /**
  * @}
  */
-public:
+
     /**
      * @brief       Writes binary data to the serial port. 
      *              This data is sent as a byte or series 
