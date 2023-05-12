@@ -17,7 +17,8 @@ UART_HandleTypeDef* uart_devices[UART_COUNT] = {&huart0, &huart1, &huart2, &huar
 
 extern "C" {
 #include "wm_uart.h"
-
+int wm_vprintf(const char *fmt, va_list arg_ptr);
+int wm_vsnprintf(char* buffer, size_t count, const char* format, va_list va);
 }
 
 //unsigned char _serial1_buf[TLS_UART_RX_BUF_SIZE] = {0};
@@ -91,7 +92,7 @@ int _read_byte(unsigned char *buf, int _begin, int _end)
  * 
  * @note 
  */ 
-HardwareSerial::HardwareSerial(int serial_no):HardwareSerial(serial_no, false)
+HardwareSerial::HardwareSerial(uint8_t serial_no):HardwareSerial(serial_no, false)
 {
     //HardwareSerial(serial_no, false);
 }
@@ -106,7 +107,7 @@ HardwareSerial::HardwareSerial(int serial_no):HardwareSerial(serial_no, false)
  * 
  * @note 
  */ 
-HardwareSerial::HardwareSerial(int serial_no, bool mul_flag):uart_num(serial_no), _uart_mul(mul_flag)
+HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):uart_num(serial_no), _uart_mul(mul_flag)
 {
     printf("Serial created for UART number %d\n", serial_no) ;
     //_uart_no = serial_no;
@@ -376,6 +377,39 @@ int HardwareSerial::available(void)
     if (_pend >= _pbegin)  return (_pend - _pbegin);
     return 0;
 }
+int HardwareSerial::printf(const char *fmt,...) {
+   
+   va_list args;
+   int len;
+   va_start( args, fmt );
+   
+   if (this->uart_num == 0 ) {
+     len = wm_vprintf(fmt, args);
+     }
+    else {
+     char * buf2;
+     char buf[32];
+
+     len = wm_vsnprintf(buf,32,fmt, args) + 1;
+     if (len > 32) {
+        len = 32;
+        buf2 = (char *) malloc( len * sizeof(char) );
+        if ( NULL != buf2 )
+         {
+         len = wm_vsnprintf(buf2,len,fmt, args) + 1;
+         this->write((uint8_t*)buf2, len);
+         free( buf2 );
+         }
+       }
+       else this->write((uint8_t*)buf, len);
+     }
+
+
+ va_end( args );
+ return len;
+}
+
+
 
 void HardwareSerial::process_rx(uint8_t* data, int size)
 {

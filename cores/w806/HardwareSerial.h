@@ -70,7 +70,7 @@ public:
      * 
      * @note 
      */ 
-    HardwareSerial(int serial_no);
+    HardwareSerial(uint8_t serial_no);
     /**
      * @brief       This constructor is used to init hardware serial.
      * @param[in] serial_no Specify serial_no
@@ -81,7 +81,7 @@ public:
      * 
      * @note 
      */ 
-    HardwareSerial(int serial_no, bool mul_flag);
+    HardwareSerial(uint8_t serial_no, bool mul_flag);
     /**
      * @brief       This constructor is used to init hardware serial.
      * @param[in] none
@@ -194,6 +194,8 @@ public:
      */ 
     virtual int peek();             // from Stream
 
+    int printf(const char *fmt,...);
+
 /**
  * @}
  */
@@ -222,7 +224,7 @@ private:
     void uart_init(unsigned long baud, int uart_mode);
     
 
-    const int uart_num;
+    const uint8_t uart_num;
     bool _uart_mul;
     UART_HandleTypeDef* huart_handle;
 //uint8_t *_pbuf;
