@@ -39,6 +39,7 @@ extern "C" {
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 //void UART1_Init(int baud);
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 class HardwareSerial : public Stream

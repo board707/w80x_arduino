@@ -367,7 +367,9 @@ size_t HardwareSerial::write(uint8_t c)
 size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
 {
     uint8_t* data_ptr = (uint8_t*) buffer;
-    HAL_UART_Transmit(this->huart_handle, data_ptr, size, 1000);
+    //int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
+    int result = HAL_UART_Transmit(this->huart_handle, data_ptr, size, size*100 );
+    //if (result != HAL_OK) wm_printf("HAL error: %d, Hal state %d\n", result, this->huart_handle->gState);
     return size;
 }
 /**
@@ -457,6 +459,12 @@ void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
    this-> huart_handle->Init.Parity = uart_mode & ( ~UART_LC_STOP_Msk) ;
    this-> huart_handle->Init.Mode = UART_MODE_TX | UART_MODE_RX;
    this-> huart_handle->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+
+    if (this->huart_handle->gState != HAL_UART_STATE_RESET)
+    {
+        HAL_UART_DeInit(this->huart_handle);
+    }
+
     int result = HAL_UART_Init(this->huart_handle);
     if ( result != HAL_OK)
     {
@@ -468,6 +476,7 @@ void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
     __HAL_RCC_GPIO_CLK_ENABLE();
+
     if (huart->Instance == UART0)
 	{
 		__HAL_RCC_UART0_CLK_ENABLE();
@@ -536,6 +545,11 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
         HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART2_5_IRQn);
     }
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
