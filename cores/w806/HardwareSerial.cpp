@@ -112,12 +112,15 @@ HardwareSerial::HardwareSerial(uint8_t serial_no):HardwareSerial(serial_no, fals
  * 
  * @note 
  */ 
+
 HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):uart_num(serial_no), _uart_mul(mul_flag)
 {
+#if USE_UART0_PRINT
     wm_printf("Serial created for UART%d\n", this->uart_num) ;
     //_uart_no = serial_no;
    // _uart1_mul = mul_flag;
     wm_printf("Internal UART number %d\n", this->uart_num) ;
+#endif
     /*
 #if USE_SEM
     tls_os_sem_create(&_psem, _uart_no);
@@ -196,13 +199,17 @@ void HardwareSerial::begin(unsigned long baud, int uart_mode)
      
      if (uart_num < UART_COUNT) {
 
-     
+#if USE_UART0_PRINT
     wm_printf("Method begin() called for UART%d\n", uart_num) ;
+#endif
+    
     serial_ptr[uart_num] = this;
     //if (this->uart_num == 1)  {
-    
+#if USE_UART0_PRINT
+    wm_printf("Start UART config with baud = %d...", baud) ;
+#endif    
 
-     wm_printf("Start UART config with baud = %d...", baud) ;
+     
       //uart1_serial_init(baud);
       uart_init(baud, uart_mode);
       HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN); 
@@ -367,8 +374,8 @@ size_t HardwareSerial::write(uint8_t c)
 size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
 {
     uint8_t* data_ptr = (uint8_t*) buffer;
-    //int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
-    int result = HAL_UART_Transmit(this->huart_handle, data_ptr, size, size*100 );
+    int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
+    //int result = HAL_UART_Transmit(this->huart_handle, data_ptr, size, size*100 );
     //if (result != HAL_OK) wm_printf("HAL error: %d, Hal state %d\n", result, this->huart_handle->gState);
     return size;
 }
@@ -466,11 +473,16 @@ void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
     }
 
     int result = HAL_UART_Init(this->huart_handle);
+
+#if USE_UART0_PRINT
+   
+  
     if ( result != HAL_OK)
     {
        wm_printf("Error initialize UART%d, error code = %d\n", this->uart_num, result);
     }
     else wm_printf("UART%d started\n", this->uart_num);
+#endif  
 }
 
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
