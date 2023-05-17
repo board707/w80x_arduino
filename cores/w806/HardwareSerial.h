@@ -13,6 +13,7 @@
 #include <Arduino.h>
 #include "debug.h"
 
+#define UART_COUNT 6
 
 // UART RX interrupt settings 
 #define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
@@ -231,21 +232,16 @@ private:
     const uint8_t uart_num;
     bool _uart_mul;
     UART_HandleTypeDef* huart_handle;
-//uint8_t *_pbuf;
+
 uint8_t _pbegin = 0; 
 uint8_t _pend = 0;
 unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
 uint8_t _hal_buf[32] = {0};   // must be greater than or equal to 32 bytes
-    //uint8_t *_pbuf;
-    //uint8_t _pbegin = 0; 
-    //uint8_t _pend = 0;
-#if USE_SEM
-    tls_os_sem_t * _psem;
-#endif
+   
 };
 
-extern HardwareSerial Serial;
-extern HardwareSerial Serial4;
+//extern HardwareSerial Serial;
+//extern HardwareSerial Serial4;
 
 #ifdef __cplusplus 
 }

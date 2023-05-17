@@ -33,6 +33,7 @@
 #define UART_PARITYODD_BIT		(0x10)
 #define UART_BITSTOP_VAL		(0x03)                  /// 1 stop-bit; no crc; 8 data-bits
 
+#if USE_UART0_PRINT
 static void uart0Init (int bandrate)
 {
 	unsigned int bd;
@@ -56,8 +57,9 @@ static void uart0Init (int bandrate)
 //	WRITE_REG(UART0->INTM, 0x00);  /* Disable INT */
 
 }
+#endif
 
-#define UART1_SERIAL 1
+#define UART1_SERIAL 0
 #if UART1_SERIAL
 static void uart1_io_init(void)
 {
@@ -104,7 +106,15 @@ static void uart1Init (int bandrate)
 	printf("UART1 configured\n");
 
 }
+
+void uart1_serial_init(int bandrate)
+{
+	 uart1_io_init();
+    /* use uart1 as log output io */
+	uart1Init(bandrate);
+}
 #endif
+
 void board_init(void)
 {
 
@@ -118,9 +128,4 @@ void board_init(void)
 #endif
 }
 
-void uart1_serial_init(int bandrate)
-{
-	 uart1_io_init();
-    /* use uart1 as log output io */
-	uart1Init(bandrate);
-}
+
