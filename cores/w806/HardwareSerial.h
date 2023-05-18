@@ -20,8 +20,9 @@
 #define IT_LEN 0     // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data; 
                      // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
-
 #define SERIAL_PRINTF_BUFFER_SIZE  64   // Automatically expands on longer output
+
+#define UART_ALT_TX_RX 1
 
 // Define config for Serial.begin(baud, config);
 // Note. w80x doesn't support as many different Serial modes as AVR or SAM cores.
