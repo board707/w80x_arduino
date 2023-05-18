@@ -16,7 +16,6 @@
 #ifdef __cplusplus
 #include "Stream.h"
 #endif
-//#include "Stream.h"
 
 #define TIMER_COUNT 6
 // Timer instances (defined in Arduino.c)
@@ -26,6 +25,16 @@ extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim4;
 extern TIM_HandleTypeDef htim5;
+
+#define UART_COUNT 6
+// UART instances (defined in Arduino.c)
+extern UART_HandleTypeDef huart0;
+extern UART_HandleTypeDef huart1;
+extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart3;
+extern UART_HandleTypeDef huart4;
+extern UART_HandleTypeDef huart5;
+
 
 #ifdef __cplusplus 
 extern "C" {

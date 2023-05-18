@@ -124,7 +124,7 @@ size_t Print::print(const __FlashStringHelper *rhs) {
  */ 
 size_t Print::print(const char str[])
 {
-    AR_DBG();
+    //AR_DBG();
     return write(str);
 }
 

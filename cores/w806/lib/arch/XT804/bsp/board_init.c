@@ -33,6 +33,7 @@
 #define UART_PARITYODD_BIT		(0x10)
 #define UART_BITSTOP_VAL		(0x03)                  /// 1 stop-bit; no crc; 8 data-bits
 
+#if USE_UART0_PRINT
 static void uart0Init (int bandrate)
 {
 	unsigned int bd;
@@ -56,7 +57,10 @@ static void uart0Init (int bandrate)
 //	WRITE_REG(UART0->INTM, 0x00);  /* Disable INT */
 
 }
-#if 0
+#endif
+
+#define UART1_SERIAL 0
+#if UART1_SERIAL
 static void uart1_io_init(void)
 {
     uint32_t temp;
@@ -66,7 +70,7 @@ static void uart1_io_init(void)
 	temp &= ~0xC0;
 	WRITE_REG(GPIOB->AF_SEL, temp);
 
-    /* PB6.7 AF Open opt1 */
+    
     temp = READ_REG(GPIOB->AF_SEL);
     temp |= 0xC0;
     WRITE_REG(GPIOB->AF_SEL, temp);
@@ -78,7 +82,11 @@ static void uart1_io_init(void)
     temp = READ_REG(GPIOB->AF_S1);
     temp &= ~0xC0;
     WRITE_REG(GPIOB->AF_S1, temp);
-
+	//__HAL_AFIO_REMAP_UART1_TX(GPIOB, GPIO_PIN_6);	
+   // __HAL_AFIO_REMAP_UART1_RX(GPIOB, GPIO_PIN_7);
+	//__HAL_AFIO_REMAP_UART1_TX(GPIOB, GPIO_PIN_31);	
+    //__HAL_AFIO_REMAP_UART1_RX(GPIOB, GPIO_PIN_16);
+	printf("UART1 pin remap done\n");
 }
 static void uart1Init (int bandrate)
 {
@@ -95,9 +103,18 @@ static void uart1Init (int bandrate)
 	WRITE_REG(UART1->DMAC, 0x00);             		/* Disable DMA */
 	WRITE_REG(UART1->FIFOC, 0x00);             		/* one byte TX/RX */
 	WRITE_REG(UART1->INTM, 0x00);             		/* Disable INT */
+	printf("UART1 configured\n");
 
 }
+
+void uart1_serial_init(int bandrate)
+{
+	 uart1_io_init();
+    /* use uart1 as log output io */
+	uart1Init(bandrate);
+}
 #endif
+
 void board_init(void)
 {
 
@@ -110,3 +127,5 @@ void board_init(void)
 	//uart1Init(115200);
 #endif
 }
+
+

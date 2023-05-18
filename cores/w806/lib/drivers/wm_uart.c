@@ -195,7 +195,7 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
         __HAL_UART_ENABLE_IT(huart, UART_TX_INT_FLAG);
         
         do {
-            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) == UART_FIFO_FULL)
+            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) >= UART_FIFO_FULL)
             {
                 break;
             }
@@ -325,7 +325,7 @@ static HAL_StatusTypeDef UART_Transmit_IT(UART_HandleTypeDef *huart)
     {
         while (huart->TxXferCount > 0)
         {
-            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) == UART_FIFO_FULL)
+            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) >= UART_FIFO_FULL)
             {
                 break;
             }

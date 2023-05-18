@@ -61,7 +61,7 @@ public:
      * 
      * @note 
      */ 
-    virtual size_t write(uint8_t) = 0;
+    virtual size_t write(uint8_t c) = 0;
     /**
      * @brief       This function is used to write buffer to the interface defined by the object.
      * @param[in] buffer Specify the buffer.
