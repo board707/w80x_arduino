@@ -15,10 +15,11 @@
 static HardwareSerial* serial_ptr[UART_COUNT] = {NULL};
 UART_HandleTypeDef* uart_devices[UART_COUNT] = {&huart0, &huart1, &huart2, &huart3, &huart4, &huart5};
 
-//HardwareSerial Serial(0);
+HardwareSerial Serial(0);
+//extern HardwareSerial Serial1;
 
 extern "C" {
-#include "wm_uart.h"
+
 int wm_printf(const char *fmt,...);
 int wm_vprintf(const char *fmt, va_list arg_ptr);
 int wm_vsnprintf(char* buffer, size_t count, const char* format, va_list va);

@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <Common.h>
 
 #include "debug.h"
 #include "WString.h"

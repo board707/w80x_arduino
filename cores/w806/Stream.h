@@ -9,7 +9,8 @@
  */
 #ifndef _STREAM_H_
 #define _STREAM_H_
-#include "Arduino.h"
+//#include "Arduino.h"
+#include <Common.h>
 #include "debug.h"
 
 #include "Print.h"

@@ -10,8 +10,9 @@
 #ifndef _HARDWARESERIAL_H_
 #define _HARDWARESERIAL_H_
 
-#include <Arduino.h>
+#include <Common.h>
 #include "debug.h"
+#include "Stream.h"
 
 #define UART_COUNT 6
 
@@ -37,7 +38,7 @@
 #ifdef __cplusplus 
 extern "C" {
 #endif
-
+#include "./include/driver/wm_uart.h"
 void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 //void UART1_Init(int baud);
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
@@ -240,8 +241,8 @@ uint8_t _hal_buf[32] = {0};   // must be greater than or equal to 32 bytes
    
 };
 
-//extern HardwareSerial Serial;
-//extern HardwareSerial Serial4;
+extern HardwareSerial Serial;
+//extern HardwareSerial Serial1;
 
 #ifdef __cplusplus 
 }
