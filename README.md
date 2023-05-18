@@ -60,13 +60,13 @@ The ticked ones have been implemented and verified, the unticked ones are under 
 
 - [x] Arduino IDE package tools for Windows and Linux 
 - [x] GPIO
-- [ ] HardwareSerial class
+- [x] [HardwareSerial](cores/w806/HardwareSerial.md) class
 - [x] ADC
 - [x] PWM
-- [x] HardwareTimer lib
+- [x] [HardwareTimer](libraries/HardwareTimer/Readme.md) lib
 - [x] I2C - HardwareI2c, SoftwareI2c
 - [ ] SPI
-- [x] EEPROM library
+- [x] [EEPROM](libraries/EEPROM/Readme.md) library
 - [x] Stream, Print and String classes
 - [ ] I2S interface
 - [ ] SDIO interface
