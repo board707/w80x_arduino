@@ -12,6 +12,14 @@
 
 //#include "pins_arduino.h"
 #include "HardwareSerial.h"
+
+UART_HandleTypeDef huart0;
+UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart3;
+UART_HandleTypeDef huart4;
+UART_HandleTypeDef huart5;
+
 static HardwareSerial* serial_ptr[UART_COUNT] = {NULL};
 UART_HandleTypeDef* uart_devices[UART_COUNT] = {&huart0, &huart1, &huart2, &huart3, &huart4, &huart5};
 
