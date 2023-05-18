@@ -163,12 +163,12 @@ void setup_adc(void);
 double analogRead(uint8_t pin);
 
 // Прототипы для измерения времени в runtime
-uint64_t millis(void);
-uint64_t micros(void);
+uint32_t millis(void);
+uint32_t micros(void);
 
 // Прототипы для функций задержек
-void delay(uint64_t ms);
-void delayMicroseconds(uint64_t us);
+void delay(uint32_t ms);
+void delayMicroseconds(uint32_t us);
 
 // Прототип для контроля вхождения в суперцикл Loop()
 bool is_loop(void) ;
