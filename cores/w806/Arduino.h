@@ -71,8 +71,16 @@ typedef struct {
 
 #define GPSEC            ((GPSEC_TypeDef *) GPSEC_BASE)
 
+#ifdef __cplusplus
+extern "C"  {
+#endif
+
 void trngInit(void);    //Инициализация истинных случайных чисел 32bit
 void prngInit(void);    //Инициализация псевдо случайных чисел 32bit
+
+#ifdef __cplusplus
+}
+#endif
 #define rngGet()      	(GPSEC->RNG_RESULT)      // Результат
 
 
