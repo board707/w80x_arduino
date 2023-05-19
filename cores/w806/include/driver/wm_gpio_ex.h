@@ -729,42 +729,71 @@
 													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
 												}													\
 											}while (0)
-#define __HAL_AFIO_REMAP_PSRAM_CLK(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_15))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0)												
-#define __HAL_AFIO_REMAP_PSRAM_CS(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_27))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0) 												
-#define __HAL_AFIO_REMAP_PSRAM_MISO(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_3))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0) 
-#define __HAL_AFIO_REMAP_PSRAM_MOSI(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_2))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0)
-#define __HAL_AFIO_REMAP_PSRAM_D2(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_4))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0)
-#define __HAL_AFIO_REMAP_PSRAM_D3(__HANDLE__, __IOPOSITION__) do{ \
-                                            if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_5))    \
-                                            {                                                    \
-                                                __AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);    \
-                                            }                                                    \
-                                        }while (0)
+#define __HAL_AFIO_REMAP_PSRAM_CS(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_1))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_27))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_PSRAM_CLK(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOA) && (__IOPOSITION__ == GPIO_PIN_15))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_0))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_PSRAM_D0(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_2))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_28))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)
+												
+#define __HAL_AFIO_REMAP_PSRAM_D1(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_3))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_29))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)	
+
+#define __HAL_AFIO_REMAP_PSRAM_D2(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_4))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_30))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)											
+												
+#define __HAL_AFIO_REMAP_PSRAM_D3(__HANDLE__, __IOPOSITION__)	do{									\
+												if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_5))	\
+												{													\
+													__AFIO_REMAP_SET_OPT4(__HANDLE__, __IOPOSITION__);	\
+												}													\
+												else if ((__HANDLE__ == GPIOB) && (__IOPOSITION__ == GPIO_PIN_31))	\
+												{													\
+													__AFIO_REMAP_SET_OPT1(__HANDLE__, __IOPOSITION__);	\
+												}													\
+											}while (0)												
 											
 #define __HAL_AFIO_REMAP_SWJ_ENABLE	do {									\
 										__AFIO_REMAP_SET_OPT1(GPIOA, GPIO_PIN_1);	\

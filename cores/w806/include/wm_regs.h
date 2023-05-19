@@ -58,15 +58,6 @@ typedef enum IRQn
 /* APB BaseAddr*/
 #define HR_APB_BASE_ADDR 	0x40010000UL
 
-typedef volatile unsigned int TLS_REG;    /* Hardware register definition */
-
-/***************************************************************
-* PSRAM CTRL Register
-****************************************************************/
-#define PSRRAM_BASE_ADDR      (DEVICE_BASE_ADDR + 0x2200)
-#define PSRAM_CTRL_ADDR       (PSRRAM_BASE_ADDR+ 0x00)
-#define PSRAM_OVERTIMER_ADDR  (PSRRAM_BASE_ADDR+ 0x04)
-
 /***************************************************************
  * DMA Reg
  ***************************************************************/
@@ -2338,16 +2329,41 @@ typedef struct
 #define READ_REG(REG)         	((REG)) 
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 
-static __inline void tls_reg_write32(unsigned int reg, unsigned int val)
-{
+/***************************************************************
+ * PSRAM Reg
+ ***************************************************************/
 
-*(TLS_REG *)reg = val;
-}
-static __inline unsigned int tls_reg_read32(unsigned int reg)
-{
+#define PSRAM_BASE   (DEVICE_BASE_ADDR + 0x2200)
 
-unsigned int val = *(TLS_REG *)reg;
-return val;
-}
+typedef struct
+{
+   __IOM uint32_t CR;
+   __IOM uint32_t TIMEOUT;
+} PSRAM_TypeDef;
+
+#define PSRAM_CR_HALFSLEEP_EN_Pos         (11)
+#define PSRAM_CR_HALFSLEEP_EN_Msk         (0x1 << PSRAM_CR_HALFSLEEP_EN_Pos)
+#define PSRAM_CR_HALFSLEEP_EN            PSRAM_CR_HALFSLEEP_EN_Msk
+#define PSRAM_CR_TCPH_Pos               (8)
+#define PSRAM_CR_TCPH_Msk               (0x7 << PSRAM_CR_TCPH_Pos)
+#define PSRAM_CR_TCPH                  PSRAM_CR_TCPH_Msk
+#define PSRAM_CR_DIV_Pos               (4)
+#define PSRAM_CR_DIV_Msk               (0xF << PSRAM_CR_DIV_Pos)
+#define PSRAM_CR_DIV                  PSRAM_CR_DIV_Msk
+#define PSRAM_CR_BURST_EN_Pos            (2)
+#define PSRAM_CR_BURST_EN_Msk            (0x1 << PSRAM_CR_BURST_EN_Pos)
+#define PSRAM_CR_BURST_EN               PSRAM_CR_BURST_EN_Msk
+#define PSRAM_CR_QUAD_EN_Pos            (1)
+#define PSRAM_CR_QUAD_EN_Msk            (0x1 << PSRAM_CR_QUAD_EN_Pos)
+#define PSRAM_CR_QUAD_EN               PSRAM_CR_QUAD_EN_Msk
+#define PSRAM_CR_SPI_EN                  (0x0 << PSRAM_CR_QUAD_EN_Pos)
+#define PSRAM_CR_RST_Pos               (0)
+#define PSRAM_CR_RST_Msk               (0x1 << PSRAM_CR_RST_Pos)
+#define PSRAM_CR_RST                  PSRAM_CR_RST_Msk
+
+#define PSRAM_TIMEOUT_Pos               (0)
+#define PSRAM_TIMEOUT_Msk               (0xFFF << PSRAM_TIMEOUT_Pos)
+#define PSRAM_TIMEOUT                  PSRAM_TIMEOUT_Msk
+
 #endif /* WM_REGS_H */
 
