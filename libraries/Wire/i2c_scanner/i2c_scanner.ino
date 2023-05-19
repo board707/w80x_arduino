@@ -1,5 +1,5 @@
 #include "Wire.h"
-TwoWire Wire;
+
 
 uint8_t dev_i2c[128] = {0};
 

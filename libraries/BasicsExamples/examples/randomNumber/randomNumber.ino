@@ -1,8 +1,14 @@
 #include "Arduino.h"
-
+/*
+* This code illustrates using of true random numeric generator(TRNG), 
+* part of w80x inboard cryptomodule
+*
+* Std lib random functions also supported
+*
+*/
 void setup() {
   Serial.begin(115200);
-  trngInit();
+  trngInit();            // TRNG init
   randomSeed(rngGet());
 }
 

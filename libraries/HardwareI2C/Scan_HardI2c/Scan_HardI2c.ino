@@ -1,20 +1,20 @@
 #include "Arduino.h"
 #include "HardwareI2C.h"
 
-HardwareI2C Wire;
+HardwareI2C hWire;
 uint8_t dDev = 0;
 uint8_t mDev[128] = {0};
 void setup() {
 
-  Wire.begin();
+  hWire.begin();
   printf("begin to scan...\n\r");
     for (unsigned char i = 0; i <= 127; i++) {
     delay(100); // Это обязательно! У HAL есть определенный таймаут для ожидания ACK (255 приращений в цикле ожидания)
-    if (Wire.beginTransmission(i)) {
+    if (hWire.beginTransmission(i)) {
       mDev[dDev]=i;
       dDev++;
     }
-    Wire.endTransmission();
+    hWire.endTransmission();
   }
   // На вывод в терминал сообщений типа i2c ack error - не обращаем внимание. Его генерирует HAL и подавить его нет возможности.
   if (dDev == 0) printf("find nothing");
