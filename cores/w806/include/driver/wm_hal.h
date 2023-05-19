@@ -25,6 +25,7 @@
 #include "wm_i2s.h"
 #include "wm_dma.h"
 #include "wm_sdio.h"
+#include "wm_psram.h"
 
 #define VER "0.6.0"
 
