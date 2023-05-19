@@ -2,7 +2,7 @@
 
 **Written by:** _Dmitry E. Dmitriev_ .
 
-### **What is the HardwareTimer library.**
+### **What is the HardwareSerial library.**
 
 The HardwareSerial library provides an easy to use interface to interact with the UART channels of WM MCUs. 
 
@@ -19,16 +19,14 @@ Winner Micro devices and clones such as W806, W801, Air103... etc has as much as
 | UART4 | **PB4**, **PB5** | PA8, PA9 |
 | UART5 | **PA12**, **PA13** | PB18,PB17 | 
 
-(Alternative pins selection is not supported yet.)
-
 ### **How to use it**
 To add its functionality to your sketch you'll need to initialize HardwareSerial object with number of used MCU UART (1..5). The UART0 `Serial` instance is defined by system and shouldn't be defined by user.
 
 ```Arduino
-HardwareSerial Serial2(2); 
+HardwareSerial mySerial(2);        // initialize Serial object on UART2
 
 void setup(){
-Serial2.begin(9600, SERIAL_8N1);
+mySerial.begin(9600, SERIAL_8N1);
 }
 
 void loop(){
@@ -37,9 +35,9 @@ void loop(){
 
 ```
 
-For uarts 2-5 you can change the default TX RX pins to the alternative option by calling the HardwareSerial constructor with number of UART and keyword `UART_ALT_TX_RX` as second parameter:
+For uarts 2-5 you can change the default TX RX pins to the alternative option by calling the HardwareSerial constructor with number of UART and keyword `REMAP_TX_RX` as second parameter:
 
-##### **`HardwareSerial Serial5(5, UART_ALT_TX_RX);`** 
+##### **`HardwareSerial Serial5(5, REMAP_TX_RX);`** 
 
 
 ### **Configure**

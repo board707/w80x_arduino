@@ -22,7 +22,7 @@
 #define _UART_RX_BUF_SIZE 128
 #define SERIAL_PRINTF_BUFFER_SIZE  64   // Automatically expands on longer output
 
-#define UART_ALT_TX_RX 1
+#define REMAP_TX_RX 1
 
 // Define config for Serial.begin(baud, config);
 // Note. w80x doesn't support as many different Serial modes as AVR or SAM cores.
@@ -44,6 +44,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart);
 //void UART1_Init(int baud);
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+void uart_pins_init(UART_HandleTypeDef *huart);
 
 class HardwareSerial : public Stream
 {
@@ -225,6 +226,8 @@ using Stream::write;
     virtual size_t write(const uint8_t *buffer, size_t size) override;
     
     void process_rx(uint8_t* data, int size);
+
+    bool _uart_mul;
 private:
 
 
@@ -232,7 +235,6 @@ private:
     
 
     const uint8_t uart_num;
-    bool _uart_mul;
     UART_HandleTypeDef* huart_handle;
 
 uint8_t _pbegin = 0; 

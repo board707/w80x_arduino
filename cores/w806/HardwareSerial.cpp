@@ -71,7 +71,7 @@ HardwareSerial::HardwareSerial(uint8_t serial_no):HardwareSerial(serial_no, fals
  * @note 
  */ 
 
-HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):uart_num(serial_no), _uart_mul(mul_flag)
+HardwareSerial::HardwareSerial(uint8_t serial_no, bool mul_flag):_uart_mul(mul_flag), uart_num(serial_no)
 {
 #if USE_UART0_PRINT
     //wm_printf("Serial created for UART%d\n", this->uart_num) ;
@@ -363,10 +363,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 	{
 		__HAL_RCC_UART0_CLK_ENABLE();
 		
-	//	PB19: UART0_TX
-	//	PB20: UART0_RX
-		__HAL_AFIO_REMAP_UART0_TX(GPIOB, GPIO_PIN_19);
-		__HAL_AFIO_REMAP_UART0_RX(GPIOB, GPIO_PIN_20);
+	    uart_pins_init(huart);
 		HAL_NVIC_SetPriority(UART0_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART0_IRQn);
 	}
@@ -375,10 +372,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 	{
 		__HAL_RCC_UART1_CLK_ENABLE();
 		
-	//	PB6: UART1_TX
-	//	PB7: UART1_RX
-		__HAL_AFIO_REMAP_UART1_TX(GPIOB, GPIO_PIN_6);
-		__HAL_AFIO_REMAP_UART1_RX(GPIOB, GPIO_PIN_7);
+	    uart_pins_init(huart);
 		HAL_NVIC_SetPriority(UART1_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART1_IRQn);
 	}
@@ -387,43 +381,24 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
      if (huart->Instance == UART2)
 	{
 		__HAL_RCC_UART2_CLK_ENABLE();
-		
-	//	PB2: UART2_TX
-	//	PB3: UART2_RX
-		__HAL_AFIO_REMAP_UART2_TX(GPIOB, GPIO_PIN_2);
-		__HAL_AFIO_REMAP_UART2_RX(GPIOB, GPIO_PIN_3);
 	}
      
      else if (huart->Instance == UART3)
 	{
 		__HAL_RCC_UART3_CLK_ENABLE();
-		
-	//	PB0: UART3_TX
-	//	PB1: UART3_RX
-		__HAL_AFIO_REMAP_UART3_TX(GPIOB, GPIO_PIN_0);
-		__HAL_AFIO_REMAP_UART3_RX(GPIOB, GPIO_PIN_1);
 	}
 
      else if (huart->Instance == UART4)
 	{
 		__HAL_RCC_UART4_CLK_ENABLE();
-		
-	//	PB4: UART4_TX
-	//	PB5: UART4_RX
-		__HAL_AFIO_REMAP_UART4_TX(GPIOB, GPIO_PIN_4);
-		__HAL_AFIO_REMAP_UART4_RX(GPIOB, GPIO_PIN_5);
 	}
 
     else if (huart->Instance == UART5)
 	{
 		__HAL_RCC_UART5_CLK_ENABLE();
-		
-	//	PA12: UART5_TX
-	//	PA13: UART5_RX
-		__HAL_AFIO_REMAP_UART5_TX(GPIOA, GPIO_PIN_12);
-		__HAL_AFIO_REMAP_UART5_RX(GPIOA, GPIO_PIN_13);
 	}
 
+        uart_pins_init(huart);
         HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
 		HAL_NVIC_EnableIRQ(UART2_5_IRQn);
     }
@@ -450,4 +425,107 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
        serial_ptr[uart_num]->process_rx(huart->pRxBuffPtr, huart->RxXferCount);
        
     }
+}
+
+void uart_pins_init(UART_HandleTypeDef *huart)
+{
+    int uart_num = -1;
+   
+    if (huart->Instance == UART0) uart_num = 0;
+    if (huart->Instance == UART1) uart_num = 1;
+    if (huart->Instance == UART2) uart_num = 2;
+    if (huart->Instance == UART3) uart_num = 3;
+    if (huart->Instance == UART4) uart_num = 4;
+    if (huart->Instance == UART5) uart_num = 5;
+
+    if ((uart_num >= 0) && (uart_num < UART_COUNT) && (serial_ptr[uart_num] != NULL))
+    {
+    switch(uart_num)
+     {
+        case 0:
+    //	PB19: UART0_TX
+	//	PB20: UART0_RX
+		__HAL_AFIO_REMAP_UART0_TX(GPIOB, GPIO_PIN_19);
+		__HAL_AFIO_REMAP_UART0_RX(GPIOB, GPIO_PIN_20);
+        break;
+
+        case 1:
+    //	PB6: UART1_TX
+	//	PB7: UART1_RX
+		__HAL_AFIO_REMAP_UART1_TX(GPIOB, GPIO_PIN_6);
+		__HAL_AFIO_REMAP_UART1_RX(GPIOB, GPIO_PIN_7);
+        break;
+
+        case 2:
+        if (serial_ptr[uart_num]->_uart_mul)
+        {
+    //  Alternative pins     
+    //	PA2: UART2_TX
+	//	PA3: UART2_RX
+		__HAL_AFIO_REMAP_UART2_TX(GPIOA, GPIO_PIN_2);
+		__HAL_AFIO_REMAP_UART2_RX(GPIOA, GPIO_PIN_3);
+        }
+        else {
+    //	PB2: UART2_TX
+	//	PB3: UART2_RX
+		__HAL_AFIO_REMAP_UART2_TX(GPIOB, GPIO_PIN_2);
+		__HAL_AFIO_REMAP_UART2_RX(GPIOB, GPIO_PIN_3);
+        }
+        break;
+
+        case 3:
+        if (serial_ptr[uart_num]->_uart_mul)
+        {
+    //  Alternative pins     
+    //	PA5: UART3_TX
+	//	PA6: UART3_RX
+		__HAL_AFIO_REMAP_UART3_TX(GPIOA, GPIO_PIN_5);
+		__HAL_AFIO_REMAP_UART3_RX(GPIOA, GPIO_PIN_6);
+        }
+        else {
+    //	PB0: UART3_TX
+	//	PB1: UART3_RX
+		__HAL_AFIO_REMAP_UART3_TX(GPIOB, GPIO_PIN_0);
+		__HAL_AFIO_REMAP_UART3_RX(GPIOB, GPIO_PIN_1);
+        }
+        break;
+
+        case 4:
+        if (serial_ptr[uart_num]->_uart_mul)
+        {
+    //  Alternative pins     
+    //	PA8: UART4_TX
+	//	PA9: UART4_RX
+		__HAL_AFIO_REMAP_UART4_TX(GPIOA, GPIO_PIN_8);
+		__HAL_AFIO_REMAP_UART4_RX(GPIOA, GPIO_PIN_9);
+        }
+        else {
+    //	PB4: UART4_TX
+	//	PB5: UART4_RX
+		__HAL_AFIO_REMAP_UART4_TX(GPIOB, GPIO_PIN_4);
+		__HAL_AFIO_REMAP_UART4_RX(GPIOB, GPIO_PIN_5);
+        }
+        break;
+
+        case 5:
+        if (serial_ptr[uart_num]->_uart_mul)
+        {
+    //  Alternative pins     
+    //	PB18: UART5_TX
+	//	PB17: UART5_RX
+		__HAL_AFIO_REMAP_UART5_TX(GPIOB, GPIO_PIN_18);
+		__HAL_AFIO_REMAP_UART5_RX(GPIOB, GPIO_PIN_17);
+        }
+        else {
+    //	PA12: UART5_TX
+	//	PA13: UART5_RX
+		__HAL_AFIO_REMAP_UART5_TX(GPIOA, GPIO_PIN_12);
+		__HAL_AFIO_REMAP_UART5_RX(GPIOA, GPIO_PIN_13);
+        }
+        break;
+
+     }
+    }
+    
+
 }
