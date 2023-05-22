@@ -3,7 +3,7 @@
 
 #include "wm_hal.h"
 
-#define SD	(SDIO_TypeDef *)SDIO_BASE
+#define SDIO	(SDIO_TypeDef *)SDIO_BASE
 
 
 typedef struct
@@ -125,7 +125,7 @@ typedef struct
 
 
 
-#define IS_SD_ALL_INSTANCE(INSTANCE)	((INSTANCE) == SD)
+#define IS_SD_ALL_INSTANCE(INSTANCE)	((INSTANCE) == SDIO)
 #define IS_SD_BUS_WIDE(WIDE)			(((WIDE) == SD_BUS_WIDE_1B) || ((WIDE) == SD_BUS_WIDE_4B))
 #define IS_SD_CLOCK_MODE(MODE)			(((MODE) == SD_CLOCK_MODE_LOW_SPEED) || ((MODE) == SD_CLOCK_MODE_HIGH_SPEED))
 #define IS_SD_CLOCK_DIV(DIV)			(((DIV) == SD_CLOCK_DIV_1_2) || ((DIV) == SD_CLOCK_DIV_1_4) || \
