@@ -108,9 +108,9 @@ int HAL_I2C_Wait_Ack(I2C_HandleTypeDef *hi2c)
     while(READ_BIT(hi2c->Instance->CR_SR, I2C_SR_RXACK))
     {
         errtime ++;
-        if(errtime > 512)
+        if(errtime > 1024)
         {
-            printf("i2c ack error");
+            //printf("i2c ack error");
             HAL_I2C_Stop(hi2c);
             return HAL_ERROR;
         }

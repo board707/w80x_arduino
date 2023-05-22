@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "HardwareI2C.h"
+#include "Wire.h"
 #include "LCD2004_PCF8547.h"
 
 #define LCD_WIDTH   20
@@ -95,9 +95,10 @@ HardwareI2C lsw;
 void setup()
 {
 
-  lsw.begin();
+  //Wire.begin();               // Hardware I2C  (PA4 = SDA, PA1 = SCL by default)
+  Wire.begin(PA12,PA14);    // Software I2C  (SDA, SCL) - any pins
 
-  LCDInit (&lsw);
+  LCDInit ();
 
   delay(500);
 

@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include "Arduino.h"
-#include "SoftwareI2C.h"
+#include "Wire.h"
 
 #define PCF8574_ADDRESS   0x27 // 39 (7-bit address)
 //#define PCF8574_ADDRESS   (0x27*2) // 39 (8-bit address)
@@ -38,7 +38,7 @@ static uint8_t  S_BacklightBit = 0;
 // Function Prototypes
 bool IsLCDEnabled (void);
 
-bool LCDInit (SoftwareI2C *sw);
+bool LCDInit ();
 void LCDTerm (void);
 
 void LCDWriteInstructionNibble (uint8_t nibble);
@@ -63,16 +63,13 @@ void LCDSetBacklightOff(void);
 // Обслуживание
 /////////////////////////////////////////////////////////////////////
 
-SoftwareI2C *sw; 
-
-bool LCDInit(SoftwareI2C *lsw)
+bool LCDInit()
 {
     int ack = 0;
-	sw = lsw;
     // Set all PCF8547 I/O pins LOW.
-    sw->beginTransmission(PCF8574_ADDRESS);
-    sw->write(0x0);
-    ack = sw->endTransmission();
+    Wire.beginTransmission(PCF8574_ADDRESS);
+    Wire.write(0x0);
+    ack = Wire.endTransmission();
 
     if (ack != 0)
     {
@@ -93,7 +90,7 @@ bool LCDInit(SoftwareI2C *lsw)
 
     // Set interface to 4-bit mode.
     LCDWriteInstructionNibble(0b0010);
-
+	delayMicroseconds(10); 
     // Function Set
     // [0  0  1  DL N  F  0  0 ]
     // DL: 1=8-Bit, 0=4-Bit
@@ -101,7 +98,7 @@ bool LCDInit(SoftwareI2C *lsw)
     //  F: 1=5x10, 0=5x8
     //                      [--001DNF00]
     LCDWriteInstructionByte(0b00101000);
-
+	delayMicroseconds(10); 
     // Display On
     // [0  0  0  0  1  D  C  B ]
     // D: Display
@@ -109,11 +106,11 @@ bool LCDInit(SoftwareI2C *lsw)
     // B: Blink
     //                      [--00001DCB]
     LCDWriteInstructionByte(0b00001100);
-
+	delayMicroseconds(10); 
     // Display Clear
     // [0  0  0  0  0  0  0  1 ]
     LCDWriteInstructionByte(0b00000001);
-    delayMicroseconds(3);  // 1.18ms - 2.16ms
+    delay(3);  // 1.18ms - 2.16ms
 
     // Entry Mode Set
     // [0  0  0  0  0  1  ID S ]
@@ -121,7 +118,7 @@ bool LCDInit(SoftwareI2C *lsw)
     //  S: 1=Shift based on ID (1=Left, 0=Right)
     //                      [--000001IS]
     LCDWriteInstructionByte(0b00000110);
-
+	delay(3);  // 1.18ms - 2.16ms
     S_IsLCDEnabled = true;
 
     return true;
@@ -142,15 +139,15 @@ void LCDWriteInstructionNibble(uint8_t nibble)
 {
     uint8_t dataByte = BL_BIT | (nibble << 4);
 
-    sw->beginTransmission(PCF8574_ADDRESS);
+    Wire.beginTransmission(PCF8574_ADDRESS);
 
-    sw->write(E_BIT | dataByte);
-    delayMicroseconds(1);
+    Wire.write(E_BIT | dataByte);
+    delayMicroseconds(10);
 
-    sw->write(dataByte);
+    Wire.write(dataByte);
     delayMicroseconds(37);
 
-    sw->endTransmission();
+    Wire.endTransmission();
 }
 /*--------------------------------------------------------------------------*/
 // Write a byte out, 4-bits at a time. The rsBit will determine
@@ -160,21 +157,21 @@ void LCDWriteByte(uint8_t rsBit, uint8_t dataByte)
 {
     uint8_t newByte;
 
-    sw->beginTransmission(PCF8574_ADDRESS);
+    Wire.beginTransmission(PCF8574_ADDRESS);
 
     newByte = S_BacklightBit | rsBit | (dataByte & 0xf0);
-    sw->write(E_BIT | newByte);
-    delayMicroseconds(1);
-    sw->write(newByte);
+    Wire.write(E_BIT | newByte);
+    delayMicroseconds(10);
+    Wire.write(newByte);
     delayMicroseconds(37);
 
     newByte = S_BacklightBit | rsBit | (dataByte << 4);
-    sw->write(E_BIT | newByte);
-    delayMicroseconds(1);
-    sw->write(newByte);
+    Wire.write(E_BIT | newByte);
+    delayMicroseconds(10);
+    Wire.write(newByte);
     delayMicroseconds(37);
 
-    sw->endTransmission();
+    Wire.endTransmission();
 }
 /*--------------------------------------------------------------------------*/
 // Write with RS bit 0.
@@ -182,6 +179,7 @@ void LCDWriteByte(uint8_t rsBit, uint8_t dataByte)
 void LCDWriteInstructionByte(uint8_t instruction)
 {
     LCDWriteByte(0, instruction);
+	delayMicroseconds(40);
 }
 /*--------------------------------------------------------------------------*/
 // Write with RS bit 1.
@@ -189,6 +187,7 @@ void LCDWriteInstructionByte(uint8_t instruction)
 void LCDWriteDataByte(uint8_t data)
 {
     LCDWriteByte(RS_BIT, data);
+	delayMicroseconds(40);
 }
 /*--------------------------------------------------------------------------*/
 // Write out one or more data bytes.
@@ -198,6 +197,7 @@ void LCDWriteData(uint8_t *dataPtr, uint8_t dataSize)
     for (int idx = 0; idx < dataSize; idx++)
     {
         LCDWriteDataByte(dataPtr[idx]);
+		delayMicroseconds(40);
     }
 }
 /*--------------------------------------------------------------------------*/
@@ -209,6 +209,7 @@ void LCDWriteDataString(uint8_t x, uint8_t y, char *message)
     {
         LCDSetXY(x, y);
         LCDWriteData((uint8_t *)message, strlen(message));
+		delayMicroseconds(40);
     }
 }
 /*--------------------------------------------------------------------------*/
@@ -299,9 +300,9 @@ void LCDSetBacklight(bool backlightOn)
     }
 
     // Manually set backlight bit.
-    sw->beginTransmission(PCF8574_ADDRESS);
-    sw->write(S_BacklightBit);
-    sw->endTransmission();
+    Wire.beginTransmission(PCF8574_ADDRESS);
+    Wire.write(S_BacklightBit);
+    Wire.endTransmission();
 }
 void LCDSetBacklightOn(void)
 {
