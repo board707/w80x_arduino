@@ -44,13 +44,12 @@ private:
     uint8_t dataMode;
 
     friend class HardSPI;
+    friend class Base_SPI;
 };
 // Максимальная частота шины SPI clock - 20 Мhz
-
-class HardSPI {
-    private:
-	// func
-    private:
+class Base_SPI {
+    
+    protected:
 	// var
     uint8_t   _miso = PB25;
     uint8_t   _mosi = PB26;
@@ -62,6 +61,33 @@ class HardSPI {
     uint8_t clock_polarity ;
     uint8_t clock_phase ;
 	uint16_t timeOut = 1000;
+	//SPI_HandleTypeDef hspi;
+	
+	public:
+	// methods
+		Base_SPI() {};
+        Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck) {};// alternatives see datasheet
+		virtual void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) =0;
+ 		virtual void beginTransaction(SPISettings settings) =0;
+		virtual void beginTransaction() {begin();};		
+		virtual void endTransaction() {end();};		
+        virtual void begin() =0;
+        virtual void end() =0;
+        virtual uint8_t transfer(uint8_t) =0;
+		virtual uint16_t transfer16(uint16_t data) =0;
+		virtual void transfer(void *buf, size_t count) =0;
+		
+		// Deprecated, NOT IMPLEMENTED YET!
+        virtual void setBitOrder(uint8_t) =0;
+        virtual void setDataMode(uint8_t) =0;
+        virtual void setClockDivider(uint8_t) =0;
+		
+};
+
+class HardSPI : public Base_SPI {
+    private:
+	// func
+    private:
 	SPI_HandleTypeDef hspi;
 	
 	public:
@@ -85,4 +111,5 @@ class HardSPI {
 		
 };
 extern HardSPI SPI;
+//extern Base_SPI* SPI;
 #endif

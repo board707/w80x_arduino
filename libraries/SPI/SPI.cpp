@@ -1,6 +1,7 @@
 #include "SPI.h"
 
 HardSPI SPI;
+//Base_SPI* SPI = &hSPI;
 
 HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
     _mosi = mosi;
