@@ -9,35 +9,25 @@ HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) : Base_SPI(0) {
     _miso = miso;
     _sck = sck;
 }
-void HardSPI::beginTransaction(SPISettings settings) {
-	_clock = settings.clock;
-	_bitOrder = settings.bitOrder;
-	_dataMode = settings.dataMode;
-	begin();
-}
-void HardSPI::SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) {
-	_clock = clock;
-	_bitOrder = bitOrder;
-	_dataMode = dataMode;
-	
-}
+
+
 void HardSPI::begin() {
 
     switch(_dataMode)
     {
-    case 0:
+    case SPI_MODE0:
         clock_polarity = SPI_POLARITY_LOW;
         clock_phase = SPI_PHASE_1EDGE;
         break;
-    case 1:
+    case SPI_MODE1:
         clock_polarity = SPI_POLARITY_LOW;
         clock_phase = SPI_PHASE_2EDGE;
         break;
-    case 2:
+    case SPI_MODE2:
         clock_polarity = SPI_POLARITY_HIGH;
         clock_phase = SPI_PHASE_1EDGE;
         break;
-    case 3:
+    case SPI_MODE3:
         clock_polarity = SPI_POLARITY_HIGH;
         clock_phase = SPI_PHASE_2EDGE;
         break;
@@ -82,7 +72,7 @@ void HardSPI::begin() {
 	hspi.Init.NSS = SPI_NSS_SOFT;
 	hspi.Init.BaudRatePrescaler = _prescaler;
 	hspi.Init.FirstByte = SPI_LITTLEENDIAN; // ONLY! Говорят что BIGENDIAN нормально не работает. Не проверял.
-	if (HAL_SPI_Init(&hspi) != HAL_OK) printf("Что то пошло не так... \n\r");
+	if (HAL_SPI_Init(&hspi) == HAL_OK) _is_init = true;
 }
 
 void HardSPI::end() {
@@ -92,7 +82,8 @@ void HardSPI::end() {
 	HAL_GPIO_DeInit(pin_Map[_mosi].pPort, pin_Map[_mosi].halPin);
 	HAL_SPI_DeInit(&hspi);
     __HAL_RCC_SPI_CLK_DISABLE();
-	
+    _is_init = false;
+
 }
 uint8_t HardSPI::transfer(uint8_t val) {
     uint8_t recv;
@@ -113,22 +104,51 @@ uint16_t HardSPI::transfer16(uint16_t data)
 
     return out.recv;
 }
+
 void HardSPI::transfer(void *buf, size_t count) {
     if (count == 0) return;
     HAL_SPI_Transmit(&hspi, (uint8_t *)buf, count, timeOut);
 }
 
-/* NOT IMPLEMENTED YET. DEPRECATED */
 
-void HardSPI::setBitOrder(uint8_t order) {
-}
 
 void HardSPI::setDataMode(uint8_t mode) {
+    _dataMode = mode;
+    if ( _is_init ) {
+      this -> end();
+      this -> begin();
+    }
 }
 
+/* NOT IMPLEMENTED YET. DEPRECATED */
 void HardSPI::setClockDivider(uint8_t div) {
 }
 
+/*
+*   Base SPI class
+*
+*/
+
 Base_SPI::Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
-             hSPI = new HardSPI;
-        };
+             pSPI = new HardSPI;
+        }
+
+bool Base_SPI::isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
+    return false;
+}
+
+void Base_SPI::SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) {
+	_clock = clock;
+	_bitOrder = bitOrder;
+	_dataMode = dataMode;	
+}
+
+void Base_SPI::SPI_Settings(SPISettings settings) {
+	_clock = settings.clock;
+	_bitOrder = settings.bitOrder;
+	_dataMode = settings.dataMode;
+}
+
+void Base_SPI::setBitOrder(uint8_t order) {
+     _bitOrder = order & 1;
+}

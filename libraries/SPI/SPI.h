@@ -54,67 +54,70 @@ class Base_SPI {
     uint8_t   _miso = PB25;
     uint8_t   _mosi = PB26;
     uint8_t   _sck  = PB24;
-	uint32_t  _clock = 4000000;
+	int32_t   _clock = 4000000;
     uint16_t  _bitOrder = SPI_LITTLEENDIAN;
     uint8_t   _dataMode = SPI_MODE0;
-	uint8_t   _prescaler = SPI_BAUDRATEPRESCALER_10;
-    uint8_t clock_polarity ;
-    uint8_t clock_phase ;
-	uint16_t timeOut = 1000;
-	//SPI_HandleTypeDef hspi;
+	bool _is_init = false;
     private:
-    Base_SPI *hSPI;
+    Base_SPI *pSPI;
 	
 	public:
 	// methods
 		
-        Base_SPI(int) : hSPI(NULL)  {};
+        Base_SPI(int) : pSPI(NULL)  {};
         Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck); 
         Base_SPI() : Base_SPI(PB26, PB25, PB24) {};
-		virtual void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) 
-               {hSPI-> SPI_Settings(clock, bitOrder, dataMode); };
- 		
-        virtual void beginTransaction(SPISettings settings) 
-               {hSPI -> beginTransaction(settings);};
+        bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck); 
+		void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) ;
+               //{pSPI-> SPI_Settings(clock, bitOrder, dataMode); };
+ 		void SPI_Settings(SPISettings settings) ;
+        void beginTransaction(SPISettings settings) 
+               {SPI_Settings(settings);
+                beginTransaction();};
+		void beginTransaction() {pSPI -> begin();};
+        
+        virtual void endTransaction() {pSPI-> end();};	
+        virtual void begin() {pSPI -> begin();};
+        virtual void end() {pSPI -> end();};	
+        virtual uint8_t transfer(uint8_t data) { return pSPI -> transfer(data);};	
+		virtual uint16_t transfer16(uint16_t data) {return pSPI -> transfer16(data);};
+		virtual void transfer(void *buf, size_t count) {pSPI -> transfer(buf, count);};
 		
-        virtual void beginTransaction() {hSPI -> beginTransaction();};
-
-		virtual void endTransaction() {hSPI -> endTransaction();};	
-        virtual void begin() {hSPI -> begin();};
-        virtual void end() {hSPI -> endTransaction();};	
-        virtual uint8_t transfer(uint8_t data) { return hSPI -> transfer(data);};	
-		virtual uint16_t transfer16(uint16_t data) {return hSPI -> transfer16(data);};
-		virtual void transfer(void *buf, size_t count) {hSPI -> transfer(buf, count);};
-		
-		// Deprecated, NOT IMPLEMENTED YET!
-        virtual void setBitOrder(uint8_t) {};
+		virtual void setBitOrder(uint8_t);
         virtual void setDataMode(uint8_t) {};
+
+        // Deprecated, NOT IMPLEMENTED YET!
         virtual void setClockDivider(uint8_t) {};
 		
 };
 
 class HardSPI : public Base_SPI {
+    
     private:
-	// func
-    private:
+    
+    uint8_t  _prescaler = SPI_BAUDRATEPRESCALER_10;
+    uint8_t clock_polarity ;
+    uint8_t clock_phase ;
+	uint16_t timeOut = 1000;
 	SPI_HandleTypeDef hspi;
+    
 	
 	public:
 	// methods
 		HardSPI() {HardSPI(PB26, PB25, PB24); /* Pins by default */ };
         HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) ;// alternatives see datasheet
-		void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
- 		void beginTransaction(SPISettings settings);
-		void beginTransaction() {begin();};		
-		void endTransaction() {end();};		
+		//void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
+ 		//void beginTransaction(SPISettings settings);
+		//void beginTransaction() {begin();};		
+		void endTransaction() {this->end();};		
         void begin();
         void end();
         uint8_t transfer(uint8_t);
 		uint16_t transfer16(uint16_t data);
 		void transfer(void *buf, size_t count);
 		
-		// Deprecated, NOT IMPLEMENTED YET!
-        void setBitOrder(uint8_t);
+		
+        //void setBitOrder(uint8_t);
         void setDataMode(uint8_t);
         void setClockDivider(uint8_t);
 		
