@@ -62,25 +62,34 @@ class Base_SPI {
     uint8_t clock_phase ;
 	uint16_t timeOut = 1000;
 	//SPI_HandleTypeDef hspi;
+    private:
+    Base_SPI *hSPI;
 	
 	public:
 	// methods
-		Base_SPI() {};
-        Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck) {};// alternatives see datasheet
-		virtual void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) =0;
- 		virtual void beginTransaction(SPISettings settings) =0;
-		virtual void beginTransaction() {begin();};		
-		virtual void endTransaction() {end();};		
-        virtual void begin() =0;
-        virtual void end() =0;
-        virtual uint8_t transfer(uint8_t) =0;
-		virtual uint16_t transfer16(uint16_t data) =0;
-		virtual void transfer(void *buf, size_t count) =0;
+		
+        Base_SPI(int) : hSPI(NULL)  {};
+        Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck); 
+        Base_SPI() : Base_SPI(PB26, PB25, PB24) {};
+		virtual void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) 
+               {hSPI-> SPI_Settings(clock, bitOrder, dataMode); };
+ 		
+        virtual void beginTransaction(SPISettings settings) 
+               {hSPI -> beginTransaction(settings);};
+		
+        virtual void beginTransaction() {hSPI -> beginTransaction();};
+
+		virtual void endTransaction() {hSPI -> endTransaction();};	
+        virtual void begin() {hSPI -> begin();};
+        virtual void end() {hSPI -> endTransaction();};	
+        virtual uint8_t transfer(uint8_t data) { return hSPI -> transfer(data);};	
+		virtual uint16_t transfer16(uint16_t data) {return hSPI -> transfer16(data);};
+		virtual void transfer(void *buf, size_t count) {hSPI -> transfer(buf, count);};
 		
 		// Deprecated, NOT IMPLEMENTED YET!
-        virtual void setBitOrder(uint8_t) =0;
-        virtual void setDataMode(uint8_t) =0;
-        virtual void setClockDivider(uint8_t) =0;
+        virtual void setBitOrder(uint8_t) {};
+        virtual void setDataMode(uint8_t) {};
+        virtual void setClockDivider(uint8_t) {};
 		
 };
 
@@ -93,7 +102,7 @@ class HardSPI : public Base_SPI {
 	public:
 	// methods
 		HardSPI() {HardSPI(PB26, PB25, PB24); /* Pins by default */ };
-        HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck); // alternatives see datasheet
+        HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) ;// alternatives see datasheet
 		void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
  		void beginTransaction(SPISettings settings);
 		void beginTransaction() {begin();};		
@@ -110,6 +119,6 @@ class HardSPI : public Base_SPI {
         void setClockDivider(uint8_t);
 		
 };
-extern HardSPI SPI;
+extern Base_SPI SPI;
 //extern Base_SPI* SPI;
 #endif

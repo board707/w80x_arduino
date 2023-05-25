@@ -1,9 +1,10 @@
 #include "SPI.h"
 
-HardSPI SPI;
+//HardSPI SPI;
 //Base_SPI* SPI = &hSPI;
+Base_SPI SPI;
 
-HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
+HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) : Base_SPI(0) {
     _mosi = mosi;
     _miso = miso;
     _sck = sck;
@@ -127,3 +128,7 @@ void HardSPI::setDataMode(uint8_t mode) {
 
 void HardSPI::setClockDivider(uint8_t div) {
 }
+
+Base_SPI::Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
+             hSPI = new HardSPI;
+        };
