@@ -104,7 +104,7 @@ class HardSPI : public Base_SPI {
 	
 	public:
 	// methods
-		HardSPI() {HardSPI(PB26, PB25, PB24); /* Pins by default */ };
+		HardSPI() : HardSPI(PB26, PB25, PB24) /* Pins by default */ {};
         HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) ;// alternatives see datasheet
 		//void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
  		//void beginTransaction(SPISettings settings);
