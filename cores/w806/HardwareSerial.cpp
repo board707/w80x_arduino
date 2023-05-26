@@ -116,7 +116,7 @@ void HardwareSerial::begin(unsigned long baud, int uart_mode)
 #endif
 
         uart_init(baud, uart_mode);
-        HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN);
+       // HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN);
     }
 }
 
@@ -231,8 +231,9 @@ size_t HardwareSerial::write(uint8_t c)
 size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
 {
     uint8_t *data_ptr = (uint8_t *)buffer;
-    // int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
-    HAL_UART_Transmit(this->huart_handle, data_ptr, size, size * 100);
+    int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
+    //printf("res = %d\n", result);
+    //HAL_UART_Transmit(this->huart_handle, data_ptr, size, size * 100);
     return size;
 }
 
@@ -262,7 +263,7 @@ int HardwareSerial::printf(const char *fmt, ...)
     int len;
     va_start(args, fmt);
 #if USE_UART0_PRINT
-    if (this->uart_num == 0)
+    if (this->uart_num == 7)
     {
         len = wm_vprintf(fmt, args);
     }
