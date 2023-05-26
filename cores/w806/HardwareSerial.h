@@ -13,6 +13,7 @@
 #include <Common.h>
 #include "debug.h"
 #include "Stream.h"
+#include "wm_fifo.h"
 
 #define UART_COUNT 6
 
@@ -20,6 +21,11 @@
 #define IT_LEN 0 // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data;
                  // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
+
+#if USE_IRQ_UART_TX
+#define _UART_TX_BUF_SIZE 128
+#endif
+
 #define SERIAL_PRINTF_BUFFER_SIZE 64 // Automatically expands on longer output
 
 #define REMAP_TX_RX 1
@@ -233,6 +239,9 @@ extern "C"
          * @note
          */
         void process_rx(uint8_t *data, int size);
+#if USE_IRQ_UART_TX
+        void process_tx();
+#endif
 
         bool _uart_mul;
 
@@ -246,6 +255,13 @@ extern "C"
         uint8_t _pend = 0;
         unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
         uint8_t _hal_buf[32] = {0}; // must be greater than or equal to 32 bytes
+
+#if USE_IRQ_UART_TX
+        _fifo_str tx_fifo;
+        uint8_t _tx_buf[_UART_TX_BUF_SIZE] = {0};
+        uint8_t _hal_tx_buf[32] = {0}; // must be lower than or equal to 32 bytes
+#endif
+        
     };
 
     extern HardwareSerial Serial;
