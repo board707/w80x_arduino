@@ -11,8 +11,10 @@
 #if USE_UART0_PRINT
 #define USE_UART0_AUTO_DL          0 // Auto download, 0:OFF, 1:ON
 #else
-#define USE_IRQ_UART_TX            1 // UART transfer using interrupt
+
 #endif
+
+#define USE_IRQ_UART_TX            1 // UART transfer using interrupt
 
 #ifdef CONFIG_KERNEL_NONE
 #define CONFIG_SYSTEM_SECURE       1

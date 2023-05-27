@@ -13,7 +13,7 @@
 #include <Common.h>
 #include "debug.h"
 #include "Stream.h"
-#include "wm_fifo.h"
+
 
 #define UART_COUNT 6
 
@@ -21,10 +21,6 @@
 #define IT_LEN 0 // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data;
                  // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
-
-#if USE_IRQ_UART_TX
-#define _UART_TX_BUF_SIZE 128
-#endif
 
 #define SERIAL_PRINTF_BUFFER_SIZE 64 // Automatically expands on longer output
 
@@ -47,11 +43,17 @@ extern "C"
 {
 #endif
 #include "./include/driver/wm_uart.h"
+#include "wm_fifo.h"
+
     void HAL_UART_MspInit(UART_HandleTypeDef *huart);
     // void UART1_Init(int baud);
     void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
     void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
     void uart_pins_init(UART_HandleTypeDef *huart);
+
+#if USE_IRQ_UART_TX
+#define _UART_TX_BUF_SIZE 128
+#endif
 
     class HardwareSerial : public Stream
     {

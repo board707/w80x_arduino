@@ -111,7 +111,7 @@ void HardwareSerial::begin(unsigned long baud, int uart_mode)
 
         serial_ptr[uart_num] = this;
 #if USE_IRQ_UART_TX
-        FifoInit(tx_fifo, _tx_buf, _UART_TX_BUF_SIZE);
+        FifoInit(&tx_fifo, _tx_buf, _UART_TX_BUF_SIZE);
 #endif
 
 #if USE_UART0_PRINT
@@ -227,9 +227,9 @@ int HardwareSerial::peek()
 size_t HardwareSerial::write(uint8_t c)
 {
 #if USE_IRQ_UART_TX
-    while (FifoWriteChar(tx_fifo, c) == 0)   HAL_Delay(10);
+    while (FifoWriteChar(&tx_fifo, c) == 0)   HAL_Delay(10);
     if (this->huart_handle->gState != HAL_UART_STATE_BUSY_TX) {
-        if (FifoReadChar(tx_fifo,_hal_tx_buf)) {
+        if (FifoReadChar(&tx_fifo,_hal_tx_buf)) {
             HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, 1);
         }
     }
@@ -340,7 +340,7 @@ void HardwareSerial::process_rx(uint8_t *data, int size)
 #if USE_IRQ_UART_TX
 void HardwareSerial::process_tx()
 {
-    int len = FifoRead(tx_fifo, _hal_tx_buf, 32);
+    int len = FifoRead(&tx_fifo, _hal_tx_buf, 32);
     if (len) HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, len);
 }
 #endif
