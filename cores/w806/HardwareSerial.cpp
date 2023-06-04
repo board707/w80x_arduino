@@ -229,9 +229,10 @@ size_t HardwareSerial::write(uint8_t c)
 #if USE_IRQ_UART_TX
     while (FifoWriteChar(&tx_fifo, c) == 0)   HAL_Delay(10);
     if (this->huart_handle->gState != HAL_UART_STATE_BUSY_TX) {
-        if (FifoReadChar(&tx_fifo,_hal_tx_buf)) {
+       /*if (FifoReadChar(&tx_fifo,_hal_tx_buf)) {
             HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, 1);
-        }
+        } */
+        process_tx();
     }
 #else
     HAL_UART_Transmit(this->huart_handle, &c, 1, 1000);
