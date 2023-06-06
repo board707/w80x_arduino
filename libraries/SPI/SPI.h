@@ -19,6 +19,14 @@
                                ((MODE) == SPI_MODE2 ) || \
                                ((MODE) == SPI_MODE3 ) )
 
+// Soft_SPI
+#define SPI_CLOCK_DIV4 0x00
+#define SPI_CLOCK_DIV16 0x01
+#define SPI_CLOCK_DIV64 0x02
+#define SPI_CLOCK_DIV128 0x03
+#define SPI_CLOCK_DIV2 0x04
+#define SPI_CLOCK_DIV8 0x05
+#define SPI_CLOCK_DIV32 0x06
 
 class SPISettings
 {
@@ -73,7 +81,7 @@ class Base_SPI {
         //Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck); 
         //Base_SPI() : Base_SPI(PB26, PB25, PB24) {};
         Base_SPI()  {};
-        bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck); 
+        
 		void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) ;
                //{pSPI-> SPI_Settings(clock, bitOrder, dataMode); };
  		void SPI_Settings(SPISettings settings) ;
@@ -87,13 +95,15 @@ class Base_SPI {
         virtual void end() =0;	
         virtual uint8_t transfer(uint8_t data)  =0 ;	
 		virtual uint16_t transfer16(uint16_t data)  =0 ;
-		virtual void transfer(void *buf, size_t count)  =0 ;
+		//virtual void transfer(void *buf, size_t count)  =0 ;
 		
 		virtual void setBitOrder(uint8_t);
         virtual void setDataMode(uint8_t);
-
+        
+        uint8_t reverseByte(uint8_t b);
+        bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck); 
         // Deprecated, NOT IMPLEMENTED YET!
-        virtual void setClockDivider(uint8_t) {};
+        //virtual void setClockDivider(uint8_t) {};
 		
 };
 
@@ -125,17 +135,19 @@ class HardSPI : public Base_SPI {
 		
         //void setBitOrder(uint8_t);
         //void setDataMode(uint8_t);
-        void setClockDivider(uint8_t);
+        //void setClockDivider(uint8_t);
 		
 };
-/*class SoftSPI : public Base_SPI {
+
+class SoftSPI : public Base_SPI {
     private:
         void wait(uint_fast8_t del);
 
     private:
-        uint8_t _cke;
-        uint8_t _ckp;
-        uint8_t _delay;
+        uint8_t _cke =0;
+        uint8_t _ckp =0;
+        uint8_t _delay = 2;
+        uint8_t _clock_div = SPI_CLOCK_DIV2;
     public:
         SoftSPI(uint8_t mosi, uint8_t miso, uint8_t sck);
         void begin();
@@ -143,7 +155,7 @@ class HardSPI : public Base_SPI {
         void setClockDivider(uint8_t);
         uint8_t transfer(uint8_t);
 		uint16_t transfer16(uint16_t data);
-};*/
+};
 extern HardSPI SPI;
 //extern Base_SPI* SPI;
 #endif
