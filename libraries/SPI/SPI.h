@@ -6,14 +6,18 @@
 // Внимание! Эта версия не совместима с SPI ванильного Ардуино... Но это пока.
 // Чип селектом управляете сами, в ручном режиме, через digitalWrite
 
-#ifndef LSBFIRST
-#  define LSBFIRST 0
-#endif
+#define LSBFIRST 0
+#define MSBFIRST 1
 
 #define SPI_MODE0 0x00
 #define SPI_MODE1 0x01
 #define SPI_MODE2 0x02
 #define SPI_MODE3 0x03
+
+#define VALID_SPI_MODE(MODE) (((MODE) == SPI_MODE0 ) || \
+                               ((MODE) == SPI_MODE1 ) || \
+                               ((MODE) == SPI_MODE2 ) || \
+                               ((MODE) == SPI_MODE3 ) )
 
 
 class SPISettings
@@ -55,7 +59,8 @@ class Base_SPI {
     uint8_t   _mosi = PB26;
     uint8_t   _sck  = PB24;
 	int32_t   _clock = 4000000;
-    uint16_t  _bitOrder = SPI_LITTLEENDIAN;
+    uint16_t  _dataOrder = SPI_LITTLEENDIAN;    // not used in the code
+    uint16_t  _bitOrder = MSBFIRST;
     uint8_t   _dataMode = SPI_MODE0;
 	bool _is_init = false;
     private:
@@ -85,7 +90,7 @@ class Base_SPI {
 		virtual void transfer(void *buf, size_t count)  =0 ;
 		
 		virtual void setBitOrder(uint8_t);
-        virtual void setDataMode(uint8_t) {};
+        virtual void setDataMode(uint8_t);
 
         // Deprecated, NOT IMPLEMENTED YET!
         virtual void setClockDivider(uint8_t) {};
@@ -119,10 +124,26 @@ class HardSPI : public Base_SPI {
 		
 		
         //void setBitOrder(uint8_t);
-        void setDataMode(uint8_t);
+        //void setDataMode(uint8_t);
         void setClockDivider(uint8_t);
 		
 };
+/*class SoftSPI : public Base_SPI {
+    private:
+        void wait(uint_fast8_t del);
+
+    private:
+        uint8_t _cke;
+        uint8_t _ckp;
+        uint8_t _delay;
+    public:
+        SoftSPI(uint8_t mosi, uint8_t miso, uint8_t sck);
+        void begin();
+        void end();
+        void setClockDivider(uint8_t);
+        uint8_t transfer(uint8_t);
+		uint16_t transfer16(uint16_t data);
+};*/
 extern HardSPI SPI;
 //extern Base_SPI* SPI;
 #endif

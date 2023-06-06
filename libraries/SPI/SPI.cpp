@@ -13,6 +13,10 @@ HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck)  {
 
 void HardSPI::begin() {
 
+    if ( _is_init ) {
+      this -> end();
+    }
+
     switch(_dataMode)
     {
     case SPI_MODE0:
@@ -111,15 +115,6 @@ void HardSPI::transfer(void *buf, size_t count) {
 }
 
 
-
-void HardSPI::setDataMode(uint8_t mode) {
-    _dataMode = mode;
-    if ( _is_init ) {
-      this -> end();
-      this -> begin();
-    }
-}
-
 /* NOT IMPLEMENTED YET. DEPRECATED */
 void HardSPI::setClockDivider(uint8_t div) {
 }
@@ -141,11 +136,20 @@ void Base_SPI::SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode)
 }
 
 void Base_SPI::SPI_Settings(SPISettings settings) {
-	_clock = settings.clock;
-	_bitOrder = settings.bitOrder;
-	_dataMode = settings.dataMode;
+	
+    this-> SPI_Settings(settings.clock, settings.bitOrder, settings.dataMode);
+    
 }
 
 void Base_SPI::setBitOrder(uint8_t order) {
      _bitOrder = order & 1;
+}
+
+void Base_SPI::setDataMode(uint8_t mode) {
+    
+    if ( ! VALID_SPI_MODE(mode)) return;   // invalid mode
+    if (_dataMode == mode) return;      // mode unchanged
+    
+    _dataMode = mode;
+   
 }
