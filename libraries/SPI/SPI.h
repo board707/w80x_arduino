@@ -59,29 +59,30 @@ class Base_SPI {
     uint8_t   _dataMode = SPI_MODE0;
 	bool _is_init = false;
     private:
-    Base_SPI *pSPI;
+    //Base_SPI *pSPI;
 	
 	public:
 	// methods
 		
-        Base_SPI(int) : pSPI(NULL)  {};
-        Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck); 
-        Base_SPI() : Base_SPI(PB26, PB25, PB24) {};
+        //Base_SPI(int) : pSPI(NULL)  {};
+        //Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck); 
+        //Base_SPI() : Base_SPI(PB26, PB25, PB24) {};
+        Base_SPI()  {};
         bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck); 
 		void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) ;
                //{pSPI-> SPI_Settings(clock, bitOrder, dataMode); };
  		void SPI_Settings(SPISettings settings) ;
         void beginTransaction(SPISettings settings) 
                {SPI_Settings(settings);
-                beginTransaction();};
-		void beginTransaction() {pSPI -> begin();};
-        
-        virtual void endTransaction() {pSPI-> end();};	
-        virtual void begin() {pSPI -> begin();};
-        virtual void end() {pSPI -> end();};	
-        virtual uint8_t transfer(uint8_t data) { return pSPI -> transfer(data);};	
-		virtual uint16_t transfer16(uint16_t data) {return pSPI -> transfer16(data);};
-		virtual void transfer(void *buf, size_t count) {pSPI -> transfer(buf, count);};
+                this-> beginTransaction();};
+		void beginTransaction() { this-> begin();};
+        void endTransaction() { this-> end();};	
+
+        virtual void begin() =0 ;
+        virtual void end() =0;	
+        virtual uint8_t transfer(uint8_t data)  =0 ;	
+		virtual uint16_t transfer16(uint16_t data)  =0 ;
+		virtual void transfer(void *buf, size_t count)  =0 ;
 		
 		virtual void setBitOrder(uint8_t);
         virtual void setDataMode(uint8_t) {};
@@ -109,7 +110,7 @@ class HardSPI : public Base_SPI {
 		//void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
  		//void beginTransaction(SPISettings settings);
 		//void beginTransaction() {begin();};		
-		void endTransaction() {this->end();};		
+		//void endTransaction() {this->end();};		
         void begin();
         void end();
         uint8_t transfer(uint8_t);
@@ -122,6 +123,6 @@ class HardSPI : public Base_SPI {
         void setClockDivider(uint8_t);
 		
 };
-extern Base_SPI SPI;
+extern HardSPI SPI;
 //extern Base_SPI* SPI;
 #endif

@@ -2,9 +2,9 @@
 
 //HardSPI SPI;
 //Base_SPI* SPI = &hSPI;
-Base_SPI SPI;
+HardSPI SPI;
 
-HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) : Base_SPI(0) {
+HardSPI::HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck)  {
     _mosi = mosi;
     _miso = miso;
     _sck = sck;
@@ -90,7 +90,7 @@ uint8_t HardSPI::transfer(uint8_t val) {
     HAL_SPI_TransmitReceive(&hspi, &val, &recv, 1, timeOut);
     return recv;
 }
-uint16_t HardSPI::transfer16(uint16_t data)
+uint16_t HardSPI::transfer16(uint16_t data) 
 {
   union
     {
@@ -129,9 +129,6 @@ void HardSPI::setClockDivider(uint8_t div) {
 *
 */
 
-Base_SPI::Base_SPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
-             pSPI = new HardSPI;
-        }
 
 bool Base_SPI::isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
     return false;
