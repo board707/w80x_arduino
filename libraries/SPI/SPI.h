@@ -63,9 +63,9 @@ class Base_SPI {
     
     protected:
 	// var
-    uint8_t   _miso = PB25;
-    uint8_t   _mosi = PB26;
-    uint8_t   _sck  = PB24;
+    uint8_t   _miso = PIN_SPI_MISO;
+    uint8_t   _mosi = PIN_SPI_MOSI;
+    uint8_t   _sck  = PIN_SPI_SCK;
 	int32_t   _clock = 4000000;
     uint16_t  _dataOrder = SPI_LITTLEENDIAN;    // not used in the code
     uint16_t  _bitOrder = MSBFIRST;
@@ -101,7 +101,7 @@ class Base_SPI {
         virtual void setDataMode(uint8_t);
         
         uint8_t reverseByte(uint8_t b);
-        bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck); 
+        virtual bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
         // Deprecated, NOT IMPLEMENTED YET!
         //virtual void setClockDivider(uint8_t) {};
 		
@@ -120,7 +120,7 @@ class HardSPI : public Base_SPI {
 	
 	public:
 	// methods
-		HardSPI() : HardSPI(PB26, PB25, PB24) /* Pins by default */ {};
+		HardSPI() : HardSPI(PIN_SPI_MOSI, PIN_SPI_MISO, PIN_SPI_SCK) /* Pins by default */ {};
         HardSPI(uint8_t mosi, uint8_t miso, uint8_t sck) ;// alternatives see datasheet
 		//void SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode);
  		//void beginTransaction(SPISettings settings);
@@ -131,6 +131,9 @@ class HardSPI : public Base_SPI {
         uint8_t transfer(uint8_t);
 		uint16_t transfer16(uint16_t data);
 		void transfer(void *buf, size_t count);
+        void transfer(void *tbuf, void *rbuf,size_t count);
+        bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
+        bool setSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
 		
 		
         //void setBitOrder(uint8_t);

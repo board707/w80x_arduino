@@ -90,6 +90,9 @@ void HardSPI::end() {
 
 }
 uint8_t HardSPI::transfer(uint8_t val) {
+    if (! _is_init) 
+      return 0;
+
     uint8_t recv;
     if (_bitOrder == LSBFIRST) val = reverseByte(val);
     HAL_SPI_TransmitReceive(&hspi, &val, &recv, 1, timeOut);
@@ -98,6 +101,9 @@ uint8_t HardSPI::transfer(uint8_t val) {
 }
 uint16_t HardSPI::transfer16(uint16_t data) 
 {
+     if (! _is_init) 
+      return 0;
+      
   union
     {
          uint8_t _8recv[2];
@@ -121,7 +127,11 @@ uint16_t HardSPI::transfer16(uint16_t data)
 }
 
 void HardSPI::transfer(void *buf, size_t count) {
-    if (count == 0) return;
+     if (! _is_init) 
+      return ;
+      
+    if (count == 0)
+      return ;
     
     if (_bitOrder == LSBFIRST) {
         uint8_t buf2[count];
@@ -131,6 +141,62 @@ void HardSPI::transfer(void *buf, size_t count) {
     else HAL_SPI_Transmit(&hspi, (uint8_t *)buf, count, timeOut);
 }
 
+void HardSPI::transfer(void *tbuf, void *rbuf,size_t count) {
+     if (! _is_init) 
+      return ;
+      
+    if (count == 0)
+      return ;
+
+    if (rbuf == NULL) { // transmit only!
+      this-> transfer(tbuf, count);
+      return;
+    }  
+
+    if (tbuf == NULL) { // receive only!
+      if (_bitOrder == LSBFIRST) {
+        uint8_t buf2[count];
+        HAL_SPI_Receive(&hspi, (uint8_t *)buf2, count, timeOut);
+        for (size_t i =0; i < count; i++) { *((uint8_t *)rbuf + i) = reverseByte( buf2[i]);}
+      }
+       else HAL_SPI_Receive(&hspi, (uint8_t *)rbuf, count, timeOut);
+
+      return;
+    }  
+    
+    // transmit - receive
+    if (_bitOrder == LSBFIRST) {
+        uint8_t buf2[count];
+        uint8_t buf3[count];
+        for (size_t i =0; i < count; i++) {buf2[i] = reverseByte( *((uint8_t *)tbuf + i));}
+        HAL_SPI_TransmitReceive(&hspi, (uint8_t *)buf2, (uint8_t *)buf3, count, timeOut);
+        for (size_t i =0; i < count; i++) { *((uint8_t *)rbuf + i) = reverseByte( buf3[i]);}
+    }
+    HAL_SPI_TransmitReceive(&hspi, (uint8_t *)tbuf, (uint8_t *)rbuf, count, timeOut);
+
+}
+
+bool HardSPI::isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
+
+    return ( ((pin_Map[mosi].ulPinAttribute & PIN_SPI_Msk) == _SPI_MOSI) && 
+            ((pin_Map[miso].ulPinAttribute & PIN_SPI_Msk) == _SPI_MISO) && 
+            ((pin_Map[sck].ulPinAttribute & PIN_SPI_Msk) == _SPI_SCK) ) ;
+   
+}
+
+bool HardSPI::setSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
+
+    if (isSPIpins(mosi, miso, sck)) {
+        _mosi = mosi;
+        _miso = miso;
+        _sck = sck;
+        this-> begin();
+        return true;
+    } 
+
+    return false;
+   
+}
 
 /* NOT IMPLEMENTED YET. DEPRECATED */
 //void HardSPI::setClockDivider(uint8_t div) {
@@ -142,8 +208,11 @@ void HardSPI::transfer(void *buf, size_t count) {
 */
 
 
+
 bool Base_SPI::isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
+
     return false;
+   
 }
 
 void Base_SPI::SPI_Settings(uint32_t clock, uint16_t bitOrder, uint8_t dataMode) {
