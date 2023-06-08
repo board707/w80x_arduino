@@ -1,3 +1,4 @@
+![](doc/rect7811.png)
 # w80x_duino
 Arduino package for [WinnerMicro](http://www.winnermicro.com/) W806, Air103 and W801 boards, based on XT-E804 MCU
 
@@ -65,7 +66,7 @@ The ticked ones have been implemented and verified, the unticked ones are under 
 - [x] PWM
 - [x] [HardwareTimer](libraries/HardwareTimer/Readme.md) lib
 - [x] I2C - HardwareI2c, SoftwareI2c
-- [ ] SPI
+- [x] SPI
 - [x] [EEPROM](libraries/EEPROM/Readme.md) library
 - [x] Stream, Print and String classes
 - [ ] I2S interface
