@@ -2,13 +2,41 @@
     "packages": [
         {
             "name": "w80x_duino",
-            "maintainer": "nulllab",
-            "websiteURL": "https://github.com/Hi-LinkDuino/w80x_arduino",
-            "email": "nulljun@nulllab.cn",
+            "maintainer": "board707",
+            "websiteURL": "https://github.com/board707/w80x_arduino",
+            "email": "",
             "help": {
-                "online": "www.nulllab.cn"
+                "online": "https://github.com/board707/w80x_arduino/issues"
             },
+            
             "platforms" : [
+                {
+                    "name": "w80x_arduino csky plain C/C++ core",
+                    "architecture": "XT804",
+                    "version": "0.0.3",
+                    "category": "Contributed",
+                    "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.3a/w80x_arduino-0.0.3a.tar.gz",
+                    "archiveFileName": "w80x_arduino-0.0.3a.tar.gz",
+                    "help": {
+                    "online": "https://github.com/board707/w80x_arduino/issues"
+                    },
+                    "boards": [
+                        {"name": "w80x_duino"},
+                        {"name": "HLK-W806"}
+                    ],
+                    "toolsDependencies": [
+                        {
+                            "name": "csky",
+                            "version": "2021.04.23",
+                            "packager": "w80x_duino"
+                        },
+                        {
+                            "name": "w80x_tool",
+                            "version": "v1.0",
+                            "packager": "w80x_duino"
+                        }
+                    ]
+                },
                 {
                     "name": "w80x_arduino csky plain C/C++ core",
                     "architecture": "XT804",
