@@ -12,7 +12,7 @@ This is a port of the WinnerMicro W806 SDK to the Arduino world. It uses T-HEAD 
 
 ## Package development - what works and what not
 
-The ticked ones have been implemented and verified, the unticked ones are under development, and more developers are expected to maintain together
+The ticked options have been implemented and tested, the unticked ones are under development, and more developers are expected to maintain together
 
 - [x] Arduino IDE package tools for Windows and Linux 
 - [x] GPIO
