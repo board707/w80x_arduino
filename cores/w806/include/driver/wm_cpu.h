@@ -64,8 +64,8 @@ void SystemClock_Get(wm_sys_clk *sysclk);
 
 HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority);
 void HAL_IncTick(void);
-uint64_t HAL_GetTick(void);
-void HAL_Delay(uint64_t Delay);
+uint32_t HAL_GetTick(void);
+void HAL_Delay(uint32_t Delay);
 
 void HAL_NVIC_SetPriority(IRQn_Type IRQn, uint32_t Priority);
 void HAL_NVIC_EnableIRQ(IRQn_Type IRQn);

@@ -267,13 +267,13 @@ void HAL_UART_IRQHandler(UART_HandleTypeDef *huart)
         }
         UART_Receive_IT(huart);
     }
-      if (0) {
+     /* if (0) {
       printf("=%d", huart->TxXferCount );
      printf("_%d", huart->TxXferSize );
      printf("#%d", huart->pTxBuffPtr );
     printf("%d %d|", (isrflags & UART_INTS_TEMPT), (isrmasks & UART_INTS_TEMPT));
     printf("%d %d ", (isrflags & UART_INTS_TL), (isrmasks & UART_INTS_TL));
-      }
+      }*/
     if (((isrflags & UART_INTS_TEMPT) != RESET) && ((isrmasks & UART_INTS_TEMPT) == RESET))
     {
         
