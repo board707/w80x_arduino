@@ -14,12 +14,14 @@
 #include "debug.h"
 #include "Stream.h"
 
+
 #define UART_COUNT 6
 
 // UART RX interrupt settings
 #define IT_LEN 0 // 0 or greater,  0: the interrupt callback can be triggered after receiving variable length data;
                  // greater than 0: the interrupt callback can be triggered only after receiving N length data
 #define _UART_RX_BUF_SIZE 128
+
 #define SERIAL_PRINTF_BUFFER_SIZE 64 // Automatically expands on longer output
 
 #define REMAP_TX_RX 1
@@ -41,11 +43,17 @@ extern "C"
 {
 #endif
 #include "./include/driver/wm_uart.h"
+#include "wm_fifo.h"
+
     void HAL_UART_MspInit(UART_HandleTypeDef *huart);
     // void UART1_Init(int baud);
     void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
     void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
     void uart_pins_init(UART_HandleTypeDef *huart);
+
+#if USE_IRQ_UART_TX
+#define _UART_TX_BUF_SIZE 128
+#endif
 
     class HardwareSerial : public Stream
     {
@@ -233,6 +241,9 @@ extern "C"
          * @note
          */
         void process_rx(uint8_t *data, int size);
+#if USE_IRQ_UART_TX
+        void process_tx();
+#endif
 
         bool _uart_mul;
 
@@ -246,6 +257,13 @@ extern "C"
         uint8_t _pend = 0;
         unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
         uint8_t _hal_buf[32] = {0}; // must be greater than or equal to 32 bytes
+
+#if USE_IRQ_UART_TX
+        _fifo_str tx_fifo;
+        uint8_t _tx_buf[_UART_TX_BUF_SIZE] = {0};
+        uint8_t _hal_tx_buf[32] = {0}; // must be lower than or equal to 32 bytes
+#endif
+        
     };
 
     extern HardwareSerial Serial;

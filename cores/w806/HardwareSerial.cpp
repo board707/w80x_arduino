@@ -110,6 +110,9 @@ void HardwareSerial::begin(unsigned long baud, int uart_mode)
 #endif
 
         serial_ptr[uart_num] = this;
+#if USE_IRQ_UART_TX
+        FifoInit(&tx_fifo, _tx_buf, _UART_TX_BUF_SIZE);
+#endif
 
 #if USE_UART0_PRINT
         //  wm_printf("Start UART config with baud = %d...", baud) ;
@@ -223,16 +226,37 @@ int HardwareSerial::peek()
  */
 size_t HardwareSerial::write(uint8_t c)
 {
-
+#if USE_IRQ_UART_TX
+    while (FifoWriteChar(&tx_fifo, c) == 0)   HAL_Delay(10);
+    if (this->huart_handle->gState != HAL_UART_STATE_BUSY_TX) {
+       /*if (FifoReadChar(&tx_fifo,_hal_tx_buf)) {
+            HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, 1);
+        } */
+        process_tx();
+    }
+#else
     HAL_UART_Transmit(this->huart_handle, &c, 1, 1000);
+#endif
     return 1;
+
 }
 
 size_t HardwareSerial::write(const uint8_t *buffer, size_t size)
 {
     uint8_t *data_ptr = (uint8_t *)buffer;
-    // int result = HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
+    uint16_t _size = size;
+#if USE_IRQ_UART_TX
+    while (_size) {
+        this-> write(*data_ptr++);
+        _size--;
+    }
+
+   // HAL_UART_Transmit_IT(this->huart_handle, data_ptr, size/*, size*100 */);
+ #else
     HAL_UART_Transmit(this->huart_handle, data_ptr, size, size * 100);
+ #endif   
+    //printf("res = %d\n", result);
+    //HAL_UART_Transmit(this->huart_handle, data_ptr, size, size * 100);
     return size;
 }
 
@@ -262,7 +286,7 @@ int HardwareSerial::printf(const char *fmt, ...)
     int len;
     va_start(args, fmt);
 #if USE_UART0_PRINT
-    if (this->uart_num == 0)
+    if (this->uart_num == 7)
     {
         len = wm_vprintf(fmt, args);
     }
@@ -282,7 +306,7 @@ int HardwareSerial::printf(const char *fmt, ...)
             {
                 len = wm_vsnprintf(buf2, len, fmt, args) + 1;
 
-                this->write((uint8_t *)buf2, len);
+                this->write((uint8_t *)buf2, len -1 );   // do not print terminate \0
                 free(buf2);
                 va_end(args);
                 return len;
@@ -291,7 +315,7 @@ int HardwareSerial::printf(const char *fmt, ...)
             else
                 len = SERIAL_PRINTF_BUFFER_SIZE;
         }
-        this->write((uint8_t *)buf, len);
+        this->write((uint8_t *)buf, len -1);   // do not print terminate \0
 #if USE_UART0_PRINT
     }
 #endif
@@ -313,6 +337,14 @@ void HardwareSerial::process_rx(uint8_t *data, int size)
         this->_pend += size;
     }
 }
+
+#if USE_IRQ_UART_TX
+void HardwareSerial::process_tx()
+{
+    int len = FifoRead(&tx_fifo, _hal_tx_buf, 32);
+    if (len) HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, len);
+}
+#endif
 
 void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
 {
@@ -416,6 +448,27 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
+#if USE_IRQ_UART_TX
+ int uart_num = -1;
+
+    if (huart->Instance == UART0)
+        uart_num = 0;
+    if (huart->Instance == UART1)
+        uart_num = 1;
+    if (huart->Instance == UART2)
+        uart_num = 2;
+    if (huart->Instance == UART3)
+        uart_num = 3;
+    if (huart->Instance == UART4)
+        uart_num = 4;
+    if (huart->Instance == UART5)
+        uart_num = 5;
+
+    if ((uart_num >= 0) && (uart_num < UART_COUNT) && (serial_ptr[uart_num] != NULL))
+    {
+        serial_ptr[uart_num]->process_tx();
+    }
+#endif
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)

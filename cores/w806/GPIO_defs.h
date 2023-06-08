@@ -13,6 +13,9 @@
 #define PIN_ADC_Pos (4)
 #define PIN_ADC_Msk ( 0b111 << PIN_ADC_Pos )
 
+#define PIN_SPI_Pos (7)
+#define PIN_SPI_Msk ( 0b111 << PIN_SPI_Pos )
+
 
 #define NONE	(0)		// Вывод не используется
 #define DIO     (1 << PIN_DIO_Pos)		// Цифровой ввод/вывод
@@ -28,6 +31,10 @@
 #define ADC3    ((3) << PIN_ADC_Pos)
 #define ADC4    ((4) << PIN_ADC_Pos)
 
+#define _SPI_MOSI    ((1) << PIN_SPI_Pos)		// SPI
+#define _SPI_MISO    ((2) << PIN_SPI_Pos)
+#define _SPI_SCK     ((3) << PIN_SPI_Pos)
+#define _SPI_SS      ((4) << PIN_SPI_Pos)
 
 
 // Константная таблица/массив возможных альтернатив

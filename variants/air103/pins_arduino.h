@@ -32,7 +32,7 @@ const PIN_MAP pin_Map[] = {
     { GPIOA, GPIO_PIN_4,	PA4,	DIO|ADC2},	// JTAG_SWO
     { GPIOA, GPIO_PIN_5,	PA5,	NONE},      // Отсутствует на плате
     { GPIOA, GPIO_PIN_6,	PA6,	NONE},      // Отсутствует на плате
-    { GPIOA, GPIO_PIN_7,	PA7,	DIO|PWM4},
+    { GPIOA, GPIO_PIN_7,	PA7,	DIO|PWM4|_SPI_MOSI},
     { GPIOA, GPIO_PIN_8,	PA8,	DIO},
     { GPIOA, GPIO_PIN_9,	PA9,	DIO},
     { GPIOA, GPIO_PIN_10,	PA10,	DIO|PWM0},
@@ -42,12 +42,12 @@ const PIN_MAP pin_Map[] = {
     { GPIOA, GPIO_PIN_14,	PA14,	DIO|PWM4},
     { GPIOA, GPIO_PIN_15,	PA15,	DIO},       // нет пина, PSRAM SCLK
 
-    { GPIOB, GPIO_PIN_0,	PB0,	DIO|PWM0},
-    { GPIOB, GPIO_PIN_1,	PB1,	DIO|PWM1},
-    { GPIOB, GPIO_PIN_2,	PB2,	DIO|PWM2},
-    { GPIOB, GPIO_PIN_3,	PB3,	DIO|PWM3},
-    { GPIOB, GPIO_PIN_4,	PB4,	DIO},
-    { GPIOB, GPIO_PIN_5,	PB5,	DIO},
+    { GPIOB, GPIO_PIN_0,	PB0,	DIO|PWM0|_SPI_MISO},
+    { GPIOB, GPIO_PIN_1,	PB1,	DIO|PWM1|_SPI_SCK},
+    { GPIOB, GPIO_PIN_2,	PB2,	DIO|PWM2|_SPI_SCK},
+    { GPIOB, GPIO_PIN_3,	PB3,	DIO|PWM3|_SPI_MISO},
+    { GPIOB, GPIO_PIN_4,	PB4,	DIO|_SPI_SS},
+    { GPIOB, GPIO_PIN_5,	PB5,	DIO|_SPI_MOSI},
     { GPIOB, GPIO_PIN_6,	PB6,	DIO},
     { GPIOB, GPIO_PIN_7,	PB7,	DIO},
     { GPIOB, GPIO_PIN_8,	PB8,	DIO},
@@ -56,10 +56,10 @@ const PIN_MAP pin_Map[] = {
     { GPIOB, GPIO_PIN_11,	PB11,	DIO},       
     { GPIOB, GPIO_PIN_12,	PB12,	DIO|PWM0},
     { GPIOB, GPIO_PIN_13,	PB13,	DIO|PWM1},    
-    { GPIOB, GPIO_PIN_14,	PB14,	DIO|PWM2},
-    { GPIOB, GPIO_PIN_15,	PB15,	DIO|PWM3},             
-    { GPIOB, GPIO_PIN_16,	PB16,	DIO},
-    { GPIOB, GPIO_PIN_17,	PB17,	DIO},       
+    { GPIOB, GPIO_PIN_14,	PB14,	DIO|PWM2|_SPI_SS},
+    { GPIOB, GPIO_PIN_15,	PB15,	DIO|PWM3|_SPI_SCK},             
+    { GPIOB, GPIO_PIN_16,	PB16,	DIO|_SPI_MISO},
+    { GPIOB, GPIO_PIN_17,	PB17,	DIO|_SPI_MOSI},       
     { GPIOB, GPIO_PIN_18,	PB18,	DIO},
     { GPIOB, GPIO_PIN_19,	PB19,	NONE},	    // TX0 |Используется для загрузки прошивки и вывода на консоль
     { GPIOB, GPIO_PIN_20,	PB20,	NONE},		  // RX0 |отладочных данных через printf()

@@ -185,14 +185,15 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
 
         huart->pTxBuffPtr = pData;
         huart->TxXferSize = Size;
-        huart->TxXferCount = Size;
+        huart->TxXferCount = 0;
 
         huart->ErrorCode = HAL_UART_ERROR_NONE;
         huart->gState = HAL_UART_STATE_BUSY_TX;
 
         __HAL_UNLOCK(huart);
 
-        __HAL_UART_ENABLE_IT(huart, UART_TX_INT_FLAG);
+        __HAL_UART_CLEAR_FLAG(huart, UART_TX_INT_FLAG);
+       //__HAL_UART_CLEAR_FLAG(huart, UART_INTM_TEMPT);
         
         do {
             if ((huart->Instance->FIFOS & UART_FIFOS_TFC) >= UART_FIFO_FULL)
@@ -200,10 +201,14 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
                 break;
             }
             huart->Instance->TDW = *(huart->pTxBuffPtr);
-            huart->pTxBuffPtr++;
-            huart->TxXferCount--;
+            //huart->pTxBuffPtr++;
+            huart->TxXferCount++;
+           // huart->TxXferSize--;
         } while(0);
 
+         __HAL_UART_ENABLE_IT(huart, UART_TX_INT_FLAG);
+         //__HAL_UART_ENABLE_IT(huart, UART_INTM_TEMPT);
+        
         return HAL_OK;
     }
     else
@@ -248,6 +253,7 @@ void HAL_UART_IRQHandler(UART_HandleTypeDef *huart)
     uint32_t isrflags   = READ_REG(huart->Instance->INTS);
     uint32_t isrmasks   = READ_REG(huart->Instance->INTM);
 
+   
     __HAL_UART_CLEAR_FLAG(huart, isrflags);
     if (((isrflags & UART_RX_INT_FLAG) != RESET) && ((isrmasks & UART_RX_INT_FLAG) == RESET))
     {
@@ -261,15 +267,32 @@ void HAL_UART_IRQHandler(UART_HandleTypeDef *huart)
         }
         UART_Receive_IT(huart);
     }
-    
-    if (((isrflags & UART_INTS_TL) != RESET) && ((isrmasks & UART_INTM_RL) == RESET))
+      if (0) {
+      printf("=%d", huart->TxXferCount );
+     printf("_%d", huart->TxXferSize );
+     printf("#%d", huart->pTxBuffPtr );
+    printf("%d %d|", (isrflags & UART_INTS_TEMPT), (isrmasks & UART_INTS_TEMPT));
+    printf("%d %d ", (isrflags & UART_INTS_TL), (isrmasks & UART_INTS_TL));
+      }
+    if (((isrflags & UART_INTS_TEMPT) != RESET) && ((isrmasks & UART_INTS_TEMPT) == RESET))
     {
-        UART_Transmit_IT(huart);
+        
+       if  (huart->TxXferCount < huart->TxXferSize ) { 
+          UART_Transmit_IT(huart); 
+         // printf("K\n");
+       }
+       else {
+        UART_EndTransmit_IT(huart);
+       // printf("E\n");
+       }
+
     }
 
-    if (((isrflags & UART_INTS_TEMPT) != RESET) && ((isrmasks & UART_INTM_TEMPT) == RESET))
+    if (((isrflags & UART_INTS_TL) != RESET) && ((isrmasks & UART_INTM_TL) == RESET))
     {
-        UART_EndTransmit_IT(huart);
+      // printf("E\n");
+        //UART_EndTransmit_IT(huart);
+        
     }
 }
 
@@ -323,29 +346,38 @@ static HAL_StatusTypeDef UART_Transmit_IT(UART_HandleTypeDef *huart)
 {
     if (huart->gState == HAL_UART_STATE_BUSY_TX)
     {
-        while (huart->TxXferCount > 0)
+        while (huart->TxXferCount < huart->TxXferSize ) 
         {
-            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) >= UART_FIFO_FULL)
+            if ((huart->Instance->FIFOS & UART_FIFOS_TFC) >= (UART_FIFO_FULL-4))
             {
+                
                 break;
             }
-            huart->Instance->TDW = *(huart->pTxBuffPtr);
-            huart->pTxBuffPtr++;
-            huart->TxXferCount--;
-        }
+            //else {
+            huart->Instance->TDW = *(huart->pTxBuffPtr + huart->TxXferCount);
+            //huart->pTxBuffPtr++;
+            huart->TxXferCount++;
+            //huart->TxXferSize--;
+            //}
+            
+        } 
+        //printf("k");
+        
         return HAL_OK;
     }
     else
     {
+       // printf("b");
         return HAL_BUSY;
     }
 }
 
 static HAL_StatusTypeDef UART_EndTransmit_IT(UART_HandleTypeDef *huart)
 {
-    if (huart->TxXferCount == 0)
+    if (huart->TxXferCount >= huart->TxXferSize )
     {
-        __HAL_UART_DISABLE_IT(huart, UART_INTM_TL | UART_INTM_TEMPT);
+        __HAL_UART_DISABLE_IT(huart, UART_TX_INT_FLAG);
+       //__HAL_UART_DISABLE_IT(huart, UART_INTS_TEMPT);
         huart->gState = HAL_UART_STATE_READY;
         HAL_UART_TxCpltCallback(huart);
     }
