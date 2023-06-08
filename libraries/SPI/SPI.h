@@ -114,7 +114,7 @@ class HardSPI : public Base_SPI {
     uint8_t  _prescaler = SPI_BAUDRATEPRESCALER_10;
     uint8_t clock_polarity ;
     uint8_t clock_phase ;
-	uint16_t timeOut = 1000;
+	uint32_t timeOut = 1000;
 	SPI_HandleTypeDef hspi;
     
 	
@@ -134,8 +134,8 @@ class HardSPI : public Base_SPI {
         void transfer(void *tbuf, void *rbuf,size_t count);
         bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
         bool setSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
-		
-		
+		void setTimeout(uint32_t timeout)  { timeOut = timeout;}
+		uint32_t getTimeout() {return timeOut;};
         //void setBitOrder(uint8_t);
         //void setDataMode(uint8_t);
         //void setClockDivider(uint8_t);

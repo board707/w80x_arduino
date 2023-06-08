@@ -60,7 +60,9 @@ void HardSPI::begin() {
 		_prescaler = SPI_BAUDRATEPRESCALER_40;
         break;
     default:
-		break;
+        _prescaler = SPI_BAUDRATEPRESCALER_40;     // set SPI 1 NHz in case of incorrect value
+		_clock = 1000000;
+        break;
 	}
 	
     __HAL_RCC_SPI_CLK_ENABLE();
@@ -133,12 +135,15 @@ void HardSPI::transfer(void *buf, size_t count) {
     if (count == 0)
       return ;
     
+    uint32_t t_out = timeOut;
+    if ((count * 100 * 1000000)/_clock > timeOut ) t_out = (count * 100 * 1000000)/_clock;
+
     if (_bitOrder == LSBFIRST) {
         uint8_t buf2[count];
         for (size_t i =0; i < count; i++) {buf2[i] = reverseByte( *((uint8_t *)buf + i));}
-        HAL_SPI_Transmit(&hspi, (uint8_t *)buf2, count, timeOut);
+        HAL_SPI_Transmit(&hspi, (uint8_t *)buf2, count, t_out);
     }
-    else HAL_SPI_Transmit(&hspi, (uint8_t *)buf, count, timeOut);
+    else HAL_SPI_Transmit(&hspi, (uint8_t *)buf, count, t_out);
 }
 
 void HardSPI::transfer(void *tbuf, void *rbuf,size_t count) {
@@ -153,13 +158,16 @@ void HardSPI::transfer(void *tbuf, void *rbuf,size_t count) {
       return;
     }  
 
+    uint32_t t_out = timeOut;
+    if ((count * 100 * 1000000)/_clock > timeOut ) t_out = (count * 100 * 1000000)/_clock;
+
     if (tbuf == NULL) { // receive only!
       if (_bitOrder == LSBFIRST) {
         uint8_t buf2[count];
-        HAL_SPI_Receive(&hspi, (uint8_t *)buf2, count, timeOut);
+        HAL_SPI_Receive(&hspi, (uint8_t *)buf2, count, t_out);
         for (size_t i =0; i < count; i++) { *((uint8_t *)rbuf + i) = reverseByte( buf2[i]);}
       }
-       else HAL_SPI_Receive(&hspi, (uint8_t *)rbuf, count, timeOut);
+       else HAL_SPI_Receive(&hspi, (uint8_t *)rbuf, count, t_out);
 
       return;
     }  
@@ -169,10 +177,10 @@ void HardSPI::transfer(void *tbuf, void *rbuf,size_t count) {
         uint8_t buf2[count];
         uint8_t buf3[count];
         for (size_t i =0; i < count; i++) {buf2[i] = reverseByte( *((uint8_t *)tbuf + i));}
-        HAL_SPI_TransmitReceive(&hspi, (uint8_t *)buf2, (uint8_t *)buf3, count, timeOut);
+        HAL_SPI_TransmitReceive(&hspi, (uint8_t *)buf2, (uint8_t *)buf3, count, t_out);
         for (size_t i =0; i < count; i++) { *((uint8_t *)rbuf + i) = reverseByte( buf3[i]);}
     }
-    HAL_SPI_TransmitReceive(&hspi, (uint8_t *)tbuf, (uint8_t *)rbuf, count, timeOut);
+    HAL_SPI_TransmitReceive(&hspi, (uint8_t *)tbuf, (uint8_t *)rbuf, count, t_out);
 
 }
 
