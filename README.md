@@ -1,12 +1,69 @@
 ![](doc/rect7811.png)
 # w80x_duino
-Arduino package for [WinnerMicro](http://www.winnermicro.com/) W806, Air103 and W801 boards, based on XT-E804 MCU
+Arduino package for [WinnerMicro](http://www.winnermicro.com/) boards, based on XT-E804 MCU.
 
-**W806 chip parameters**
+This is a port of the WinnerMicro W806 SDK to the Arduino world. It uses T-HEAD C-SKY Tools V3.10.29 Minilibc abiv2 toolchain (GCC v6.3.0)
 
-- QFN56 package, 6mm x 6mm, pitch 0.35mm
+## Boards
 
-**MCU Features**
+- W806 ([pinout](doc/W806_pinout.png)) 
+- W801 ([pinout](doc/W801_pinout.png)) 
+- Air_103 (W806 clone) ([pinout](doc/Air103_pinout.png)) 
+
+## Package development - what works and what not
+
+The ticked ones have been implemented and verified, the unticked ones are under development, and more developers are expected to maintain together
+
+- [x] Arduino IDE package tools for Windows and Linux 
+- [x] GPIO
+- [x] [HardwareSerial](cores/w806/HardwareSerial.md) class
+- [x] ADC
+- [x] PWM
+- [x] [HardwareTimer](libraries/HardwareTimer/Readme.md) lib
+- [x] I2C - HardwareI2c, SoftwareI2c
+- [x] SPI
+- [x] [EEPROM](libraries/EEPROM/Readme.md) library
+- [x] Stream, Print and String classes
+- [ ] I2S interface
+- [ ] SDIO interface
+- [ ] DMA 
+
+## Installation in Arduino IDE
+
+1. **File -> Preferences**
+
+2. Enter the following URL in the additional development board manager URL:
+
+> https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_index.json
+
+![](doc/arduino_preferences.png)
+
+3. **Tools -> Boards -> Boards Manager...**
+Search for **w80x_duino**, select the latest version to install 
+
+![board_manager](doc/board_manager.png)
+
+4. **Tools -> Boards**
+
+![](doc/board_select.png)
+
+**Notes to Linux users**
+
+If you experienced the error at the first build under linux:
+
+`/w80x_duino/tools/w80x_tool/v1.0/lin/wm_tool: /lib64/libc.so.6: version GLIBC_2.34 not found `
+
+or something like it, just go to your `w80x_duino/tools/w80x_tool/v1.0/lin/` folder and remove the `wm_tool` and `wm_toold` files.
+After that start building again and now the error should gone.
+
+### Support
+If you have any problems using the package, please submit an issue directly. Developers are welcome to collaborate and develop and submit commits. This project will continue to be updated.
+
+## W806 MCU Info
+
+ - QFN56 package, 6mm x 6mm, pitch 0.35mm
+
+**Main Features**
 
 - Integrated 32-bit XT804 processor, operating frequency 240MHz, built-in DSP, floating point unit and security engine
 - Builtin 1MB Flash(2MB for W801)，288KB RAM
@@ -31,50 +88,6 @@ Arduino package for [WinnerMicro](http://www.winnermicro.com/) W806, Air103 and 
 - Sleep, standy and shutdown power modes
 - Standby power consumption is less than 10uA
 
-**Boards**
-
-- [W806 pinout](doc/W806_pinout.png) 
-- [W801 pinout](doc/W801_pinout.png) 
-- [Air_103 pinout](doc/Air_103_pinout.png) 
-
-## w80x_duino package installation in Arduino IDE
-
-1. **File -> Preferences**
-
-2. Enter the following URL in the additional development board manager URL:
-
-> https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_index.json
-
-![](doc/arduino_preferences.png)
-
-3. **Tools -> Boards -> Boards Manager...**
-Search for **w80x_duino**, select the latest version to install 
-
-![board_manager](doc/board_manager.png)
-
-4. **Tools -> Boards**
-
-![](doc/board_select.png)
-
-## w80x_duino development
-The ticked ones have been implemented and verified, the unticked ones are under development, and more developers are expected to maintain together
-
-- [x] Arduino IDE package tools for Windows and Linux 
-- [x] GPIO
-- [x] [HardwareSerial](cores/w806/HardwareSerial.md) class
-- [x] ADC
-- [x] PWM
-- [x] [HardwareTimer](libraries/HardwareTimer/Readme.md) lib
-- [x] I2C - HardwareI2c, SoftwareI2c
-- [x] SPI
-- [x] [EEPROM](libraries/EEPROM/Readme.md) library
-- [x] Stream, Print and String classes
-- [ ] I2S interface
-- [ ] SDIO interface
-- [ ] DMA 
-
-### Support
-If you have any problems using the package, please submit an issue directly. Developers are welcome to collaborate and develop and submit commits. This project will continue to be updated.
 
 ## Credits
 - Hi-Link developed and produced this development board
