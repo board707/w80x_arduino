@@ -69,13 +69,25 @@ void HardSPI::begin() {
     __HAL_AFIO_REMAP_SPI_CLK(pin_Map[_sck].pPort, pin_Map[_sck].halPin);
     __HAL_AFIO_REMAP_SPI_MISO(pin_Map[_miso].pPort, pin_Map[_miso].halPin);
     __HAL_AFIO_REMAP_SPI_MOSI(pin_Map[_mosi].pPort, pin_Map[_mosi].halPin);
+    if (_use_hard_cs) {
+        __HAL_AFIO_REMAP_SPI_CS(pin_Map[_ss].pPort, pin_Map[_ss].halPin);
+    }
+
 	
 	hspi.Instance = SPI_HAL;
 	hspi.Init.Mode = SPI_MODE_MASTER;
 	hspi.Init.CLKPolarity = clock_polarity;
 	hspi.Init.CLKPhase = clock_phase;
-	// Ручное управление чип_селектом
-	hspi.Init.NSS = SPI_NSS_SOFT;
+	
+
+    if (_use_hard_cs) {
+        hspi.Init.NSS = SPI_NSS_HARD;
+    }
+    // Ручное управление чип_селектом
+    else {
+        hspi.Init.NSS = SPI_NSS_SOFT;
+    }
+	
 	hspi.Init.BaudRatePrescaler = _prescaler;
 	hspi.Init.FirstByte = SPI_LITTLEENDIAN; // ONLY! Говорят что BIGENDIAN нормально не работает. Не проверял.
 	if (HAL_SPI_Init(&hspi) == HAL_OK) _is_init = true;
@@ -86,6 +98,9 @@ void HardSPI::end() {
 	HAL_GPIO_DeInit(pin_Map[_sck].pPort, pin_Map[_sck].halPin);
 	HAL_GPIO_DeInit(pin_Map[_miso].pPort, pin_Map[_miso].halPin);
 	HAL_GPIO_DeInit(pin_Map[_mosi].pPort, pin_Map[_mosi].halPin);
+    if (_use_hard_cs) {
+        HAL_GPIO_DeInit(pin_Map[_ss].pPort, pin_Map[_ss].halPin);
+    }
 	HAL_SPI_DeInit(&hspi);
     __HAL_RCC_SPI_CLK_DISABLE();
     _is_init = false;
@@ -206,6 +221,28 @@ bool HardSPI::setSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck) {
    
 }
 
+bool HardSPI::setHardCS(uint8_t cs)  {
+   if ((pin_Map[cs].ulPinAttribute & PIN_SPI_Msk) == _SPI_SS) {
+     _ss = cs;
+   if ( _is_init ) {
+      this -> end();
+    }
+     _use_hard_cs = true;
+    this-> begin();
+    return true;
+    } 
+
+    return false;
+
+}
+
+void HardSPI::useSoftCS() {
+  if ( _is_init ) {
+      this -> end();
+    }
+  _use_hard_cs = false;
+  this-> begin();
+}
 /* NOT IMPLEMENTED YET. DEPRECATED */
 //void HardSPI::setClockDivider(uint8_t div) {
 //}
