@@ -306,7 +306,7 @@ int HardwareSerial::printf(const char *fmt, ...)
             {
                 len = wm_vsnprintf(buf2, len, fmt, args) + 1;
 
-                this->write((uint8_t *)buf2, len);
+                this->write((uint8_t *)buf2, len -1 );   // do not print terminate \0
                 free(buf2);
                 va_end(args);
                 return len;
@@ -315,7 +315,7 @@ int HardwareSerial::printf(const char *fmt, ...)
             else
                 len = SERIAL_PRINTF_BUFFER_SIZE;
         }
-        this->write((uint8_t *)buf, len);
+        this->write((uint8_t *)buf, len -1);   // do not print terminate \0
 #if USE_UART0_PRINT
     }
 #endif
