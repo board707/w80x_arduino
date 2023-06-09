@@ -81,6 +81,15 @@ typedef bool boolean;
 #define ANALOG_INPUT 	0b00010000
 #define PWM_OUT 		0b00100000
 
+// PWM Resolution
+
+#define PWM_8BIT  (0xFF)
+#define PWM_9BIT  (0x1FF)
+#define PWM_10BIT  (0x3FF)
+#define PWM_11BIT  (0x7FF)
+#define PWM_12BIT  (0xFFF)
+
+
 // Прототипы для DIO
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
@@ -88,9 +97,10 @@ void digitalToggle(uint8_t pin);
 uint8_t digitalRead(uint8_t pin);
 
 // Прототипы для режимов ШИМ/АЦП
-void setup_pwm(void);
+//void setup_pwm(void);
 void analogWrite(uint8_t pin, uint8_t val);
-void setup_adc(void);
+uint32_t pwmSetup(uint8_t pin, uint32_t pwmFreq, uint16_t pwmResolution);
+//void setup_adc(void);
 double analogRead(uint8_t pin);
 
 // Прототипы для измерения времени в runtime

@@ -29,8 +29,8 @@ int main(void)
 	
     SystemClock_Config(f_cpu_dir);
     setup();
-	setup_pwm();
-    setup_adc();
+	//setup_pwm();
+    //setup_adc();
 
     for (;;) {
 		_loop = true;
