@@ -218,14 +218,19 @@ void analogWrite(uint8_t pin, uint8_t val) {
     }
 }
 
-uint32_t pwmSetup(uint8_t pin, uint32_t pwmFreq, uint16_t pwmResolution) {
+uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq) {
     for(uint8_t i = 0; i < PWM_COUNT; i++) {
 		if(pwmPinState[i].pin == pin) {
-			uint32_t freq = 40000000ul/ pwmResolution;
+			uint32_t freq = 40000000ul/ PWM_8BIT;
 			uint32_t prescaler = freq/pwmFreq + 1;
-			if (HAL_OK == HAL_PWM_Freq_Set(&(pwmPinState[i].hpwm), prescaler, pwmResolution))
+			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
+			pwmPinState[i].hpwm.Init.Prescaler = prescaler ; // Прескалер
+            //pwmPinState[i].hpwm.Init.Period = 200; // Частота ШИМ = 40,000,000 / prescaler / (255 + 1) 
+			if (HAL_OK == HAL_PWM_Freq_Set(&(pwmPinState[i].hpwm), prescaler, PWM_8BIT))
+			  {
+			  HAL_PWM_Start(&(pwmPinState[i].hpwm));
 			  return (freq/prescaler);
-			  
+			  }			  
 		}
     }
    return 0;
@@ -246,8 +251,8 @@ void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel)
     hpwm->Instance = PWM;
     hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
     hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
-    hpwm->Init.Prescaler = 4; // Прескалер
-    hpwm->Init.Period = 255; // Частота ШИМ = 40,000,000 / 4 / (255 + 1) = 39060К
+    hpwm->Init.Prescaler = 8; // Прескалер
+    hpwm->Init.Period = 255; // Частота ШИМ = 40,000,000 / 8 / (255 + 1) = 19 530 Hz
     hpwm->Init.Pulse = 19;   // Заполнение = (19 + 1) / (255 + 1) = 7%
     hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
     hpwm->Channel = channel;
