@@ -32,11 +32,11 @@ Note that you need call **SPI.begin()** before any SPI operation after changing 
 ### Hardware and software CS select
 
 Note that the ``CS`` pin can be hardware or software controlled by the sketch.
-The libary uses software CS control by default. To change this you need call **SPI.setHardCS(uint8_t cs)** with one of predefined CS pins above. To swith hardware CS off, use the call **SPI.useSoftCS()**.
+The library uses software CS control by default. To change this you need call **SPI.setHardCS(uint8_t cs)** with one of predefined CS pins above. To switch hardware CS off, use the call **SPI.useSoftCS()**.
 
 ### Using interrupts
 
-The currect library does not suports the interrupt calls `usingInterrupt`, `notUsingInterrupt`, `attachInterrupt`, and `detachInterrpt`.
+The current library does not supports the interrupt calls `usingInterrupt`, `notUsingInterrupt`, `attachInterrupt`, and `detachInterrpt`.
 
 ### Documentation 
 
