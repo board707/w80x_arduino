@@ -40,8 +40,8 @@ int main(void)
     return 0;
 }
 
-bool is_loop(){return _loop;}
-void set_loop(bool param) {_loop = param;}
+//bool is_loop(){return _loop;}
+//void set_loop(bool param) {_loop = param;}
 
 void Error_Handler(void)
 {

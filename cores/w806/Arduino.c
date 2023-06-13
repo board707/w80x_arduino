@@ -62,7 +62,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 	uint32_t adc_channel = 0;
 	uint8_t adc_index = 0;
 	
-    if(!is_loop()) {
+    //if(!is_loop()) {
 		if(pin_Map[pin].ulPinAttribute != NONE) {
 			if (check_pin()) {
 				if(pin_Map[pin].ulPinAttribute & PIN_DIO_Msk) {
@@ -187,9 +187,9 @@ void pinMode(uint8_t pin, uint8_t mode)
 		} else {
 			printf("Вывод %d не конфигурируется! \n\r", pin);
 		}	
-    } else {
+    /*} else {
 		printf("Конфигурирование выводов в Loop запрещено! \n\r");
-    }
+    }*/
 }
 
 // Запись/чтение цифрового выхода/входа

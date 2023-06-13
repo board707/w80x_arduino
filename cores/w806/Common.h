@@ -106,8 +106,8 @@ void delay(uint32_t ms);
 void delayMicroseconds(uint32_t us);
 
 // Прототип для контроля вхождения в суперцикл Loop()
-bool is_loop(void) ;
-void set_loop(bool param);
+//bool is_loop(void) ;
+//void set_loop(bool param);
 
 // Прототипы для скетча Ардуино
 void setup(void);
