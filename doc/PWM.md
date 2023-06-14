@@ -12,6 +12,7 @@ Than you will able to control a PWM output by usual arduino way:
 #### **`analogWrite(PB12, duty)`**
 
 where `duty` should be in range 0-255.
+> Due to hardware limitations, in the current release duty = 0 does not correspond to a constant low level, but produces a single pulses with a width of 1/255 of a period. This will be fixed in future versions.
 
 ### **Change PWM frequency**
 
