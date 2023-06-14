@@ -81,6 +81,9 @@ typedef bool boolean;
 #define ANALOG_INPUT 	0b00010000
 #define PWM_OUT 		0b00100000
 
+// PWM Resolution
+#define PWM_8BIT  (0xFF)  // defined by HAL registers size
+
 // Прототипы для DIO
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
@@ -88,9 +91,10 @@ void digitalToggle(uint8_t pin);
 uint8_t digitalRead(uint8_t pin);
 
 // Прототипы для режимов ШИМ/АЦП
-void setup_pwm(void);
+//void setup_pwm(void);
 void analogWrite(uint8_t pin, uint8_t val);
-void setup_adc(void);
+uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq);
+//void setup_adc(void);
 double analogRead(uint8_t pin);
 
 // Прототипы для измерения времени в runtime
@@ -102,8 +106,8 @@ void delay(uint32_t ms);
 void delayMicroseconds(uint32_t us);
 
 // Прототип для контроля вхождения в суперцикл Loop()
-bool is_loop(void) ;
-void set_loop(bool param);
+//bool is_loop(void) ;
+//void set_loop(bool param);
 
 // Прототипы для скетча Ардуино
 void setup(void);

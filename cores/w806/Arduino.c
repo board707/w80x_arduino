@@ -20,7 +20,7 @@ typedef struct {
 	bool isPresent;
 } pwmPinStateTD;
 pwmPinStateTD pwmPinState[PWM_COUNT] = { 0 };
-PWM_HandleTypeDef pwm[PWM_COUNT] = { 0 };
+//PWM_HandleTypeDef pwm[PWM_COUNT] = { 0 };
 
 // Массив для фиксации занятых каналов ADC
 typedef struct
@@ -31,7 +31,7 @@ typedef struct
 	bool isPresent;
 } adcPinStateTD;
 adcPinStateTD adcPinState[ADC_COUNT] = {0};
-ADC_HandleTypeDef adc[ADC_COUNT] = { 0 };
+//ADC_HandleTypeDef adc[ADC_COUNT] = { 0 };
 
 // Прототипы функций
 void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel);
@@ -62,7 +62,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 	uint32_t adc_channel = 0;
 	uint8_t adc_index = 0;
 	
-    if(!is_loop()) {
+    //if(!is_loop()) {
 		if(pin_Map[pin].ulPinAttribute != NONE) {
 			if (check_pin()) {
 				if(pin_Map[pin].ulPinAttribute & PIN_DIO_Msk) {
@@ -131,7 +131,8 @@ void pinMode(uint8_t pin, uint8_t mode)
 						}
 						adcPinState[adc_index].channel = adc_channel;
 						adcPinState[adc_index].pin = pin;
-						adcPinState[adc_index].hadc = adc[adc_index];
+						//adcPinState[adc_index].hadc = adc[adc_index];
+						ADC_Init(&(adcPinState[adc_index].hadc), adc_channel);
 						adcPinState[adc_index].isPresent = true;
 					} else {
 					printf("Вывод %d не работает в АЦП режиме! \n\r", pin);}
@@ -169,8 +170,13 @@ void pinMode(uint8_t pin, uint8_t mode)
 						}
 						pwmPinState[pwm_channel].channel = pwm_channel;
 						pwmPinState[pwm_channel].pin = pin;
-						pwmPinState[pwm_channel].hpwm = pwm[pwm_channel];
+						//pwmPinState[pwm_channel].hpwm = pwm[pwm_channel];
+						if (pwmPinState[pwm_channel].isPresent) {
+							HAL_PWM_Stop(&(pwmPinState[pwm_channel].hpwm));
+							HAL_PWM_DeInit(&(pwmPinState[pwm_channel].hpwm));
+                            }
 						pwmPinState[pwm_channel].isPresent = true;
+						PWM_Init(&(pwmPinState[pwm_channel].hpwm), pwm_channel);
 					} else {
 						printf("Вывод %d не работает в ШИМ режиме! \n\r", pin);
 					}
@@ -181,9 +187,9 @@ void pinMode(uint8_t pin, uint8_t mode)
 		} else {
 			printf("Вывод %d не конфигурируется! \n\r", pin);
 		}	
-    } else {
+    /*} else {
 		printf("Конфигурирование выводов в Loop запрещено! \n\r");
-    }
+    }*/
 }
 
 // Запись/чтение цифрового выхода/входа
@@ -212,6 +218,56 @@ void analogWrite(uint8_t pin, uint8_t val) {
     }
 }
 
+uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq) {
+    for(uint8_t i = 0; i < PWM_COUNT; i++) {
+		if(pwmPinState[i].pin == pin) {
+			uint32_t freq = 40000000ul/ PWM_8BIT;
+			uint32_t prescaler = freq/pwmFreq + 1;
+			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
+			pwmPinState[i].hpwm.Init.Prescaler = prescaler ; // Прескалер
+            //pwmPinState[i].hpwm.Init.Period = 200; // Частота ШИМ = 40,000,000 / prescaler / (255 + 1) 
+			if (HAL_OK == HAL_PWM_Freq_Set(&(pwmPinState[i].hpwm), prescaler, PWM_8BIT))
+			  {
+			  HAL_PWM_Start(&(pwmPinState[i].hpwm));
+			  return (freq/prescaler);
+			  }			  
+		}
+    }
+   return 0;
+}
+
+// Инициализация ШИМ
+/*void setup_pwm()
+{
+	for(int8_t i = PWM_COUNT-1; i >= 0 ; i--) {
+		if (pwmPinState[i].isPresent == true) {
+			PWM_Init(&(pwmPinState[i].hpwm), pwmPinState[i].channel);
+		}
+	}
+}*/
+
+void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel)
+{
+    hpwm->Instance = PWM;
+    hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
+    hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
+    hpwm->Init.Prescaler = 8; // Прескалер
+    hpwm->Init.Period = 255; // Частота ШИМ = 40,000,000 / 8 / (255 + 1) = 19 530 Hz
+    hpwm->Init.Pulse = 19;   // Заполнение = (19 + 1) / (255 + 1) = 7%
+    hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
+    hpwm->Channel = channel;
+    HAL_PWM_Init(hpwm);
+    HAL_PWM_Start(hpwm);
+}
+
+// Инициализация АЦП
+/*void setup_adc() {
+	for(uint8_t i = 0; i < ADC_COUNT; i++) {
+		if (adcPinState[i].isPresent == true) {
+			ADC_Init(&(adcPinState[i].hadc), adcPinState[i].channel);
+		}
+	}
+}*/
 // Чтение данных АЦП
 double analogRead(uint8_t pin) {
 	double value = 0.0;
@@ -221,39 +277,6 @@ double analogRead(uint8_t pin) {
 		}
     }
 	return value;
-}
-
-// Инициализация ШИМ
-void setup_pwm()
-{
-	for(int8_t i = PWM_COUNT-1; i >= 0 ; i--) {
-		if (pwmPinState[i].isPresent == true) {
-			PWM_Init(&(pwmPinState[i].hpwm), pwmPinState[i].channel);
-		}
-	}
-}
-
-void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel)
-{
-    hpwm->Instance = PWM;
-    hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
-    hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
-    hpwm->Init.Prescaler = 4; // Прескалер
-    hpwm->Init.Period = 255; // Частота ШИМ = 40,000,000 / 4 / (255 + 1) = 39060К
-    hpwm->Init.Pulse = 19;   // Заполнение = (19 + 1) / (255 + 1) = 7%
-    hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
-    hpwm->Channel = channel;
-    HAL_PWM_Init(hpwm);
-    HAL_PWM_Start(hpwm);
-}
-
-// Инициализация АЦП
-void setup_adc() {
-	for(uint8_t i = 0; i < ADC_COUNT; i++) {
-		if (adcPinState[i].isPresent == true) {
-			ADC_Init(&(adcPinState[i].hadc), adcPinState[i].channel);
-		}
-	}
 }
 
 void ADC_Init(ADC_HandleTypeDef* hadc, uint32_t channel) {

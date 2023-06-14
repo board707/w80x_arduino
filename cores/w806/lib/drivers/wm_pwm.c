@@ -70,7 +70,7 @@ HAL_StatusTypeDef __PWM_CountType_Config(PWM_HandleTypeDef *hpwm, uint32_t Chann
     }
     else
     {
-        MODIFY_REG(hpwm->Instance->CR, (0x0FF << (PWM_CR_CNTTYPE0_Pos + Channel * 2)), 
+        MODIFY_REG(hpwm->Instance->CR, (0x03 << (PWM_CR_CNTTYPE0_Pos + Channel * 2)), 
                     (CounterMode << (PWM_CR_CNTTYPE0_Pos + Channel * 2)));
     }
     

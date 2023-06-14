@@ -18,10 +18,10 @@ The ticked options have been implemented and tested, the unticked ones are under
 - [x] GPIO
 - [x] [HardwareSerial](cores/w806/HardwareSerial.md) class
 - [x] ADC
-- [x] PWM
+- [x] [PWM](doc/PWM.md)
 - [x] [HardwareTimer](libraries/HardwareTimer/Readme.md) lib
 - [x] I2C - HardwareI2c, SoftwareI2c
-- [x] SPI
+- [x] [SPI](doc/SPI.md)
 - [x] [EEPROM](libraries/EEPROM/Readme.md) library
 - [x] Stream, Print and String classes
 - [ ] I2S interface
