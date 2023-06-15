@@ -1,5 +1,7 @@
 #include "Arduino.h"
 
+// Tested on Air103 board with PS6404L-3SQR-SN chip
+
 PSRAM_HandleTypeDef hpsram;
 
 static void PSRAM_Init(void);
@@ -9,6 +11,7 @@ static uint8_t *psram_buf = (uint8_t *)PSRAM_ADDR_START;
 
 void setup()
 {
+  Serial.begin(115200);
   PSRAM_Init();
 }
  
@@ -21,9 +24,9 @@ void loop()
   memset(psram_buf, 0, 100);
   for(i = 0; i < 100; i++)
   {
-    printf("%x ", psram_buf[i]);
+    Serial.printf("%x ", psram_buf[i]);
   }
-  printf("\r\n");
+  Serial.printf("\r\n");
 
   for(i = 0; i < 100; i++)
   {
@@ -33,9 +36,9 @@ void loop()
   memcpy(psram_buf, temp, 100);
   for(i = 0; i < 100; i++)
   {
-    printf("%x ", psram_buf[i]);
+    Serial.printf("%x ", psram_buf[i]);
   }
-  printf("\r\n");
+  Serial.printf("\r\n");
 
   delay(1000);
 }
@@ -58,6 +61,6 @@ static void PSRAM_Init(void)
 
   if (HAL_PSRAM_Init(&hpsram) != HAL_OK)
   {
-    printf("Init error...\r\n");
+    Serial.printf("Init error...\r\n");
   }
 }

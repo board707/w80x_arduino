@@ -24,7 +24,7 @@
 
 #include "SoftwareI2C.h"
 
-extern "C" void set_loop(bool param); // from main.cpp
+//extern "C" void set_loop(bool param); // from main.cpp
 
 SoftwareI2C::SoftwareI2C(){}
 SoftwareI2C::~SoftwareI2C(){}
@@ -39,7 +39,7 @@ void SoftwareI2C::begin(int Sda, int Scl) {
     pinSda = Sda;
     pinScl = Scl;
 	//ToDo: Сделать запись в глобальный массив использованных выводов
-	set_loop(false);
+	//set_loop(false);
     pinMode(pinScl, OUTPUT);
     pinMode(pinSda, OUTPUT);
     sda_in_out = OUTPUT;
@@ -57,7 +57,7 @@ void SoftwareI2C::sdaSet(uchar ucDta) {
 
     if (sda_in_out != OUTPUT) {
         sda_in_out = OUTPUT;
-		set_loop(false);
+		//set_loop(false);
         pinMode(pinSda, OUTPUT);
     }
     digitalWrite(pinSda, ucDta);
@@ -82,7 +82,7 @@ void SoftwareI2C::sclSet(uchar ucDta) {
 *************************************************************************************************/
 uchar SoftwareI2C::getAck(void) {
     sclSet(LOW);
-	set_loop(false);
+	//set_loop(false);
     pinMode(pinSda, INPUT);
     sda_in_out = INPUT;
 
@@ -229,7 +229,7 @@ uchar SoftwareI2C::read() {
     }
 
     uchar ucRt = 0;
-	set_loop(false);
+	//set_loop(false);
     pinMode(pinSda, INPUT);
     sda_in_out = INPUT;
 
