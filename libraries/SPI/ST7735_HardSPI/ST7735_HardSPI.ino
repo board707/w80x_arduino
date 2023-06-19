@@ -1,9 +1,13 @@
+// This code was written a million years ago during the age of the dinosaurs. For using in 8 bit controllers PIC18
+// Casually adapted as an example for an SPI class in NSS_Soft mode
+// Tested on Air103 with default MOSI and SCK pins. See Variant.h/pins_arduino.h/GPIO_Defs.h/SPI.md for details
+
 #include "Arduino.h"
 #include "SPI.h"
 
-#define ST7735_CS  PB2
-#define ST7735_RST PA8
-#define ST7735_A0  PA6
+#define ST7735_CS  PB14
+#define ST7735_RST PB8
+#define ST7735_A0  PB7
 
 #define BLACK                      0x0000
 #define BLUE                       0x001F
@@ -536,7 +540,7 @@ void setup() {
   pinMode(ST7735_CS, OUTPUT);
   pinMode(ST7735_A0, OUTPUT);
 
-  SPI.beginTransaction(SPISettings(20000000)); // Запускаем SPI на частоте 20 Мгц
+  SPI.beginTransaction(SPISettings(20000000,MSBFIRST, SPI_MODE0)); // Запускаем SPI на частоте 20 Мгц
 
   ST7735_init();
   ST7735_Orientation(scr_normal);

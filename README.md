@@ -36,6 +36,10 @@ The ticked options have been implemented and tested, the unticked ones are under
 
 > https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_index.json
 
+2.1 If this doesn't work please use this link address:
+
+> http://dl.isme.fun/w80x_arduino/package_w80x_index.json
+
 ![](doc/arduino_preferences.png)
 
 3. **Tools -> Boards -> Boards Manager...**
