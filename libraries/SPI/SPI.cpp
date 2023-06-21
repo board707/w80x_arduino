@@ -305,7 +305,7 @@ SoftSPI::SoftSPI(uint8_t mosi, uint8_t miso, uint8_t sck) {
 }
 
 void SoftSPI::begin() {
-	set_loop(false);
+	//set_loop(false);
 
     switch (_dataMode) {
         case SPI_MODE0:
@@ -361,7 +361,7 @@ void SoftSPI::begin() {
 }
 
 void SoftSPI::end() {
-	set_loop(false);
+	//set_loop(false);
     pinMode(_mosi, INPUT);
     pinMode(_miso, INPUT);
     pinMode(_sck, INPUT);

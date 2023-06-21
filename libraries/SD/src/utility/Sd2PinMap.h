@@ -51,11 +51,11 @@
 
   #include <Arduino.h>
 
-  uint8_t const SS_PIN = PA8;
-  uint8_t const MOSI_PIN = PB26;
-  uint8_t const MISO_PIN = PB25;
-  uint8_t const SCK_PIN = PB24;
- 
+  uint8_t const SS_PIN = PIN_SPI_SS;
+  uint8_t const MOSI_PIN = PIN_SPI_MOSI;
+  uint8_t const MISO_PIN = PIN_SPI_MISO;
+  uint8_t const SCK_PIN = PIN_SPI_SCK;
+
 
 #endif // Sd2PinMap_h
 #elif defined(__AVR__) // Other AVR based Boards follows
