@@ -17,6 +17,8 @@
                     "category": "Contributed",
                     "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.3a/w80x_arduino-0.0.3a.tar.gz",
                     "archiveFileName": "w80x_arduino-0.0.3a.tar.gz",
+                     "checksum": "SHA-256:48bc6b7292f8fb0f70f654186653066e6c6386ae906dfde64fed5099addb6a86",
+                     "size": "7431515",
                     "help": {
                     "online": "https://github.com/board707/w80x_arduino/issues"
                     },
@@ -119,12 +121,16 @@
                         {
                             "host": "i686-mingw32",
                             "url": "https://github.com/Hi-LinkDuino/w80x_arduino/releases/download/v0.0.1/w80x_tool-mingw32-v1.0.zip",
-                            "archiveFileName": "w80x_tool-mingw32-v1.0.zip"
+                            "archiveFileName": "w80x_tool-mingw32-v1.0.zip",
+                            "checksum": "SHA-256:9f134e107f1b075fd4394c8f8cccf11146ef42d25d1c058d0fea9b14d2f6f5aa",
+                            "size": "3278269"
                         },
                         {
                             "host": "x86_64-pc-linux-gnu",
                             "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.2a/w80x_tool_x86_64-pc-linux-gnu-v1.0.tar.gz",
-                            "archiveFileName": "w80x_tool_x86_64-pc-linux-gnu-v1.0.tar.gz"
+                            "archiveFileName": "w80x_tool_x86_64-pc-linux-gnu-v1.0.tar.gz",
+                            "checksum": "SHA-256:1d0bd6f499b11877c66ebe36f848e7b540f5816134ddad02d2e8d233ad7b061b",
+                            "size": "154302"
                             
                         }
                     ]
