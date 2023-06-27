@@ -214,6 +214,7 @@ void analogWrite(uint8_t pin, uint8_t val) {
     for(uint8_t i = 0; i < PWM_COUNT; i++) {
 		if(pwmPinState[i].pin == pin) {
 			HAL_PWM_Duty_Set(&(pwmPinState[i].hpwm), val);
+			pwmPinState[i].hpwm.Init.Pulse = val; 
 		}
     }
 }
@@ -230,12 +231,81 @@ uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq) {
 			  {
 			  HAL_PWM_Start(&(pwmPinState[i].hpwm));
 			  return (freq/prescaler);
-			  }			  
+			  }			
+			  break;  
 		}
     }
    return 0;
 }
 
+void setPWM_Inverse(uint8_t pin, bool pwm_inverse, bool start) {
+    for(uint8_t i = 0; i < PWM_COUNT; i++) {
+		if(pwmPinState[i].pin == pin) {
+			
+			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
+			if (pwm_inverse) {
+				pwmPinState[i].hpwm.Init.OutInverse = PWM_OUT_INVERSE_ENABLE;
+			}
+			else {
+				pwmPinState[i].hpwm.Init.OutInverse = PWM_OUT_INVERSE_DISABLE;
+			}
+             
+			 HAL_PWM_Init(&(pwmPinState[i].hpwm));  
+			 if (start) HAL_PWM_Start(&(pwmPinState[i].hpwm));  
+			 break;
+		}
+    }
+   
+}
+
+void setPWM_OneShotMode(uint8_t pin, bool os_mode, uint8_t num_cnt, bool start) {
+    for(uint8_t i = 0; i < PWM_COUNT; i++) {
+		if(pwmPinState[i].pin == pin) {
+			
+			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
+			if (os_mode) {
+				pwmPinState[i].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_DISABLE;
+			 }
+			 
+			else {
+				pwmPinState[i].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
+			}
+
+			PWM_HandleTypeDef* hpwm = &(pwmPinState[i].hpwm);
+			uint32_t Channel = hpwm->Channel;
+            uint32_t PNUM_Mask = 0;
+			uint32_t reg_val = 0;
+			uint32_t pnum = num_cnt;
+		 
+		 
+		     if (Channel == PWM_CHANNEL_0) {PNUM_Mask = PWM_PNUM_CH0; reg_val = pnum;}
+             else if (Channel == PWM_CHANNEL_1) {PNUM_Mask = PWM_PNUM_CH1; reg_val = (pnum << PWM_PNUM_CH1_Pos);}
+			 else if (Channel == PWM_CHANNEL_2) {PNUM_Mask = PWM_PNUM_CH2; reg_val = (pnum << PWM_PNUM_CH2_Pos);}
+			 else if (Channel == PWM_CHANNEL_3) {PNUM_Mask = PWM_PNUM_CH3; reg_val = (pnum << PWM_PNUM_CH3_Pos);}
+ 			 else if (Channel == PWM_CHANNEL_4)
+ 			   {
+  			      MODIFY_REG(hpwm->Instance->CH4CR1, PWM_CH4CR1_PNUM, (pnum << PWM_CH4CR1_PNUM_Pos));
+
+   				}
+			
+			 if (PNUM_Mask) {
+				MODIFY_REG(hpwm->Instance->PNUM, PNUM_Mask, reg_val);
+			 }
+			
+
+
+
+
+    
+  
+  
+			 HAL_PWM_Init(&(pwmPinState[i].hpwm));  
+			 if (start) HAL_PWM_Start(&(pwmPinState[i].hpwm));  
+			 break;
+		}
+    }
+   
+}
 // Инициализация ШИМ
 /*void setup_pwm()
 {

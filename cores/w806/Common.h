@@ -94,6 +94,8 @@ uint8_t digitalRead(uint8_t pin);
 //void setup_pwm(void);
 void analogWrite(uint8_t pin, uint8_t val);
 uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq);
+void setPWM_Inverse(uint8_t pin, bool pwm_inverse, bool start);
+void setPWM_OneShotMode(uint8_t pin, bool os_mode, uint8_t pnum_cnt, bool start);
 //void setup_adc(void);
 double analogRead(uint8_t pin);
 
