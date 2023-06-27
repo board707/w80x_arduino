@@ -1,77 +1,215 @@
 # See: http://code.google.com/p/arduino/wiki/Platforms
 
 menu.cpu_frq=CPU Frequency
-menu.cpu_variant=CPU
+#menu.cpu_variant=CPU
 menu.opt=Build mode
 menu.upload_speed=Upload Speed
 menu.erase=Erase Flash
 #menu.os_variant=OS
 
 ##############################################################
-
-w80x.name=w806/w805
-w80x.upload.tool=serial_upload
-w80x.upload.protocol=xmodem
-w80x.upload.maximum_size=1048576
-w80x.upload.maximum_data_size=294912
-w80x.build.mcu=ck804ef
-w80x.build.board=HLK_w80x
-#w80x.build.core=w806
-w80x.build.mcpu=ck804ef
-w80x.serial.disableRTS=true
-
-##############################################################
+w801.name=W801
+w801.upload.tool=serial_upload
+w801.upload.protocol=xmodem
+w801.upload.maximum_size=2048576
+w801.upload.maximum_data_size=294912
+w801.build.mcu=ck804ef
+w801.build.board=HT804_W801
+w801.build.core=w806
+w801.build.variant=w801
+w801.build.mcpu=ck804ef
+w801.serial.disableRTS=true
+#---------------------------------------
 # CPU Frequency
-w80x.menu.cpu_frq.240MHZ=240MHZ
-w80x.menu.cpu_frq.240MHZ.build.f_cpu=240000000
-w80x.menu.cpu_frq.160MHZ=160MHZ
-w80x.menu.cpu_frq.160MHZ.build.f_cpu=160000000
-w80x.menu.cpu_frq.80MHZ=80MHZ
-w80x.menu.cpu_frq.80MHZ.build.f_cpu=80000000
-w80x.menu.cpu_frq.40MHZ=40MHZ
-w80x.menu.cpu_frq.40MHZ.build.f_cpu=40000000
-w80x.menu.cpu_frq.2MHZ=2MHZ
-w80x.menu.cpu_frq.2MHZ.build.f_cpu=2000000
-
-##############################################################
-# CPU variant
-w80x.menu.cpu_variant.w806=W806
-w80x.menu.cpu_variant.w806.build.variant=w806
-w80x.menu.cpu_variant.w806.build.core=w806
-w80x.menu.cpu_variant.w805=W805
-w80x.menu.cpu_variant.w805.build.variant=w805
-w80x.menu.cpu_variant.w806.build.core=w806
-w80x.menu.cpu_variant.w801=W801
-w80x.menu.cpu_variant.w801.build.variant=w801
-w80x.menu.cpu_variant.w801.build.core=w806
-w80x.menu.cpu_variant.w801.upload.maximum_size=2048576
-w80x.menu.cpu_variant.air103=Air103
-w80x.menu.cpu_variant.air103.build.variant=air103
-w80x.menu.cpu_variant.air103.build.core=w806
-
-##############################################################
+w801.menu.cpu_frq.240MHZ=240MHZ
+w801.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+w801.menu.cpu_frq.160MHZ=160MHZ
+w801.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+w801.menu.cpu_frq.80MHZ=80MHZ
+w801.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+w801.menu.cpu_frq.40MHZ=40MHZ
+w801.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+w801.menu.cpu_frq.2MHZ=2MHZ
+w801.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+#---------------------------------------
 # Release /Optimise
-w80x.menu.opt.release=Release ( -Os)
-w80x.menu.opt.release.build.flags.optimize=-Os -flto
-w80x.menu.opt.debug=Debug (-g)
-w80x.menu.opt.debug.build.flags.optimize=-Og
+w801.menu.opt.release=Release ( -Os)
+w801.menu.opt.release.build.flags.optimize=-Os -flto
+w801.menu.opt.debug=Debug (-g)
+w801.menu.opt.debug.build.flags.optimize=-Og
 
-##############################################################
+#---------------------------------------
 # Upload Speed
-w80x.menu.upload_speed.baud115200=115200
-w80x.menu.upload_speed.baud115200.upload.speed=115200
-w80x.menu.upload_speed.baud460800=460800
-w80x.menu.upload_speed.baud460800.upload.speed=460800
-w80x.menu.upload_speed.baud921600=921600
-w80x.menu.upload_speed.baud921600.upload.speed=921600
-w80x.menu.upload_speed.baud1000000=1000000
-w80x.menu.upload_speed.baud1000000.upload.speed=1000000
-w80x.menu.upload_speed.baud2000000=2000000
-w80x.menu.upload_speed.baud2000000.upload.speed=2000000
-
+w801.menu.upload_speed.baud115200=115200
+w801.menu.upload_speed.baud115200.upload.speed=115200
+w801.menu.upload_speed.baud460800=460800
+w801.menu.upload_speed.baud460800.upload.speed=460800
+w801.menu.upload_speed.baud921600=921600
+w801.menu.upload_speed.baud921600.upload.speed=921600
+w801.menu.upload_speed.baud1000000=1000000
+w801.menu.upload_speed.baud1000000.upload.speed=1000000
+w801.menu.upload_speed.baud2000000=2000000
+w801.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
 # Erase Flash
-w80x.menu.erase.yes=erase all flash
-w80x.menu.erase.yes.erase.flash=all
-w80x.menu.erase.no=no erase
-w80x.menu.erase.no.erase.flash=none
+w801.menu.erase.yes=erase all flash
+w801.menu.erase.yes.erase.flash=all
+w801.menu.erase.no=no erase
+w801.menu.erase.no.erase.flash=none
 ##############################################################
+
+##############################################################
+w805.name=W805
+w805.upload.tool=serial_upload
+w805.upload.protocol=xmodem
+w805.upload.maximum_size=1048576
+w805.upload.maximum_data_size=294912
+w805.build.mcu=ck804ef
+w805.build.board=HT804_W805
+w805.build.core=w806
+w805.build.variant=w805
+w805.build.mcpu=ck804ef
+w805.serial.disableRTS=true
+
+#---------------------------------------
+# Release /Optimise
+w805.menu.opt.release=Release ( -Os)
+w805.menu.opt.release.build.flags.optimize=-Os -flto
+w805.menu.opt.debug=Debug (-g)
+w805.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+w805.menu.upload_speed.baud115200=115200
+w805.menu.upload_speed.baud115200.upload.speed=115200
+w805.menu.upload_speed.baud460800=460800
+w805.menu.upload_speed.baud460800.upload.speed=460800
+w805.menu.upload_speed.baud921600=921600
+w805.menu.upload_speed.baud921600.upload.speed=921600
+w805.menu.upload_speed.baud1000000=1000000
+w805.menu.upload_speed.baud1000000.upload.speed=1000000
+w805.menu.upload_speed.baud2000000=2000000
+w805.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+w805.menu.erase.yes=erase all flash
+w805.menu.erase.yes.erase.flash=all
+w805.menu.erase.no=no erase
+w805.menu.erase.no.erase.flash=none
+#---------------------------------------
+# CPU Frequency
+w805.menu.cpu_frq.240MHZ=240MHZ
+w805.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+w805.menu.cpu_frq.160MHZ=160MHZ
+w805.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+w805.menu.cpu_frq.80MHZ=80MHZ
+w805.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+w805.menu.cpu_frq.40MHZ=40MHZ
+w805.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+w805.menu.cpu_frq.2MHZ=2MHZ
+w805.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+##############################################################
+
+
+##############################################################
+w806.name=W806
+w806.upload.tool=serial_upload
+w806.upload.protocol=xmodem
+w806.upload.maximum_size=1048576
+w806.upload.maximum_data_size=294912
+w806.build.mcu=ck804ef
+w806.build.board=HT804_W806
+w806.build.core=w806
+w806.build.variant=w806
+w806.build.mcpu=ck804ef
+w806.serial.disableRTS=true
+#---------------------------------------
+# Release /Optimise
+w806.menu.opt.release=Release ( -Os)
+w806.menu.opt.release.build.flags.optimize=-Os -flto
+w806.menu.opt.debug=Debug (-g)
+w806.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+w806.menu.upload_speed.baud115200=115200
+w806.menu.upload_speed.baud115200.upload.speed=115200
+w806.menu.upload_speed.baud460800=460800
+w806.menu.upload_speed.baud460800.upload.speed=460800
+w806.menu.upload_speed.baud921600=921600
+w806.menu.upload_speed.baud921600.upload.speed=921600
+w806.menu.upload_speed.baud1000000=1000000
+w806.menu.upload_speed.baud1000000.upload.speed=1000000
+w806.menu.upload_speed.baud2000000=2000000
+w806.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+w806.menu.erase.yes=erase all flash
+w806.menu.erase.yes.erase.flash=all
+w806.menu.erase.no=no erase
+w806.menu.erase.no.erase.flash=none
+#---------------------------------------
+# CPU Frequency
+w806.menu.cpu_frq.240MHZ=240MHZ
+w806.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+w806.menu.cpu_frq.160MHZ=160MHZ
+w806.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+w806.menu.cpu_frq.80MHZ=80MHZ
+w806.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+w806.menu.cpu_frq.40MHZ=40MHZ
+w806.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+w806.menu.cpu_frq.2MHZ=2MHZ
+w806.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+##############################################################
+
+
+##############################################################
+air103.name=Air103
+air103.upload.tool=serial_upload
+air103.upload.protocol=xmodem
+air103.upload.maximum_size=1048576
+air103.upload.maximum_data_size=294912
+air103.build.mcu=ck804ef
+air103.build.board=HT804_Air103
+air103.build.core=w806
+air103.build.variant=air103
+air103.build.mcpu=ck804ef
+air103.serial.disableRTS=true
+
+#---------------------------------------
+# Release /Optimise
+air103.menu.opt.release=Release ( -Os)
+air103.menu.opt.release.build.flags.optimize=-Os -flto
+air103.menu.opt.debug=Debug (-g)
+air103.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+air103.menu.upload_speed.baud115200=115200
+air103.menu.upload_speed.baud115200.upload.speed=115200
+air103.menu.upload_speed.baud460800=460800
+air103.menu.upload_speed.baud460800.upload.speed=460800
+air103.menu.upload_speed.baud921600=921600
+air103.menu.upload_speed.baud921600.upload.speed=921600
+air103.menu.upload_speed.baud1000000=1000000
+air103.menu.upload_speed.baud1000000.upload.speed=1000000
+air103.menu.upload_speed.baud2000000=2000000
+air103.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+air103.menu.erase.yes=erase all flash
+air103.menu.erase.yes.erase.flash=all
+air103.menu.erase.no=no erase
+air103.menu.erase.no.erase.flash=none
+#---------------------------------------
+# CPU Frequency
+air103.menu.cpu_frq.240MHZ=240MHZ
+air103.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+air103.menu.cpu_frq.160MHZ=160MHZ
+air103.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+air103.menu.cpu_frq.80MHZ=80MHZ
+air103.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+air103.menu.cpu_frq.40MHZ=40MHZ
+air103.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+air103.menu.cpu_frq.2MHZ=2MHZ
+air103.menu.cpu_frq.2MHZ.build.f_cpu=2000000
