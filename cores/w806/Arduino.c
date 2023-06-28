@@ -34,7 +34,7 @@ adcPinStateTD adcPinState[ADC_COUNT] = {0};
 //ADC_HandleTypeDef adc[ADC_COUNT] = { 0 };
 
 // Прототипы функций
-void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel);
+
 void ADC_Init(ADC_HandleTypeDef* hadc, uint32_t channel);
 bool check_pin(void);
 
@@ -208,6 +208,15 @@ void digitalToggle(uint8_t pin) {
     HAL_GPIO_TogglePin(pin_Map[pin].pPort, pin_Map[pin].halPin);
 }
 
+
+PWM_HandleTypeDef* getPWMHandle(uint8_t pin) {
+	for(uint8_t i = 0; i < PWM_COUNT; i++) {
+		if(pwmPinState[i].pin == pin) {
+			return(&(pwmPinState[i].hpwm));
+		}
+	}
+	return NULL;
+}
 // Установка заполнения ШИМ
 void analogWrite(uint8_t pin, uint8_t val) {
 	
@@ -219,116 +228,6 @@ void analogWrite(uint8_t pin, uint8_t val) {
     }
 }
 
-uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq) {
-    for(uint8_t i = 0; i < PWM_COUNT; i++) {
-		if(pwmPinState[i].pin == pin) {
-			uint32_t freq = 40000000ul/ PWM_8BIT;
-			uint32_t prescaler = freq/pwmFreq + 1;
-			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
-			pwmPinState[i].hpwm.Init.Prescaler = prescaler ; // Прескалер
-            //pwmPinState[i].hpwm.Init.Period = 200; // Частота ШИМ = 40,000,000 / prescaler / (255 + 1) 
-			if (HAL_OK == HAL_PWM_Freq_Set(&(pwmPinState[i].hpwm), prescaler, PWM_8BIT))
-			  {
-			  HAL_PWM_Start(&(pwmPinState[i].hpwm));
-			  return (freq/prescaler);
-			  }			
-			  break;  
-		}
-    }
-   return 0;
-}
-
-void setPWM_Inverse(uint8_t pin, bool pwm_inverse, bool start) {
-    for(uint8_t i = 0; i < PWM_COUNT; i++) {
-		if(pwmPinState[i].pin == pin) {
-			
-			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
-			if (pwm_inverse) {
-				pwmPinState[i].hpwm.Init.OutInverse = PWM_OUT_INVERSE_ENABLE;
-			}
-			else {
-				pwmPinState[i].hpwm.Init.OutInverse = PWM_OUT_INVERSE_DISABLE;
-			}
-             
-			 HAL_PWM_Init(&(pwmPinState[i].hpwm));  
-			 if (start) HAL_PWM_Start(&(pwmPinState[i].hpwm));  
-			 break;
-		}
-    }
-   
-}
-
-void setPWM_OneShotMode(uint8_t pin, bool os_mode, uint8_t num_cnt, bool start) {
-    for(uint8_t i = 0; i < PWM_COUNT; i++) {
-		if(pwmPinState[i].pin == pin) {
-			
-			HAL_PWM_Stop(&(pwmPinState[i].hpwm));
-			if (os_mode) {
-				pwmPinState[i].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_DISABLE;
-			 }
-			 
-			else {
-				pwmPinState[i].hpwm.Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
-			}
-
-			PWM_HandleTypeDef* hpwm = &(pwmPinState[i].hpwm);
-			uint32_t Channel = hpwm->Channel;
-            uint32_t PNUM_Mask = 0;
-			uint32_t reg_val = 0;
-			uint32_t pnum = num_cnt;
-		 
-		 
-		     if (Channel == PWM_CHANNEL_0) {PNUM_Mask = PWM_PNUM_CH0; reg_val = pnum;}
-             else if (Channel == PWM_CHANNEL_1) {PNUM_Mask = PWM_PNUM_CH1; reg_val = (pnum << PWM_PNUM_CH1_Pos);}
-			 else if (Channel == PWM_CHANNEL_2) {PNUM_Mask = PWM_PNUM_CH2; reg_val = (pnum << PWM_PNUM_CH2_Pos);}
-			 else if (Channel == PWM_CHANNEL_3) {PNUM_Mask = PWM_PNUM_CH3; reg_val = (pnum << PWM_PNUM_CH3_Pos);}
- 			 else if (Channel == PWM_CHANNEL_4)
- 			   {
-  			      MODIFY_REG(hpwm->Instance->CH4CR1, PWM_CH4CR1_PNUM, (pnum << PWM_CH4CR1_PNUM_Pos));
-
-   				}
-			
-			 if (PNUM_Mask) {
-				MODIFY_REG(hpwm->Instance->PNUM, PNUM_Mask, reg_val);
-			 }
-			
-
-
-
-
-    
-  
-  
-			 HAL_PWM_Init(&(pwmPinState[i].hpwm));  
-			 if (start) HAL_PWM_Start(&(pwmPinState[i].hpwm));  
-			 break;
-		}
-    }
-   
-}
-// Инициализация ШИМ
-/*void setup_pwm()
-{
-	for(int8_t i = PWM_COUNT-1; i >= 0 ; i--) {
-		if (pwmPinState[i].isPresent == true) {
-			PWM_Init(&(pwmPinState[i].hpwm), pwmPinState[i].channel);
-		}
-	}
-}*/
-
-void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel)
-{
-    hpwm->Instance = PWM;
-    hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
-    hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
-    hpwm->Init.Prescaler = 8; // Прескалер
-    hpwm->Init.Period = 255; // Частота ШИМ = 40,000,000 / 8 / (255 + 1) = 19 530 Hz
-    hpwm->Init.Pulse = 19;   // Заполнение = (19 + 1) / (255 + 1) = 7%
-    hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
-    hpwm->Channel = channel;
-    HAL_PWM_Init(hpwm);
-    HAL_PWM_Start(hpwm);
-}
 
 // Инициализация АЦП
 /*void setup_adc() {

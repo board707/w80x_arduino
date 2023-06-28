@@ -73,3 +73,8 @@ __attribute__((isr)) void UART2_5_IRQHandler(void)
     HAL_UART_IRQHandler(&huart4);
     HAL_UART_IRQHandler(&huart5);
 }
+
+__attribute__((isr)) void PWM_IRQHandler(void)
+{
+  // HAL_PWM_IRQHandler(void);
+}

@@ -6,6 +6,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "./include/driver/wm_pwm.h"
 
 
 #ifdef __cplusplus 
@@ -92,10 +93,8 @@ uint8_t digitalRead(uint8_t pin);
 
 // Прототипы для режимов ШИМ/АЦП
 //void setup_pwm(void);
+PWM_HandleTypeDef* getPWMHandle(uint8_t pin);
 void analogWrite(uint8_t pin, uint8_t val);
-uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq);
-void setPWM_Inverse(uint8_t pin, bool pwm_inverse, bool start);
-void setPWM_OneShotMode(uint8_t pin, bool os_mode, uint8_t pnum_cnt, bool start);
 //void setup_adc(void);
 double analogRead(uint8_t pin);
 
