@@ -4,7 +4,7 @@
 
 
 #include "Common.h"
-
+#include "variant.h"
 
 
 void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel);

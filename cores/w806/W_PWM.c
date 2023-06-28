@@ -1,6 +1,11 @@
 #include "./include/driver/wm_pwm.h"
 #include "W_PWM.h"
 
+
+/** pwm interrupt callback type **/
+typedef void (*pwm_irq_callback)();
+pwm_irq_callback pwm_callback[PWM_COUNT]  = {0};
+
 uint32_t setPWMFreq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
 {
 	if (hpwm == NULL)
