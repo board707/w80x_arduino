@@ -5,10 +5,6 @@
 #include "./include/driver/wm_hal.h"
 #include <GPIO_defs.h>
 
-#define PINS_COUNT          (44U)           // Количество выводов на плате. Выводы PB19,PB20,PB23 не используются
-#define ADC_COUNT           (4U)            // Количество каналов АЦП
-#define PWM_COUNT           (5U)            // Количество каналов ШИМ
-
 
 // Перечисление выводов - индекс массива возможных альтернатив 
 
