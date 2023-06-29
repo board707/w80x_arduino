@@ -115,12 +115,12 @@ void configPWM_Pulses(PWM_HandleTypeDef *hpwm, uint8_t pulse_cnt, pwm_irq_callba
 		NVIC_ClearPendingIRQ(PWM_IRQn);
 		NVIC_EnableIRQ(PWM_IRQn);
 	}
-		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+		SET_BIT(PWM->IF, (1 << hpwm->Channel));  // clearing IRQ flag by writing 1
 		SET_BIT(PWM->IE, (1 << hpwm->Channel));
 	}
 	else
 	{
-		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+		SET_BIT(PWM->IF, (1 << hpwm->Channel));  // clearing IRQ flag by writing 1
 		CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
 	}
 
@@ -143,7 +143,7 @@ void disablePWM_Pulses(PWM_HandleTypeDef *hpwm, bool start)
 		return;
 
 	HAL_PWM_Stop(hpwm);
-	CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+	SET_BIT(PWM->IF, (1 << hpwm->Channel));  // clearing IRQ flag by writing 1
 	CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
 
 	pwm_callback[hpwm->Channel] = NULL;
@@ -179,7 +179,7 @@ void stopPWM(PWM_HandleTypeDef* hpwm)  {
 void HAL_PWM_IRQHandler(void) {
  for (int8_t i = 0; i < PWM_COUNT; i++) {
 	if ((READ_BIT(PWM->IE, (1 << i))) && (READ_BIT(PWM->IF, (1 << i))) ) {
-		CLEAR_BIT(PWM->IF, (1 << i));
+		SET_BIT(PWM->IF, (1 << i));  // clear IRQ flag
 		if (pwm_callback[i] != NULL)  {
 			 (* (pwm_callback[i])) ();
 
