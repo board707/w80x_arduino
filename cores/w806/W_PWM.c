@@ -150,6 +150,8 @@ void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel)
 	hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
 	hpwm->Channel = channel;
 	HAL_PWM_Init(hpwm);
+	NVIC_ClearPendingIRQ(PWM_IRQn);
+	NVIC_EnableIRQ(PWM_IRQn);
 	HAL_PWM_Start(hpwm);
 }
 
