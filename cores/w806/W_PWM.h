@@ -23,5 +23,5 @@ void startPWM(PWM_HandleTypeDef* hpwm);
 void stopPWM(PWM_HandleTypeDef* hpwm);
 
 // depredicated, leave for compatibility
-uint32_t setPWMFreq(PWM_HandleTypeDef* hpwm, uint32_t pwmFreq);
+uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq);
 #endif

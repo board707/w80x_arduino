@@ -28,8 +28,9 @@ uint32_t setPWM_Freq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
 }
 
 // for compatibility with prev release
-uint32_t setPWMFreq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
+uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq)
 {
+	PWM_HandleTypeDef *hpwm = getPWMHandle(pin);
 	return(setPWM_Freq_Period(hpwm, pwmFreq, PWM_8BIT));
 }
 
