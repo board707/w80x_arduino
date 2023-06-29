@@ -27,6 +27,12 @@ uint32_t setPWM_Freq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
 	return(setPWM_Freq_Period(hpwm, pwmFreq, PWM_8BIT));
 }
 
+// for compatibility with prev release
+uint32_t setPWMFreq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
+{
+	return(setPWM_Freq_Period(hpwm, pwmFreq, PWM_8BIT));
+}
+
 void setPWM_OutInverse(PWM_HandleTypeDef *hpwm, bool pwm_inverse, bool start)
 {
 	if (hpwm == NULL)

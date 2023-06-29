@@ -8,6 +8,8 @@
 
 /** pwm interrupt callback type **/
 typedef void (*pwm_irq_callback)();
+// PWM IRQ handler
+void HAL_PWM_IRQHandler(void);
 
 void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel);
 uint32_t setPWM_Freq(PWM_HandleTypeDef* hpwm, uint32_t pwmFreq);
@@ -20,6 +22,6 @@ void disablePWM_Pulses(PWM_HandleTypeDef *hpwm, bool start);
 void startPWM(PWM_HandleTypeDef* hpwm);
 void stopPWM(PWM_HandleTypeDef* hpwm);
 
-void HAL_PWM_IRQHandler(void);
-
+// depredicated, leave for compatibility
+uint32_t setPWMFreq(PWM_HandleTypeDef* hpwm, uint32_t pwmFreq);
 #endif
