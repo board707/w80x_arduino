@@ -5,7 +5,7 @@
 
 pwm_irq_callback pwm_callback[PWM_COUNT]  = {0};
 
-uint32_t setPWMFreq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
+uint32_t setPWM_Freq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
 {
 	if (hpwm == NULL)
 		return 0;
@@ -23,7 +23,7 @@ uint32_t setPWMFreq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
 	return 0;
 }
 
-void setPWM_Inverse(PWM_HandleTypeDef *hpwm, bool pwm_inverse, bool start)
+void setPWM_OutInverse(PWM_HandleTypeDef *hpwm, bool pwm_inverse, bool start)
 {
 	if (hpwm == NULL)
 		return ;
@@ -42,54 +42,30 @@ void setPWM_Inverse(PWM_HandleTypeDef *hpwm, bool pwm_inverse, bool start)
 		HAL_PWM_Start(hpwm);
 	
 }
-
-void enablePWM_Train(PWM_HandleTypeDef *hpwm, uint8_t num_cnt, pwm_irq_callback callback, bool start)
-{
-	if ((hpwm == NULL) || (num_cnt == 0))
-		return;
-
-	HAL_PWM_Stop(hpwm);
-	if (callback != NULL)
-	{
-		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
-		SET_BIT(PWM->IE, (1 << hpwm->Channel));
-	}
-	else
-	{
-		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
-		CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
-	}
-	pwm_callback[hpwm->Channel] = callback;
-	setPWM_OneShotMode(hpwm, false, num_cnt, start);
-}
-
-void disablePWM_Train(PWM_HandleTypeDef *hpwm, bool start)
-{
+void setPWM_AutoReload(PWM_HandleTypeDef *hpwm, bool pwm_autoreload, bool start) {
 	if (hpwm == NULL)
-		return;
-
+		return ;
 	HAL_PWM_Stop(hpwm);
-	CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
-	CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
-
-	pwm_callback[hpwm->Channel] = NULL;
-	setPWM_OneShotMode(hpwm, false, 0, start);
-}
-
-void setPWM_OneShotMode(PWM_HandleTypeDef *hpwm, bool os_mode, uint8_t num_cnt, bool start)
-{
-	if (hpwm == NULL)
-		return;
-	HAL_PWM_Stop(hpwm);
-	if (os_mode)
-	{
-		hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_DISABLE;
-	}
-
-	else
+	if (pwm_autoreload)
 	{
 		hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
+	}
 
+	else
+	{
+		hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_DISABLE;
+
+	}
+
+	HAL_PWM_Init(hpwm);
+	if (start)
+		HAL_PWM_Start(hpwm);
+}
+
+void setPWM_PulseCounter(PWM_HandleTypeDef *hpwm, uint8_t num_cnt) {
+        if (hpwm == NULL)
+			return;
+		
 		uint32_t Channel = hpwm->Channel;
 		uint32_t PNUM_Mask = 0;
 		uint32_t reg_val = 0;
@@ -124,20 +100,58 @@ void setPWM_OneShotMode(PWM_HandleTypeDef *hpwm, bool os_mode, uint8_t num_cnt, 
 		{
 			MODIFY_REG(hpwm->Instance->PNUM, PNUM_Mask, reg_val);
 		}
-	}
-	HAL_PWM_Init(hpwm);
-	if (start)
-		HAL_PWM_Start(hpwm);
+
 }
-// Инициализация ШИМ
-/*void setup_pwm()
+
+void configPWM_Pulses(PWM_HandleTypeDef *hpwm, uint8_t pulse_cnt, pwm_irq_callback callback, bool start)
 {
-	for(int8_t i = PWM_COUNT-1; i >= 0 ; i--) {
-		if (pwmPinState[i].isPresent == true) {
-			PWM_Init(&(pwmPinState[i].hpwm), pwmPinState[i].channel);
-		}
+	if ((hpwm == NULL) || (pulse_cnt == 0))
+		return;
+
+	HAL_PWM_Stop(hpwm);
+	if (callback != NULL)
+	{
+		if (pwm_callback[hpwm->Channel] == NULL )  {
+		NVIC_ClearPendingIRQ(PWM_IRQn);
+		NVIC_EnableIRQ(PWM_IRQn);
 	}
-}*/
+		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+		SET_BIT(PWM->IE, (1 << hpwm->Channel));
+	}
+	else
+	{
+		CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+		CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
+	}
+
+    
+	pwm_callback[hpwm->Channel] = callback;
+	if (pulse_cnt == 1) {
+		setPWM_AutoReload(hpwm, false, start);
+	}
+	else {
+		setPWM_PulseCounter(hpwm, pulse_cnt); 
+		setPWM_AutoReload(hpwm, true, start);
+		
+	}
+	
+}
+
+void disablePWM_Pulses(PWM_HandleTypeDef *hpwm, bool start)
+{
+	if (hpwm == NULL)
+		return;
+
+	HAL_PWM_Stop(hpwm);
+	CLEAR_BIT(PWM->IF, (1 << hpwm->Channel));
+	CLEAR_BIT(PWM->IE, (1 << hpwm->Channel));
+
+	pwm_callback[hpwm->Channel] = NULL;
+	setPWM_PulseCounter(hpwm, 0); 
+	setPWM_AutoReload(hpwm, true, start);
+}
+
+
 
 void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel)
 {
@@ -149,14 +163,18 @@ void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel)
 	hpwm->Init.Pulse = 19;	  // Заполнение = (19 + 1) / (255 + 1) = 7%
 	hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
 	hpwm->Channel = channel;
+	setPWM_PulseCounter(hpwm, 0); 
 	HAL_PWM_Init(hpwm);
-	NVIC_ClearPendingIRQ(PWM_IRQn);
-	NVIC_EnableIRQ(PWM_IRQn);
 	HAL_PWM_Start(hpwm);
 }
 
-void startPWM(PWM_HandleTypeDef* hpwm)  { HAL_PWM_Start(hpwm);}
-void stopPWM(PWM_HandleTypeDef* hpwm)  { HAL_PWM_Stop(hpwm);}
+void startPWM(PWM_HandleTypeDef* hpwm)  { 
+	HAL_PWM_Start(hpwm);
+	}
+
+void stopPWM(PWM_HandleTypeDef* hpwm)  { 
+	HAL_PWM_Stop(hpwm);
+	}
 
 void HAL_PWM_IRQHandler(void) {
  for (int8_t i = 0; i < PWM_COUNT; i++) {
