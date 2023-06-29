@@ -11,6 +11,7 @@ typedef void (*pwm_irq_callback)();
 
 void PWM_Init(PWM_HandleTypeDef* hpwm, uint32_t channel);
 uint32_t setPWM_Freq(PWM_HandleTypeDef* hpwm, uint32_t pwmFreq);
+uint32_t setPWM_Freq_Period(PWM_HandleTypeDef* hpwm, uint32_t pwmFreq, uint8_t period);
 void setPWM_OutInverse(PWM_HandleTypeDef* hpwm, bool pwm_inverse, bool start);
 void setPWM_AutoReload(PWM_HandleTypeDef *hpwm, bool pwm_autoreload, bool start);
 void setPWM_PulseCounter(PWM_HandleTypeDef *hpwm, uint8_t num_cnt);

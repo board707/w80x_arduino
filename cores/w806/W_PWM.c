@@ -5,22 +5,26 @@
 
 pwm_irq_callback pwm_callback[PWM_COUNT]  = {0};
 
-uint32_t setPWM_Freq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
+uint32_t setPWM_Freq_Period(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq, uint8_t period)
 {
 	if (hpwm == NULL)
 		return 0;
 
-	uint32_t freq = 40000000ul / PWM_8BIT;
+	uint32_t freq = 40000000ul / period;
 	uint32_t prescaler = freq / pwmFreq + 1;
 	HAL_PWM_Stop(hpwm);
-	hpwm->Init.Prescaler = prescaler; // Прескалер
-									  // Частота ШИМ = 40,000,000 / prescaler / (255 + 1)
-	if (HAL_OK == HAL_PWM_Freq_Set(hpwm, prescaler, PWM_8BIT))
+	hpwm->Init.Prescaler = prescaler; // PWM Freq = 40,000,000 / prescaler / (period + 1)
+									  
+	if (HAL_OK == HAL_PWM_Freq_Set(hpwm, prescaler, period))
 	{
 		HAL_PWM_Start(hpwm);
 		return (freq / prescaler);
 	}
 	return 0;
+}
+uint32_t setPWM_Freq(PWM_HandleTypeDef *hpwm, uint32_t pwmFreq)
+{
+	return(setPWM_Freq_Period(hpwm, pwmFreq, PWM_8BIT));
 }
 
 void setPWM_OutInverse(PWM_HandleTypeDef *hpwm, bool pwm_inverse, bool start)
@@ -158,9 +162,9 @@ void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel)
 	hpwm->Instance = PWM;
 	hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
 	hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
-	hpwm->Init.Prescaler = 8; // Прескалер
-	hpwm->Init.Period = 255;  // Частота ШИМ = 40,000,000 / 8 / (255 + 1) = 19 530 Hz
-	hpwm->Init.Pulse = 0;	  // Заполнение = (19 + 1) / (255 + 1) = 7%
+	hpwm->Init.Prescaler = 8; 
+	hpwm->Init.Period = 255;  // PWM Freq = 40,000,000 / prescaler / (255 + 1) = 19 530 Hz
+	hpwm->Init.Pulse = 0;	  
 	hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
 	hpwm->Channel = channel;
 	setPWM_PulseCounter(hpwm, 0); 
