@@ -160,7 +160,7 @@ void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel)
 	hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;
 	hpwm->Init.Prescaler = 8; // Прескалер
 	hpwm->Init.Period = 255;  // Частота ШИМ = 40,000,000 / 8 / (255 + 1) = 19 530 Hz
-	hpwm->Init.Pulse = 19;	  // Заполнение = (19 + 1) / (255 + 1) = 7%
+	hpwm->Init.Pulse = 0;	  // Заполнение = (19 + 1) / (255 + 1) = 7%
 	hpwm->Init.OutMode = PWM_OUT_MODE_INDEPENDENT;
 	hpwm->Channel = channel;
 	setPWM_PulseCounter(hpwm, 0); 

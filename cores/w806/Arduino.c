@@ -18,6 +18,7 @@ typedef struct {
     uint8_t pin;
     PWM_HandleTypeDef hpwm;
 	bool isPresent;
+	uint8_t lastDuty;
 } pwmPinStateTD;
 pwmPinStateTD pwmPinState[PWM_COUNT] = { 0 };
 //PWM_HandleTypeDef pwm[PWM_COUNT] = { 0 };
@@ -142,23 +143,23 @@ void pinMode(uint8_t pin, uint8_t mode)
 						switch(pin_Map[pin].ulPinAttribute & PIN_PWM_Msk) {
 							case PWM0:
 								pwm_channel = PWM_CHANNEL_0;
-								__HAL_AFIO_REMAP_PWM0(pin_Map[pin].pPort, pin_Map[pin].halPin);
+								//__HAL_AFIO_REMAP_PWM0(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
 							case PWM1:
 								pwm_channel = PWM_CHANNEL_1;
-								__HAL_AFIO_REMAP_PWM1(pin_Map[pin].pPort, pin_Map[pin].halPin);
+								//__HAL_AFIO_REMAP_PWM1(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
 							case PWM2:
 								pwm_channel = PWM_CHANNEL_2;
-								__HAL_AFIO_REMAP_PWM2(pin_Map[pin].pPort, pin_Map[pin].halPin);
+								//__HAL_AFIO_REMAP_PWM2(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
 							case PWM3:
 								pwm_channel = PWM_CHANNEL_3;
-								__HAL_AFIO_REMAP_PWM3(pin_Map[pin].pPort, pin_Map[pin].halPin);
+								//__HAL_AFIO_REMAP_PWM3(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
 							case PWM4:
 								pwm_channel = PWM_CHANNEL_4;
-								__HAL_AFIO_REMAP_PWM4(pin_Map[pin].pPort, pin_Map[pin].halPin);
+								//__HAL_AFIO_REMAP_PWM4(pin_Map[pin].pPort, pin_Map[pin].halPin);
 								break;
 							
 							default:
@@ -168,6 +169,11 @@ void pinMode(uint8_t pin, uint8_t mode)
 							__HAL_RCC_PWM_CLK_ENABLE();
 							is_pwm_clk_en = true;
 						}
+						// Setup the pin as GPIO OUTPUT and set it LOW
+						// to set zero duty at PWM init.
+						// We need it because PWM always produce pulses even with Duty = 0
+						pinMode(pin, OUTPUT);
+						digitalWrite(pin, LOW);
 						pwmPinState[pwm_channel].channel = pwm_channel;
 						pwmPinState[pwm_channel].pin = pin;
 						//pwmPinState[pwm_channel].hpwm = pwm[pwm_channel];
@@ -176,6 +182,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 							HAL_PWM_DeInit(&(pwmPinState[pwm_channel].hpwm));
                             }
 						pwmPinState[pwm_channel].isPresent = true;
+						pwmPinState[pwm_channel].lastDuty = 0;
 						PWM_Init(&(pwmPinState[pwm_channel].hpwm), pwm_channel);
 					} else {
 						printf("Вывод %d не работает в ШИМ режиме! \n\r", pin);
@@ -217,17 +224,55 @@ PWM_HandleTypeDef* getPWMHandle(uint8_t pin) {
 	}
 	return NULL;
 }
-// Установка заполнения ШИМ
-void analogWrite(uint8_t pin, uint8_t val) {
-	
-    for(uint8_t i = 0; i < PWM_COUNT; i++) {
-		if(pwmPinState[i].pin == pin) {
-			HAL_PWM_Duty_Set(&(pwmPinState[i].hpwm), val);
-			pwmPinState[i].hpwm.Init.Pulse = val; 
-		}
-    }
-}
+// PWM Duty setup
+void analogWrite(uint8_t pin, uint8_t val)
+{
 
+	for (uint8_t i = 0; i < PWM_COUNT; i++)
+	{
+		if (pwmPinState[i].pin == pin)
+		{
+			if (val == pwmPinState[i].lastDuty) {   
+				return;    // value not changed, nothing to do
+			}
+			
+			if (val && (pwmPinState[i].lastDuty == 0))
+			{
+					switch (pwmPinState[i].channel)
+					{
+					case PWM_CHANNEL_0:
+						__HAL_AFIO_REMAP_PWM0(pin_Map[pin].pPort, pin_Map[pin].halPin);
+						break;
+					case PWM_CHANNEL_1:
+						__HAL_AFIO_REMAP_PWM1(pin_Map[pin].pPort, pin_Map[pin].halPin);
+						break;
+					case PWM_CHANNEL_2:
+						__HAL_AFIO_REMAP_PWM2(pin_Map[pin].pPort, pin_Map[pin].halPin);
+						break;
+					case PWM_CHANNEL_3:
+						__HAL_AFIO_REMAP_PWM3(pin_Map[pin].pPort, pin_Map[pin].halPin);
+						break;
+					case PWM_CHANNEL_4:
+						__HAL_AFIO_REMAP_PWM4(pin_Map[pin].pPort, pin_Map[pin].halPin);
+						break;
+					}
+					
+			}
+			else if ((val == 0) && (pwmPinState[i].lastDuty != 0))
+			{
+					// Setup the pin as GPIO OUTPUT and set it LOW
+					// to set zero duty at PWM channel.
+					// We need it because PWM always produce pulses even with Duty = 0
+					pinMode(pin, OUTPUT);
+					digitalWrite(pin, LOW);
+					
+			}
+			pwmPinState[i].lastDuty = val;
+			HAL_PWM_Duty_Set(&(pwmPinState[i].hpwm), val);
+			pwmPinState[i].hpwm.Init.Pulse = val;
+		}
+	}
+}
 
 // Инициализация АЦП
 /*void setup_adc() {
