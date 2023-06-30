@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include "./include/driver/wm_pwm.h"
 
+#define SPIClass HardSPI
 
 #ifdef __cplusplus 
 extern "C" {
