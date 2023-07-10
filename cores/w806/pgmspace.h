@@ -77,11 +77,47 @@ int	vsnprintf_P(char *str, size_t strSize, PGM_P formatP, va_list ap) __attribut
 // b3, b2, b1, b0
 //     w1,     w0
 
-#define pgm_read_byte(addr)     (*reinterpret_cast<const uint8_t*>(addr))
+// Commented by @bort707  2023.Jun.30
+// reason - to get rid numerous strict-aliasing warnings
+
+/*#define pgm_read_byte(addr)     (*reinterpret_cast<const uint8_t*>(addr))
 #define pgm_read_word(addr)     (*reinterpret_cast<const uint16_t*>(addr))
 #define pgm_read_dword(addr) 		(*reinterpret_cast<const uint32_t*>(addr))
 #define pgm_read_float(addr) 		(*reinterpret_cast<const float*>(addr))
-#define pgm_read_ptr(addr) 		(*reinterpret_cast<const void* const *>(addr))
+#define pgm_read_ptr(addr) 		(*reinterpret_cast<const void* const *>(addr))*/
+
+// Added from the EarlePhilhower RP2040 core
+// https://github.com/earlephilhower/ArduinoCore-API/blob/master/api/deprecated-avr-comp/avr/pgmspace.h
+//
+#ifdef __cplusplus
+extern "C"{
+#endif
+static inline unsigned char pgm_read_byte(const void *addr) {
+    return *(const unsigned char *)(addr);
+}
+static inline unsigned short pgm_read_word(const void *addr) {
+    const unsigned char *a = (const unsigned char *)addr;
+    return pgm_read_byte(a) | ( pgm_read_byte(a + 1) << 8 );
+}
+static inline unsigned long pgm_read_dword(const void *addr) {
+    const unsigned char *a = (const unsigned char *)addr;
+    return pgm_read_byte(a) | ( pgm_read_byte(a + 1) << 8 ) | 
+      ( pgm_read_byte(a + 2) << 16 ) | ( pgm_read_byte(a + 3) << 24 );
+}
+static inline void *pgm_read_ptr(const void *addr) {
+    return (void*) pgm_read_dword(addr);
+}
+static inline float pgm_read_float(const void *addr) {
+    union {
+        void *p;
+        float f;
+    } x;
+    x.p = pgm_read_ptr(addr);
+    return x.f;
+}
+#ifdef __cplusplus
+}
+#endif
 
 #define pgm_read_byte_near(addr) 	pgm_read_byte(addr)
 #define pgm_read_word_near(addr) 	pgm_read_word(addr)

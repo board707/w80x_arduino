@@ -11,6 +11,7 @@
 #include "./include/driver/wm_hal.h"
 #include "W_interrupt.h"
 #include "Common.h"
+
 /*
  * C++ type
  */
@@ -36,6 +37,18 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart5;
+
+
+
+#ifdef __cplusplus
+extern "C"  {
+#endif
+
+#include "W_PWM.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 
 

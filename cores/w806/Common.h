@@ -6,7 +6,9 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "./include/driver/wm_pwm.h"
 
+#define SPIClass HardSPI
 
 #ifdef __cplusplus 
 extern "C" {
@@ -92,8 +94,8 @@ uint8_t digitalRead(uint8_t pin);
 
 // Прототипы для режимов ШИМ/АЦП
 //void setup_pwm(void);
+PWM_HandleTypeDef* getPWMHandle(uint8_t pin);
 void analogWrite(uint8_t pin, uint8_t val);
-uint32_t setPWMFreq(uint8_t pin, uint32_t pwmFreq);
 //void setup_adc(void);
 double analogRead(uint8_t pin);
 

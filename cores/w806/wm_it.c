@@ -18,6 +18,8 @@ extern uint32_t GPIOA_CallbackFlag;
 extern uint32_t GPIOB_CallbackFlag;
 
 
+__attribute__((weak)) void HAL_PWM_IRQHandler(void);
+
 
 #define readl(addr) ({unsigned int __v = (*(volatile unsigned int *) (addr)); __v;})
 __attribute__((isr)) void CORET_IRQHandler(void)
@@ -72,4 +74,14 @@ __attribute__((isr)) void UART2_5_IRQHandler(void)
     HAL_UART_IRQHandler(&huart3);
     HAL_UART_IRQHandler(&huart4);
     HAL_UART_IRQHandler(&huart5);
+}
+
+__attribute__((isr)) void PWM_IRQHandler(void)
+{
+  HAL_PWM_IRQHandler();
+}
+
+__attribute__((weak)) void HAL_PWM_IRQHandler(void)
+{
+   
 }

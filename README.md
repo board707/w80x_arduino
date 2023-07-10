@@ -28,6 +28,8 @@ The ticked options have been implemented and tested, the unticked ones are under
 - [ ] SDIO interface
 - [ ] DMA 
 
+To detailed development info see the [CHANGES.txt](CHANGES.TXT) file.
+
 ## Installation in Arduino IDE
 
 1. **File -> Preferences**
