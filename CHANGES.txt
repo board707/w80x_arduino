@@ -1,5 +1,5 @@
 0.0.4 July, 10 2023
-    - add advanced PWM features (see [reference file](doc/PWM.md))
+    - add advanced PWM features (see doc/PWM.md file)
     - fix analogWrite() to output no signal with duty = 0
     - change the pgmspace.h to get rid strict assignment warnings
     - add __cxa_pure_virtual function to main.cpp to prevent linker bug
