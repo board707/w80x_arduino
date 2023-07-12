@@ -139,6 +139,7 @@ class HardSPI : public Base_SPI {
         void useSoftCS();
 		void setTimeout(uint32_t timeout)  { timeOut = timeout;}
 		uint32_t getTimeout() {return timeOut;};
+        SPI_HandleTypeDef* getHalhandle() {return &hspi;}
         //void setBitOrder(uint8_t);
         //void setDataMode(uint8_t);
         //void setClockDivider(uint8_t);
