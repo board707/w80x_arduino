@@ -33,14 +33,14 @@ w801.menu.cpu_frq.2MHZ=2MHZ
 w801.menu.cpu_frq.2MHZ.build.f_cpu=2000000
 #---------------------------------------
 # Release /Optimise
-w80x.menu.opt.default=Default (-O2 -g3)
-#w80x.menu.opt.release.build.flags.optimize=-Os -flto
-w80x.menu.opt.maxspeed=Maximum speed (-O3)
-w80x.menu.opt.maxspeed.build.flags.optimize=-O3
-w80x.menu.opt.minsize=Minimum code size ( -Os)
-w80x.menu.opt.minsize.build.flags.optimize=-Os
-w80x.menu.opt.debug=Debug (-g)
-w80x.menu.opt.debug.build.flags.optimize=-Og
+w801.menu.opt.default=Default (-O2 -g3)
+#w801.menu.opt.release.build.flags.optimize=-Os -flto
+w801.menu.opt.maxspeed=Maximum speed (-O3)
+w801.menu.opt.maxspeed.build.flags.optimize=-O3
+w801.menu.opt.minsize=Minimum code size ( -Os)
+w801.menu.opt.minsize.build.flags.optimize=-Os
+w801.menu.opt.debug=Debug (-g)
+w801.menu.opt.debug.build.flags.optimize=-Og
 
 #---------------------------------------
 # Upload Speed
@@ -77,8 +77,12 @@ w805.serial.disableRTS=true
 
 #---------------------------------------
 # Release /Optimise
-w805.menu.opt.release=Release ( -Os)
-w805.menu.opt.release.build.flags.optimize=-Os -flto
+w805.menu.opt.default=Default (-O2 -g3)
+#w805.menu.opt.release.build.flags.optimize=-Os -flto
+w805.menu.opt.maxspeed=Maximum speed (-O3)
+w805.menu.opt.maxspeed.build.flags.optimize=-O3
+w805.menu.opt.minsize=Minimum code size ( -Os)
+w805.menu.opt.minsize.build.flags.optimize=-Os
 w805.menu.opt.debug=Debug (-g)
 w805.menu.opt.debug.build.flags.optimize=-Og
 
@@ -129,8 +133,12 @@ w806.build.mcpu=ck804ef
 w806.serial.disableRTS=true
 #---------------------------------------
 # Release /Optimise
-w806.menu.opt.release=Release ( -Os)
-w806.menu.opt.release.build.flags.optimize=-Os -flto
+w806.menu.opt.default=Default (-O2 -g3)
+#w806.menu.opt.release.build.flags.optimize=-Os -flto
+w806.menu.opt.maxspeed=Maximum speed (-O3)
+w806.menu.opt.maxspeed.build.flags.optimize=-O3
+w806.menu.opt.minsize=Minimum code size ( -Os)
+w806.menu.opt.minsize.build.flags.optimize=-Os
 w806.menu.opt.debug=Debug (-g)
 w806.menu.opt.debug.build.flags.optimize=-Og
 
@@ -182,8 +190,12 @@ air103.serial.disableRTS=true
 
 #---------------------------------------
 # Release /Optimise
-air103.menu.opt.release=Release ( -Os)
-air103.menu.opt.release.build.flags.optimize=-Os -flto
+air103.menu.opt.default=Default (-O2 -g3)
+#air103.menu.opt.release.build.flags.optimize=-Os -flto
+air103.menu.opt.maxspeed=Maximum speed (-O3)
+air103.menu.opt.maxspeed.build.flags.optimize=-O3
+air103.menu.opt.minsize=Minimum code size ( -Os)
+air103.menu.opt.minsize.build.flags.optimize=-Os
 air103.menu.opt.debug=Debug (-g)
 air103.menu.opt.debug.build.flags.optimize=-Og
 
