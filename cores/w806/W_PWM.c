@@ -1,5 +1,6 @@
 #include "./include/driver/wm_pwm.h"
 #include "W_PWM.h"
+#include "W_IRQ_Priority.h"
 
 
 
@@ -124,6 +125,7 @@ void configPWM_Pulses(PWM_HandleTypeDef *hpwm, uint8_t pulse_cnt, pwm_irq_callba
 	{
 		if (pwm_callback[hpwm->Channel] == NULL )  {
 		NVIC_ClearPendingIRQ(PWM_IRQn);
+		NVIC_SetPriority(PWM_IRQn, PWM_IRQn_PRIORITY);
 		NVIC_EnableIRQ(PWM_IRQn);
 	}
 		SET_BIT(PWM->IF, (1 << hpwm->Channel));  // clearing IRQ flag by writing 1
