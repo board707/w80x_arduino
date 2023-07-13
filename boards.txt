@@ -33,10 +33,14 @@ w801.menu.cpu_frq.2MHZ=2MHZ
 w801.menu.cpu_frq.2MHZ.build.f_cpu=2000000
 #---------------------------------------
 # Release /Optimise
-w801.menu.opt.release=Release ( -Os)
-w801.menu.opt.release.build.flags.optimize=-Os -flto
-w801.menu.opt.debug=Debug (-g)
-w801.menu.opt.debug.build.flags.optimize=-Og
+w80x.menu.opt.default=Default (-O2 -g3)
+#w80x.menu.opt.release.build.flags.optimize=-Os -flto
+w80x.menu.opt.maxspeed=Maximum speed (-O3)
+w80x.menu.opt.maxspeed.build.flags.optimize=-O3
+w80x.menu.opt.minsize=Minimum code size ( -Os)
+w80x.menu.opt.minsize.build.flags.optimize=-Os
+w80x.menu.opt.debug=Debug (-g)
+w80x.menu.opt.debug.build.flags.optimize=-Og
 
 #---------------------------------------
 # Upload Speed

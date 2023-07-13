@@ -20,12 +20,17 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 
+# This can be overridden in boards.txt
+build.extra_flags=
+build.flags.optimize=-O2 -g3
+
+
 # Default "compiler.path" is correct, change only if you want to override the initial value
 compiler.path={runtime.tools.csky.path}/bin/
 compiler.wrapper.path={runtime.tools.w80x_tool.path}/wrapper
 compiler.wrapper.path.windows={runtime.tools.w80x_tool.path}/win/busybox" ash "{runtime.tools.w80x_tool.path}/wrapper
 compiler.c.cmd=csky-elfabiv2-gcc
-compiler.c.flags=-mhard-float -DGCC_COMPILE=1 -O2 -g3 -Wall -ffunction-sections -fdata-sections -c
+compiler.c.flags=-mhard-float -DGCC_COMPILE=1 {build.flags.optimize} -Wall -ffunction-sections -fdata-sections -c
 
 compiler.c.elf.flags=-Wl,--gc-sections -Wl,-zmax-page-size=1024 -Wl,--whole-archive
 compiler.c.elf.cmd=csky-elfabiv2-gcc
@@ -33,7 +38,7 @@ compiler.c.elf.cmd=csky-elfabiv2-gcc
 compiler.S.flags=-mhard-float -Wa,--gdwarf2
 
 compiler.cpp.cmd=csky-elfabiv2-g++
-compiler.cpp.flags=-mhard-float -DGCC_COMPILE=1 -O2 -g3 -Wall -ffunction-sections -fdata-sections -c
+compiler.cpp.flags=-mhard-float -DGCC_COMPILE=1 {build.flags.optimize} -Wall -ffunction-sections -fdata-sections -c
 
 compiler.ar.cmd=csky-elfabiv2-gcc-ar
 compiler.ar.flags=ru
@@ -46,8 +51,7 @@ compiler.elf2bin.cmd=csky-elfabiv2-objcopy
 compiler.ldflags=-lm -Wl,-T{build.core.path}/ld/gcc_csky.ld
 compiler.size.cmd=csky-elfabiv2-size
 
-# This can be overridden in boards.txt
-build.extra_flags=
+
 
 
 
