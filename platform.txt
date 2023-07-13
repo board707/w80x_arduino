@@ -8,6 +8,8 @@
 
 name= W80x Boards
 version=0.1.2
+build.boards_family=HLK_w80x
+
 
 #runtime.tools.csky.path={runtime.hardware.path}/tools/csky-abiv2-elf-toolchain
 #runtime.tools.w80x_tool.path={runtime.hardware.path}/tools/w80x_tool
@@ -47,7 +49,10 @@ compiler.size.cmd=csky-elfabiv2-size
 # This can be overridden in boards.txt
 build.extra_flags=
 
+
+
 # These can be overridden in platform.local.txt
+compiler.define.flags= -D__{build.board}__ -DARDUINO_{build.boards_family}
 compiler.c.extra_flags=
 compiler.c.elf.extra_flags=-Wl,--no-whole-archive -nostartfiles -mhard-float -lsupc++ 
 #compiler.S.extra_flags=-I{runtime.tools.csky.path}/csky-elfabiv2/include/csi/csi_core/csi_cdk/ -ID:/C-Sky/CDK/CSKY/csi/csi_core/include/ -ID:/C-Sky/CDK/CSKY/csi/csi_driver/include/
@@ -81,10 +86,10 @@ recipe.hooks.prebuild.2.pattern.linux=bash -c "if [ ! -f {build.tools.path}/wm_t
 # --------------------
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.c.extra_flags} {build.extra_flags} {compiler.includes} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.c.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.c.extra_flags} {build.extra_flags} {compiler.includes} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.includes} {build.extra_flags} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.cpp.flags} -DF_CPU={build.f_cpu} -DARDUINO_CORE_{build.core} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.includes} {build.extra_flags} {includes} -MMD -MP -MF {object_file}.d -MT {object_file} -o "{object_file}"
 
 ## Compile S files
 recipe.S.o.pattern="{compiler.path}{compiler.c.cmd}" -c "{source_file}" -mcpu={build.mcpu} {compiler.S.flags} -MMD -MP -MT {object_file} -MF {object_file}.d -o "{object_file}" {compiler.S.extra_flags} {build.extra_flags} {compiler.includes} {includes}
@@ -119,11 +124,11 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 
 ## Preprocessor
 preproc.includes.flags=-w -x c++ -M -MG -MP
-recipe.preproc.includes="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.includes.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {build.extra_flags} {compiler.libs.c.flags} {includes} "{source_file}"
+recipe.preproc.includes="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.includes.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {build.extra_flags} {compiler.libs.c.flags} {includes} "{source_file}"
 
 #preproc.macros.flags=-w -x c++ -E -CC
 preproc.macros.flags=
-recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.macros.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.libs.c.flags} {build.extra_flags} {includes} "{source_file}" -o "{preprocessed_file_path}"
+recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.macros.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.libs.c.flags} {build.extra_flags} {includes} "{source_file}" -o "{preprocessed_file_path}"
 
 # W806 Uploader tools
 # ------------------------------
