@@ -17,6 +17,8 @@ extern UART_HandleTypeDef huart5;
 extern uint32_t GPIOA_CallbackFlag;
 extern uint32_t GPIOB_CallbackFlag;
 
+extern DMA_HandleTypeDef hdma_channel0;
+
 
 __attribute__((weak)) void HAL_PWM_IRQHandler(void);
 
@@ -84,4 +86,9 @@ __attribute__((isr)) void PWM_IRQHandler(void)
 __attribute__((weak)) void HAL_PWM_IRQHandler(void)
 {
    
+}
+
+__attribute__((isr)) void DMA_Channel0_IRQHandler(void)
+{
+    HAL_DMA_IRQHandler(&hdma_channel0);
 }

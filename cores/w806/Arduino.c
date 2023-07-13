@@ -10,6 +10,8 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 
+DMA_HandleTypeDef hdma_channel0;
+
 
 
 // Массив для фиксации занятых каналов PWM

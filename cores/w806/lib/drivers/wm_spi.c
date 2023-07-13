@@ -1076,6 +1076,27 @@ static void SPI_DMATransmitCplt(DMA_HandleTypeDef *hdma)
     if ((hspi->TxXferCount == 0) && ((hdma->Init.Mode == DMA_MODE_NORMAL_SINGLE) || (hdma->Init.Mode == DMA_MODE_LINK_SINGLE)))
     {
         CLEAR_BIT(hspi->Instance->MODE_CFG, SPI_MODE_CFG_TXDMA);
+         hspi->State = HAL_SPI_STATE_READY;
+    }
+    else {
+        uint32_t len = (hspi->TxXferCount > BLOCK_SIZE) ? BLOCK_SIZE : hspi->TxXferCount;
+      hspi->TxXferCount -= len;
+      hspi->pTxBuffPtr += BLOCK_SIZE;
+    __HAL_SPI_SET_CLK_NUM(hspi, (len * 8));
+    if (HAL_OK != HAL_DMA_Start_IT(hspi->hdmatx, 
+                                    (uint32_t)hspi->pTxBuffPtr, 
+                                    (uint32_t)&hspi->Instance->TXDATA,
+                                    len))
+    {
+        SET_BIT(hspi->ErrorCode, HAL_SPI_ERROR_DMA);
+        hspi->State = HAL_SPI_STATE_READY;
+        
+    }
+    __HAL_SPI_ENABLE_TX(hspi);
+    __HAL_SPI_CLEAR_FLAG(hspi, (SPI_INT_SRC_DONE | SPI_INT_SRC_TXOV | SPI_INT_SRC_TXUN | SPI_INT_SRC_TXRDY));
+    __HAL_SPI_ENABLE_IT(hspi, (SPI_INT_MASK_DONE | SPI_INT_MASK_TXUN));
+    SET_BIT(hspi->Instance->MODE_CFG, SPI_MODE_CFG_TXDMA);
+    __HAL_SPI_SET_START(hspi);
     }
 }
 

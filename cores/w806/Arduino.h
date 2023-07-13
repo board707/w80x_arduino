@@ -38,7 +38,7 @@ extern UART_HandleTypeDef huart3;
 extern UART_HandleTypeDef huart4;
 extern UART_HandleTypeDef huart5;
 
-
+extern DMA_HandleTypeDef hdma_channel0;
 
 #ifdef __cplusplus
 extern "C"  {

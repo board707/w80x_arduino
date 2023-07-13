@@ -13,6 +13,7 @@ void ADC_IRQHandler(void);
 void PMU_IRQHandler(void);
 void TOUCH_IRQHandler(void);
 void PWM_IRQHandler(void);
+void DMA_Channel0_IRQHandler(void);
 
 #endif
 
