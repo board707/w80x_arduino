@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "./include/driver/wm_pwm.h"
+#include "Binary.h"
 
 #define SPIClass HardSPI
 
@@ -69,6 +70,16 @@ typedef bool boolean;
 
 #define maskSet(value, mask) ((value) |= (mask))
 #define maskClear(value, mask) ((value) &= ~(mask))
+
+// AVR compatibility macros...naughty and accesses the HW directly
+#define digitalPinToPort(pin)       ((pin < PB0) ? GPIOA : GPIOB ) 
+#define digitalPinToBitMask(pin)    ((pin < PB0) ? (1UL << (pin)) : (1UL << (pin - PB0)))
+#define digitalPinToTimer(pin)      (0)
+#define digitalPinToInterrupt(pin)  (pin)
+#define NOT_AN_INTERRUPT            (-1)
+#define portOutputRegister(port)    ((volatile uint32_t*) &(port -> DATA))
+#define portInputRegister(port)     ((volatile uint32_t*) &(port -> DATA))
+#define portModeRegister(port)      ((volatile uint32_t*) &(port -> DIR))
 
 // Определения для DIO
 #define HIGH 			0x1
