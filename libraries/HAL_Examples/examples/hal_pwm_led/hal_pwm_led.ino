@@ -10,7 +10,7 @@ PWM_HandleTypeDef hal_pwm[3];
 
 int i, j, m[3] = { 0 }, d[3] = { DUTY_MIN, (DUTY_MIN + DUTY_MAX) / 2, DUTY_MAX - 1 };
 
-static void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel);
+static void initPWM(PWM_HandleTypeDef *hpwm, uint32_t channel);
 
 
 void setup() {
@@ -25,7 +25,7 @@ void setup() {
 
   // Starting each instance of PWM channel
   for (i = 2; i >= 0; i--) {
-    PWM_Init(&hal_pwm[i], PWM_CHANNEL_0 + i);
+    initPWM(&hal_pwm[i], PWM_CHANNEL_0 + i);
     HAL_PWM_Start(&hal_pwm[i]);
   }
 }
@@ -49,7 +49,7 @@ void loop() {
   delay(10);
 }
 
-static void PWM_Init(PWM_HandleTypeDef *hpwm, uint32_t channel) {
+static void initPWM(PWM_HandleTypeDef *hpwm, uint32_t channel) {
   hpwm->Instance = PWM;
   hpwm->Init.AutoReloadPreload = PWM_AUTORELOAD_PRELOAD_ENABLE;
   hpwm->Init.CounterMode = PWM_COUNTERMODE_EDGEALIGNED_DOWN;

@@ -14,12 +14,14 @@ enum pins
 {PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,PA8,PA9,PA10,PA11,PA12,PA13,PA14,PA15,
  PB0,PB1,PB2,PB3,PB4,PB5,PB6,PB7,PB8,PB9,PB10,PB11,PB12,PB13,PB14,PB15,PB16,PB17,PB18,PB19,PB20,PB21,PB22,PB23,PB24,PB25,PB26,PB27};
 
-// Аналоговые входы в стиле Ардуино
+// Arduino macros for analog inputs
+#define A1 PA1
+#define A2 PA2
+#define A3 PA3
+#define A4 PA4
 
-#define A0	PA1
-#define A1	PA4
-#define A2	PA3
-#define A4	PA2
+// add A0 as alias to A1 for compatibility
+#define A0 A1
 
 
 

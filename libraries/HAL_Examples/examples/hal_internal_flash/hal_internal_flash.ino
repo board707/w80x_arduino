@@ -18,13 +18,14 @@ data_storage ds = {
 data_storage ds1;
 
 void setup() {
+Serial.begin(115200);
 
 // Storing structure ds
 HAL_FLASH_Write(INTERNAL_STORAGE_ADDR, (uint8_t *) &ds, sizeof(data_storage));
 
 // Restore data to ds1;
 HAL_FLASH_Read(INTERNAL_STORAGE_ADDR,  (uint8_t *) &ds1, sizeof(data_storage));
-printf("DS1 offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds1.offset, ds1.data1, ds1.data2, ds1.data3);
+Serial.printf("DS1 offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds1.offset, ds1.data1, ds1.data2, ds1.data3);
 }
 
 void loop() {

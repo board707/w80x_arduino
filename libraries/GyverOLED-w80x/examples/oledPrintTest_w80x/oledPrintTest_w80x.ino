@@ -8,8 +8,9 @@ GyverOLED<SSD1306_128x64, OLED_BUFFER> oled;
 //GyverOLED<SSH1106_128x64> oled;
 
 char Lorem_ipsum[] = "Lorem ipsum dolor sit amet, лорем ипсум долор сит амет привет народ ё, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip...";
+
 void setup() {
- // Serial.begin(9600);
+    Serial.begin(9600);
 #if defined(ARDUINO_HLK_w80x)
             //oled.init(PA12,PA14);   // Software_I2c
             oled.init();              // Hardware_I2c

@@ -27,24 +27,26 @@ uint8_t a1 = 122;
 uint8_t a2 = 255;
 
 void setup() {
-  printf("\nInit EEPROM size = %d bytes\n", W_EEPROM.length());
+
+  Serial.begin(115200);
+  Serial.printf("\nInit EEPROM size = %d bytes\n", W_EEPROM.length());
 
   // storing data
-  printf("Write to EEPROM:\n");
+  Serial.printf("Write to EEPROM:\n");
   if (! W_EEPROM.write(0, a1))          // store single byte
-     { printf("EEPROM error!\n");}
+     { Serial.printf("EEPROM error!\n");}
 
   W_EEPROM.put(10, ds);                 // store whole structure
   
-  printf("DS offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds.offset, ds.data1, ds.data2, ds.data3);
+  Serial.printf("DS offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds.offset, ds.data1, ds.data2, ds.data3);
   delay(500);
 
   // reading data
-  printf("\nRead from EEPROM:\n");
+  Serial.printf("\nRead from EEPROM:\n");
   a2 = W_EEPROM.read(0);              // read single byte
-  printf("Byte a2 = %d\n", a2);
+  Serial.printf("Byte a2 = %d\n", a2);
   W_EEPROM.get(10, ds1);              // read structure
-  printf("DS1 offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds1.offset, ds1.data1, ds1.data2, ds1.data3);
+  Serial.printf("DS1 offset = %d, data1 = %d, data2 = %d, data3 = %f\n", ds1.offset, ds1.data1, ds1.data2, ds1.data3);
 
 }
 

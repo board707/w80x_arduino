@@ -77,25 +77,23 @@ static void TIM1_Init(void)
     htim1.Init.AutoReload = TIM_AUTORELOAD_PRELOAD_ENABLE;
     if (HAL_TIM_Base_Init(&htim1) != HAL_OK)
     {
-        printf("TIM init error\r\n");
+        Serial.printf("TIM init error\r\n");
         Error_Handler_tim();
     }
     if (HAL_TIM_Base_Start_IT(&htim1) != HAL_OK)
     {
-        printf("TIM start_it error\r\n");
+        Serial.printf("TIM start_it error\r\n");
         Error_Handler_tim();
     }
 }
 
 void setup() {
-
-    printf("Led Demo\r\n");
+    Serial.begin(115200);
+    printf("Timer Led Demo\r\n");
     
-    HAL_Init();
+    
     GPIO_Init();
     TIM1_Init();
-    
-    printf("End setup\r\n");
     
 }
 

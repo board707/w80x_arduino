@@ -25,9 +25,8 @@ static void GPIO_Init(void)
 }
 
 void setup() {
-
-    printf("Led Demo\r\n");
-    HAL_Init();
+    Serial.begin(115200);
+    Serial.printf("Led Demo\r\n");
     GPIO_Init();
 }
 
