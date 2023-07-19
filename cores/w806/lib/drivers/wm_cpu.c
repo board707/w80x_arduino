@@ -12,7 +12,9 @@
 #include "core_804.h"
 #include "wm_hal.h"
 
-#define TICK_INT_PRIORITY 7
+
+
+#define TICK_INT_PRIORITY 0
 
 __IO uint32_t uwTick;
 uint32_t uwTickPrio;

@@ -12,6 +12,7 @@
 
 // #include "pins_arduino.h"
 #include "HardwareSerial.h"
+#include "W_IRQ_Priority.h"
 
 UART_HandleTypeDef huart0;
 UART_HandleTypeDef huart1;
@@ -405,7 +406,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
         __HAL_RCC_UART0_CLK_ENABLE();
 
         uart_pins_init(huart);
-        HAL_NVIC_SetPriority(UART0_IRQn, 0);
+        HAL_NVIC_SetPriority(UART0_IRQn, UART0_IRQn_PRIORITY);
         HAL_NVIC_EnableIRQ(UART0_IRQn);
     }
 
@@ -414,7 +415,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
         __HAL_RCC_UART1_CLK_ENABLE();
 
         uart_pins_init(huart);
-        HAL_NVIC_SetPriority(UART1_IRQn, 0);
+        HAL_NVIC_SetPriority(UART1_IRQn, UART1_IRQn_PRIORITY);
         HAL_NVIC_EnableIRQ(UART1_IRQn);
     }
 
@@ -441,7 +442,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef *huart)
         }
 
         uart_pins_init(huart);
-        HAL_NVIC_SetPriority(UART2_5_IRQn, 0);
+        HAL_NVIC_SetPriority(UART2_5_IRQn, UART2_5_IRQn_PRIORITY);
         HAL_NVIC_EnableIRQ(UART2_5_IRQn);
     }
 }

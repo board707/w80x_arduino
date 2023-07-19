@@ -1,5 +1,6 @@
 
 #include "W_interrupt.h"
+#include "W_IRQ_Priority.h"
 uint32_t GPIOA_CallbackFlag =0;
 gpio_irq_callback GPIOA_Callback[GPIOA_PINS_CNT] = {0};
 
@@ -24,14 +25,14 @@ void attachInterrupt(uint16_t pin, uint16_t mode, gpio_irq_callback callback)
             HAL_GPIO_Init(pin_Map[pin].pPort, &GPIO_InitStruct);
             if (pin_Map[pin].pPort == GPIOB)
             {
-                HAL_NVIC_SetPriority(GPIOB_IRQn, 1); // приоритет прерывания 1
+                HAL_NVIC_SetPriority(GPIOB_IRQn, GPIOB_IRQn_PRIORITY); // приоритет прерывания 1
                 HAL_NVIC_EnableIRQ(GPIOB_IRQn);
                 GPIOB_CallbackFlag |= pin_Map[pin].halPin;
                 GPIOB_Callback[pin - PB0] = callback;
             }
             else
             {
-                HAL_NVIC_SetPriority(GPIOA_IRQn, 1);
+                HAL_NVIC_SetPriority(GPIOA_IRQn, GPIOA_IRQn_PRIORITY);
                 HAL_NVIC_EnableIRQ(GPIOA_IRQn);
                 GPIOA_CallbackFlag |= pin_Map[pin].halPin;
                 GPIOA_Callback[pin - PA0] = callback;
