@@ -6,8 +6,10 @@
 // Внимание! Эта версия не совместима с SPI ванильного Ардуино... Но это пока.
 // Чип селектом управляете сами, в ручном режиме, через digitalWrite
 
-#define LSBFIRST 0
-#define MSBFIRST 1
+//#define LSBFIRST 0
+//#define MSBFIRST 1
+
+
 
 #define SPI_MODE0 0x00
 #define SPI_MODE1 0x01

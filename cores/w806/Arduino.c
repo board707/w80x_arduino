@@ -350,3 +350,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
 bool check_pin() {
 	return true;
 }
+
+// added for compatibility
+__attribute__((weak)) void yield() {}
+

@@ -15,13 +15,20 @@
 extern "C" {
 #endif
  
+typedef enum {
+  LSBFIRST = 0,
+  MSBFIRST = 1,
+} BitOrder;
+
+
+/* 
 #ifndef LSBFIRST
 #define LSBFIRST 0
 #endif
 #ifndef MSBFIRST
 #define MSBFIRST 1
 #endif
-
+*/
 typedef uint8_t byte;
 typedef bool boolean;
 
@@ -130,6 +137,9 @@ void loop(void);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder); 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 
+
+// added for compatibility
+void yield();
 
 #ifdef __cplusplus 
 }

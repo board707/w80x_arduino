@@ -65,13 +65,25 @@ public:
      */
     uint8_t requestFrom(uint8_t, int);
     uint8_t requestFrom(int, int);
-
+    // added for compatibility
+    uint8_t requestFrom(int addr, int len, int stop)  {
+        UNUSED(stop);
+        return requestFrom(addr, len);
+    }
     /*
      * Stack up bytes to be sent when transmitting
      */
+    
     uint8_t write(uint8_t);
     uint8_t write(uint8_t*, int);
     uint8_t write(int);
+
+    // added for compatibility
+    uint8_t write(const uint8_t* data, int len)  {
+        uint8_t* dt = (uint8_t*)data;
+        return write(dt, len);
+    }
+    
 
     /*
      * Stack up bytes from a string to be sent when transmitting
@@ -90,6 +102,14 @@ public:
     int read();
 
     void setClock(int clockFrequency);
+
+    /*
+     * Deinitialize the Wire interface.
+     * Do nothing yet. Added for compatibility.
+     * 
+     */
+    void end() {}
+
 };
 
 extern TwoWire Wire;
