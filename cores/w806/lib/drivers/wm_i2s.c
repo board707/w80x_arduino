@@ -1129,11 +1129,11 @@ static void I2S_DMATxCplt(DMA_HandleTypeDef *hdma)
     if ((hdma->Init.Mode == DMA_MODE_NORMAL_SINGLE) || (hdma->Init.Mode == DMA_MODE_LINK_SINGLE))
     {
         CLEAR_BIT(hi2s->Instance->CR, I2S_CR_TXDMA_EN);
-    //    __HAL_I2S_DISABLE_TX(hi2s);
+        __HAL_I2S_DISABLE_TX(hi2s);
         hi2s->TxXferCount = 0;
-    //    hi2s->State = HAL_I2S_STATE_READY;
+        hi2s->State = HAL_I2S_STATE_READY;
     }
-//    HAL_I2S_TxCpltCallback(hi2s);
+  HAL_I2S_TxCpltCallback(hi2s);
 }
 
 /**
