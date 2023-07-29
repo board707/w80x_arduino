@@ -40,6 +40,8 @@ extern UART_HandleTypeDef huart5;
 
 extern DMA_HandleTypeDef hdma_channel0;
 
+extern I2S_HandleTypeDef hi2s;
+
 #ifdef __cplusplus
 extern "C"  {
 #endif

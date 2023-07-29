@@ -19,6 +19,7 @@ extern uint32_t GPIOB_CallbackFlag;
 
 extern DMA_HandleTypeDef hdma_channel0;
 
+extern I2S_HandleTypeDef hi2s;
 
 __attribute__((weak)) void HAL_PWM_IRQHandler(void);
 
@@ -91,4 +92,9 @@ __attribute__((weak)) void HAL_PWM_IRQHandler(void)
 __attribute__((isr)) void DMA_Channel0_IRQHandler(void)
 {
     HAL_DMA_IRQHandler(&hdma_channel0);
+}
+
+__attribute__((isr)) void I2S_IRQHandler(void)
+{
+    HAL_I2S_IRQHandler(&hi2s);
 }
