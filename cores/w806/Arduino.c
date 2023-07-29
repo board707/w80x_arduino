@@ -12,7 +12,7 @@ TIM_HandleTypeDef htim5;
 
 DMA_HandleTypeDef hdma_channel0;
 
-//I2S_HandleTypeDef hi2s;
+I2S_HandleTypeDef hi2s;
 
 
 
