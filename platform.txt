@@ -130,8 +130,8 @@ recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 preproc.includes.flags=-w -x c++ -M -MG -MP
 recipe.preproc.includes="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.includes.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {build.extra_flags} {compiler.libs.c.flags} {includes} "{source_file}"
 
-#preproc.macros.flags=-w -x c++ -E -CC
-preproc.macros.flags=
+preproc.macros.flags=-w -x c++ -E -CC
+#preproc.macros.flags=
 recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" -mcpu={build.mcpu} {compiler.cpp.flags} {preproc.macros.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} {compiler.define.flags} -DTLS_CONFIG_CPU_{build.arch}=1 {compiler.cpp.extra_flags} {compiler.libs.c.flags} {build.extra_flags} {includes} "{source_file}" -o "{preprocessed_file_path}"
 
 # W806 Uploader tools
