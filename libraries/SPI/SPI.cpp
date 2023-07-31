@@ -243,9 +243,38 @@ void HardSPI::useSoftCS() {
   _use_hard_cs = false;
   this-> begin();
 }
-/* NOT IMPLEMENTED YET. DEPRECATED */
-//void HardSPI::setClockDivider(uint8_t div) {
-//}
+
+void HardSPI::setClockDivider(uint8_t div) {
+    // Максимальная частота шины SPI 20 Мгц
+ 
+    switch(div)
+    {
+    case SPI_CLOCK_DIV2:
+		_prescaler = SPI_BAUDRATEPRESCALER_2;
+        _clock = 20000000;
+        break;
+    case SPI_CLOCK_DIV4:
+		_prescaler = SPI_BAUDRATEPRESCALER_4;
+        _clock = 10000000;
+        break;
+    case SPI_CLOCK_DIV8:
+		_prescaler = SPI_BAUDRATEPRESCALER_8;
+        _clock = 5000000;
+        break;
+    case SPI_CLOCK_DIV16:
+		_prescaler = SPI_BAUDRATEPRESCALER_20;
+        _clock = 2000000;
+        break;
+    case SPI_CLOCK_DIV32:
+		_prescaler = SPI_BAUDRATEPRESCALER_40;
+        _clock = 1000000;
+        break;
+    default:
+        _prescaler = SPI_BAUDRATEPRESCALER_40;     // set SPI 1 NHz in case of incorrect value
+		_clock = 1000000;
+        break;
+	}
+}
 
 /*
 *   Base SPI class

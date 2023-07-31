@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "./include/driver/wm_pwm.h"
+#include "Binary.h"
 
 #define SPIClass HardSPI
 
@@ -14,13 +15,20 @@
 extern "C" {
 #endif
  
+typedef enum {
+  LSBFIRST = 0,
+  MSBFIRST = 1,
+} BitOrder;
+
+
+/* 
 #ifndef LSBFIRST
 #define LSBFIRST 0
 #endif
 #ifndef MSBFIRST
 #define MSBFIRST 1
 #endif
-
+*/
 typedef uint8_t byte;
 typedef bool boolean;
 
@@ -69,6 +77,16 @@ typedef bool boolean;
 
 #define maskSet(value, mask) ((value) |= (mask))
 #define maskClear(value, mask) ((value) &= ~(mask))
+
+// AVR compatibility macros...naughty and accesses the HW directly
+#define digitalPinToPort(pin)       ((pin < PB0) ? GPIOA : GPIOB ) 
+#define digitalPinToBitMask(pin)    ((pin < PB0) ? (1UL << (pin)) : (1UL << (pin - PB0)))
+#define digitalPinToTimer(pin)      (0)
+#define digitalPinToInterrupt(pin)  (pin)
+#define NOT_AN_INTERRUPT            (-1)
+#define portOutputRegister(port)    ((volatile uint32_t*) &(port -> DATA))
+#define portInputRegister(port)     ((volatile uint32_t*) &(port -> DATA))
+#define portModeRegister(port)      ((volatile uint32_t*) &(port -> DIR))
 
 // Определения для DIO
 #define HIGH 			0x1
@@ -119,6 +137,9 @@ void loop(void);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder); 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 
+
+// added for compatibility
+void yield();
 
 #ifdef __cplusplus 
 }

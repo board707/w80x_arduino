@@ -6,8 +6,10 @@
 // Внимание! Эта версия не совместима с SPI ванильного Ардуино... Но это пока.
 // Чип селектом управляете сами, в ручном режиме, через digitalWrite
 
-#define LSBFIRST 0
-#define MSBFIRST 1
+//#define LSBFIRST 0
+//#define MSBFIRST 1
+
+
 
 #define SPI_MODE0 0x00
 #define SPI_MODE1 0x01
@@ -20,13 +22,13 @@
                                ((MODE) == SPI_MODE3 ) )
 
 // Soft_SPI
-#define SPI_CLOCK_DIV4 0x00
-#define SPI_CLOCK_DIV16 0x01
-#define SPI_CLOCK_DIV64 0x02
-#define SPI_CLOCK_DIV128 0x03
-#define SPI_CLOCK_DIV2 0x04
-#define SPI_CLOCK_DIV8 0x05
-#define SPI_CLOCK_DIV32 0x06
+#define SPI_CLOCK_DIV2 0x00
+#define SPI_CLOCK_DIV4 0x01
+#define SPI_CLOCK_DIV8 0x02
+#define SPI_CLOCK_DIV16 0x03
+#define SPI_CLOCK_DIV32 0x04
+#define SPI_CLOCK_DIV64 0x05
+#define SPI_CLOCK_DIV128 0x06
 
 class SPISettings
 {
@@ -99,11 +101,15 @@ class Base_SPI {
 		
 		virtual void setBitOrder(uint8_t);
         virtual void setDataMode(uint8_t);
+        virtual void setClockDivider(uint8_t) {};
         
         uint8_t reverseByte(uint8_t b);
         virtual bool isSPIpins(uint8_t mosi, uint8_t miso, uint8_t sck);
         // Deprecated, NOT IMPLEMENTED YET!
-        //virtual void setClockDivider(uint8_t) {};
+        
+        uint8_t sckPin() { return _sck;};
+        uint8_t mosiPin() { return _mosi;};
+        uint8_t misoPin() { return _miso;};
 		
 };
 
@@ -141,7 +147,7 @@ class HardSPI : public Base_SPI {
 		uint32_t getTimeout() {return timeOut;};
         //void setBitOrder(uint8_t);
         //void setDataMode(uint8_t);
-        //void setClockDivider(uint8_t);
+        void setClockDivider(uint8_t);
 		
 };
 
