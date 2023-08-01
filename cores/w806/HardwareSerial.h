@@ -247,6 +247,7 @@ extern "C"
 
         bool _uart_mul;
 
+        operator bool();
     private:
         void uart_init(unsigned long baud, int uart_mode);
 
@@ -257,7 +258,7 @@ extern "C"
         uint8_t _pend = 0;
         unsigned char _pbuf[_UART_RX_BUF_SIZE] = {0};
         uint8_t _hal_buf[32] = {0}; // must be greater than or equal to 32 bytes
-
+        bool _initalized = false;
 #if USE_IRQ_UART_TX
         _fifo_str tx_fifo;
         uint8_t _tx_buf[_UART_TX_BUF_SIZE] = {0};

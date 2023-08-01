@@ -121,6 +121,7 @@ void HardwareSerial::begin(unsigned long baud, int uart_mode)
 
         uart_init(baud, uart_mode);
         HAL_UART_Receive_IT(this->huart_handle, _hal_buf, IT_LEN);
+        _initalized = true;
     }
 }
 
@@ -346,6 +347,10 @@ void HardwareSerial::process_tx()
     if (len) HAL_UART_Transmit_IT(this->huart_handle, _hal_tx_buf, len);
 }
 #endif
+
+HardwareSerial::operator bool() {
+    return _initalized;
+}
 
 void HardwareSerial::uart_init(unsigned long baud, int uart_mode)
 {
