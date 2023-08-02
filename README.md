@@ -30,6 +30,17 @@ The ticked options have been implemented and tested, the unticked ones are under
 
 To detailed development info see the [CHANGES.txt](CHANGES.txt) file.
 
+## Library Compatibility List
+The libraries listed below tested to be used with w80x controllers as is:
+
+* AdafruitGFX and its companion libraries
+
+## Ported Libraries
+Below are links to w80x-ported versions of some arduino libraries:
+
+ * [FastLED](https://github.com/board707/FastLED) - the library for controlling an addressable LEDs
+ * [MCUFRIEND_kbv](https://github.com/board707/MCUFRIEND_kbv) - the library for 8bits parallel TFT displays
+
 ## Installation in Arduino IDE
 
 1. **File -> Preferences**
