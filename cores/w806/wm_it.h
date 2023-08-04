@@ -14,6 +14,9 @@ void PMU_IRQHandler(void);
 void TOUCH_IRQHandler(void);
 void PWM_IRQHandler(void);
 
+void I2S_IRQHandler(void);
+
+
 #endif
 
 
