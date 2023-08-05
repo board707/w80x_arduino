@@ -13,11 +13,14 @@ enum pins
   PB16,PB17,PB18,PB19,PB20,PB21,PB22,PB23,PB24,PB25,PB26,PB27
 };
 
-// Arduino style analog inputs
-#define A0  PA1
-#define A1  PA4
-#define A2  PA3
-#define A4  PA2
+// Arduino macros for analog inputs
+#define A1 PA1
+#define A2 PA2
+#define A3 PA3
+#define A4 PA4
+
+// add A0 as alias to A1 for compatibility
+#define A0 A1
 
 // pin mux macros for W801
 #define MUX_PA0 (DIO)                       // Boot

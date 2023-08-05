@@ -14,10 +14,13 @@ enum pins
 };
 
 // Arduino style analog inputs
-#define A0  PA1
-#define A1  PA4
-#define A2  PA3
-#define A4  PA2
+#define A1  PA1
+#define A2  PA2
+#define A3  PA3
+#define A4  PA4
+
+// add A0 as alias to A1 for compatibility
+#define A0 A1
 
 // pin mux macros for W806
 #define MUX_PA0 (DIO)                       // Boot
@@ -25,8 +28,8 @@ enum pins
 #define MUX_PA2 (DIO | ADC4 | PWM0)
 #define MUX_PA3 (DIO | ADC3 | PWM1)
 #define MUX_PA4 (DIO | ADC2 | PWM4)         // JTAG_SWO
-#define MUX_PA5 (DIO)                       // not connected on PCB
-#define MUX_PA6 (DIO)                       // not connected on PCB
+#define MUX_PA5 (NONE)                       // not connected on PCB
+#define MUX_PA6 (NONE)                       // not connected on PCB
 #define MUX_PA7 (DIO | PWM4 | _SPI_MOSI)
 #define MUX_PA8 (DIO)
 #define MUX_PA9 (DIO)
@@ -58,12 +61,12 @@ enum pins
 #define MUX_PB18 (DIO)
 #define MUX_PB19 (NONE) // TX0: used to download firmware and output to console
 #define MUX_PB20 (NONE) // RX0: debug data via printf()
-#define MUX_PB21 (DIO)                      // not connected on PCB
-#define MUX_PB22 (DIO)                      // not connected on PCB
+#define MUX_PB21 (NONE)                     // not connected on PCB
+#define MUX_PB22 (NONE)                     // not connected on PCB
 #define MUX_PB23 (NONE)                     // no pin for PB23 on W806 package
-#define MUX_PB24 (DIO | PWM2 | _SPI_SCK)    // only connected to LED_BUILTIN_1
-#define MUX_PB25 (DIO | PWM3 | _SPI_MISO)   // only connected to LED_BUILTIN_2
-#define MUX_PB26 (DIO | PWM4 | _SPI_MOSI)   // only connected to LED_BUILTIN_3
+#define MUX_PB24 (DIO | PWM2)               // only connected to LED_BUILTIN_1
+#define MUX_PB25 (DIO | PWM3)               // only connected to LED_BUILTIN_2
+#define MUX_PB26 (DIO | PWM4)               // only connected to LED_BUILTIN_3
 #define MUX_PB27 (DIO)                      // only connected to PSRAM CS
 
 extern const PIN_MAP pin_Map[];
