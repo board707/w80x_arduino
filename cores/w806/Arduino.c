@@ -2,7 +2,7 @@
 #include "wm_hal.h"
 //#include "pins_arduino.h"
 
-// Массив таймеров
+// array of timers
 TIM_HandleTypeDef htim0;
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
@@ -10,6 +10,54 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim5;
 
+const PIN_MAP pin_Map[] =
+{
+    { GPIOA, GPIO_PIN_0,    PA0,    MUX_PA0},
+    { GPIOA, GPIO_PIN_1,    PA1,    MUX_PA1},
+    { GPIOA, GPIO_PIN_2,    PA2,    MUX_PA2},
+    { GPIOA, GPIO_PIN_3,    PA3,    MUX_PA3},
+    { GPIOA, GPIO_PIN_4,    PA4,    MUX_PA4},
+    { GPIOA, GPIO_PIN_5,    PA5,    MUX_PA5},
+    { GPIOA, GPIO_PIN_6,    PA6,    MUX_PA6},
+    { GPIOA, GPIO_PIN_7,    PA7,    MUX_PA7},
+    { GPIOA, GPIO_PIN_8,    PA8,    MUX_PA8},
+    { GPIOA, GPIO_PIN_9,    PA9,    MUX_PA9},
+    { GPIOA, GPIO_PIN_10,   PA10,   MUX_PA10},
+    { GPIOA, GPIO_PIN_11,   PA11,   MUX_PA11},
+    { GPIOA, GPIO_PIN_12,   PA12,   MUX_PA12},
+    { GPIOA, GPIO_PIN_13,   PA13,   MUX_PA13},
+    { GPIOA, GPIO_PIN_14,   PA14,   MUX_PA14},
+    { GPIOA, GPIO_PIN_15,   PA15,   MUX_PA15},
+
+    { GPIOB, GPIO_PIN_0,    PB0,    MUX_PB0},
+    { GPIOB, GPIO_PIN_1,    PB1,    MUX_PB1},
+    { GPIOB, GPIO_PIN_2,    PB2,    MUX_PB2},
+    { GPIOB, GPIO_PIN_3,    PB3,    MUX_PB3},
+    { GPIOB, GPIO_PIN_4,    PB4,    MUX_PB4},
+    { GPIOB, GPIO_PIN_5,    PB5,    MUX_PB5},
+    { GPIOB, GPIO_PIN_6,    PB6,    MUX_PB6},
+    { GPIOB, GPIO_PIN_7,    PB7,    MUX_PB7},
+    { GPIOB, GPIO_PIN_8,    PB8,    MUX_PB8},
+    { GPIOB, GPIO_PIN_9,    PB9,    MUX_PB9},
+    { GPIOB, GPIO_PIN_10,   PB10,   MUX_PB10},
+    { GPIOB, GPIO_PIN_11,   PB11,   MUX_PB11},
+    { GPIOB, GPIO_PIN_12,   PB12,   MUX_PB12},
+    { GPIOB, GPIO_PIN_13,   PB13,   MUX_PB13},
+    { GPIOB, GPIO_PIN_14,   PB14,   MUX_PB14},
+    { GPIOB, GPIO_PIN_15,   PB15,   MUX_PB15},
+    { GPIOB, GPIO_PIN_16,   PB16,   MUX_PB16},
+    { GPIOB, GPIO_PIN_17,   PB17,   MUX_PB17},
+    { GPIOB, GPIO_PIN_18,   PB18,   MUX_PB18},
+    { GPIOB, GPIO_PIN_19,   PB19,   MUX_PB19},
+    { GPIOB, GPIO_PIN_20,   PB20,   MUX_PB20},
+    { GPIOB, GPIO_PIN_21,   PB21,   MUX_PB21}, 
+    { GPIOB, GPIO_PIN_22,   PB22,   MUX_PB22},
+    { GPIOB, GPIO_PIN_23,   PB23,   MUX_PB23},
+    { GPIOB, GPIO_PIN_24,   PB24,   MUX_PB24},
+    { GPIOB, GPIO_PIN_25,   PB25,   MUX_PB25}, 
+    { GPIOB, GPIO_PIN_26,   PB26,   MUX_PB26},
+    { GPIOB, GPIO_PIN_27,   PB27,   MUX_PB27}
+};
 
 
 // Массив для фиксации занятых каналов PWM
@@ -350,7 +398,3 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val)
 bool check_pin() {
 	return true;
 }
-
-// added for compatibility
-__attribute__((weak)) void yield() {}
-
