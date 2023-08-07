@@ -27,7 +27,7 @@ extern gpio_irq_callback GPIOA_Callback[GPIOA_PINS_CNT];
 extern uint32_t GPIOB_CallbackFlag;
 extern gpio_irq_callback GPIOB_Callback[GPIOB_PINS_CNT];*/
 
-void attachInterrupt(uint16_t pin, uint16_t mode, gpio_irq_callback callback);
+void attachInterrupt(uint16_t pin, gpio_irq_callback callback, uint16_t mode);
 void detachInterrupt(uint16_t pin);
 
 void HAL_GPIO_EXTI_Callback(GPIO_TypeDef *GPIOx, uint32_t GPIO_Pin);

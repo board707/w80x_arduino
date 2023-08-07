@@ -21,7 +21,7 @@ void setup() {
 *  HIGH_LEVEL or  GPIO_MODE_IT_HIGH_LEVEL         
 *  LOW_LEVEL  or  GPIO_MODE_IT_LOW_LEVEL  */
         
-  attachInterrupt(PB10, FALLING, &_irq_routine);
+  attachInterrupt(PB10, &_irq_routine, FALLING);
 
 // Also available
 // detachInterrupt(pin);  

@@ -7,7 +7,7 @@ gpio_irq_callback GPIOA_Callback[GPIOA_PINS_CNT] = {0};
 uint32_t GPIOB_CallbackFlag =0;
 gpio_irq_callback GPIOB_Callback[GPIOB_PINS_CNT] = {0};
 
-void attachInterrupt(uint16_t pin, uint16_t mode, gpio_irq_callback callback)
+void attachInterrupt(uint16_t pin, gpio_irq_callback callback, uint16_t mode)
 { 
 
     if (pin_Map[pin].ulPinAttribute & PIN_DIO_Msk)
