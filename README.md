@@ -31,9 +31,11 @@ The ticked options have been implemented and tested, the unticked ones are under
 To detailed development info see the [CHANGES.txt](CHANGES.txt) file.
 
 ## Library Compatibility List
-The libraries listed below tested to be used with w80x controllers as is:
+The libraries listed below tested to be used with w80x controllers:
 
 * AdafruitGFX and its companion libraries
+* SD.h and other related libraries - SdFat.h, SdFile.h etc 
+* LiquidCrytal screen library
 
 ## Ported Libraries
 Below are links to w80x-ported versions of some arduino libraries:
