@@ -89,8 +89,8 @@ typedef bool boolean;
 #define portModeRegister(port)      ((volatile uint32_t*) &(port -> DIR))
 
 // TODO: Add a _disable_irq() & _enable_irq() here
-#define interrupts()                { }
-#define noInterrupts()              { }
+#define interrupts()                { __enable_irq(); }
+#define noInterrupts()              { __disable_irq(); }
 
 // Определения для DIO
 #define HIGH 			0x1
