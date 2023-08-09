@@ -12,6 +12,10 @@ TIM_HandleTypeDef htim5;
 
 
 
+I2S_HandleTypeDef hi2s;
+
+
+
 // Массив для фиксации занятых каналов PWM
 typedef struct {
     uint8_t channel;
