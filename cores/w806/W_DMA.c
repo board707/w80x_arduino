@@ -8,7 +8,7 @@ DMA_Channel_TypeDef* DMA_CH[8] = {DMA_Channel0, DMA_Channel1, DMA_Channel2, DMA_
 
 DMA_HandleTypeDef hdma_channel[8];
 
-int8_t claim_unused_dma_chan() {
+int8_t claim_unused_dma_channel() {
   int i = 0;
   while (i < 8) {
     if (!used_dma_channels[i] )  {used_dma_channels[i] = true; return i;}

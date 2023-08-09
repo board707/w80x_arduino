@@ -11,7 +11,7 @@ extern DMA_HandleTypeDef hdma_channel[8];
 extern "C"  {
 #endif
 
-int8_t claim_unused_dma_chan();
+int8_t claim_unused_dma_channel();
 DMA_HandleTypeDef*  dma_simple_config(uint8_t ch, uint32_t request_src);
 uint8_t dma_init(DMA_HandleTypeDef* hdma);
 void DMA_Channel0_IRQHandler(void);
