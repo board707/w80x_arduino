@@ -1,6 +1,8 @@
 ## Example of using W80x I2s interface 
 
- In the `example` folder there is a simple example to demonstrate the basic usage of W80x i2s interface for outputs digital audio data. The code plays WAV file from SD card using asynchronically DMA transfer. To keep this simple the WAV must be 16bit samples. The Mono/Stereo and Samples Per second reads from the file and can be anything. To test place the wav file in the root folder of the SD card. The name of the file must match the "8.3" scheme.
+ In the `example` folder there is a simple example to demonstrate the basic usage of W80x i2s interface for outputs digital audio data. The code plays WAV file from SD card using asynchronically I2S DMA transfer. To keep this simple the WAV must be 16bit samples. The Mono/Stereo and Samples Per second reads from the file and can be anything. To test place the wav file in the root folder of the SD card. The name of the file must match the "8.3" scheme.
+
+ To play the audio data you need a I2S audio module such as MAX98357A.
 
  The `wav_files` folder contains a few example WAV files, that can used with **Wav_SD_Player** code:
 
