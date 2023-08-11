@@ -24,9 +24,9 @@ The ticked options have been implemented and tested, the unticked ones are under
 - [x] [SPI](doc/SPI.md)
 - [x] [EEPROM](libraries/EEPROM/Readme.md) library
 - [x] Stream, Print and String classes
-- [ ] I2S interface
+- [x] I2S interface (see libraries/I2S/examples/Wav_SD_Player example)
 - [ ] SDIO interface
-- [ ] DMA 
+- [x] [DMA](doc/W_DMA.md)
 
 To detailed development info see the [CHANGES.txt](CHANGES.txt) file.
 
