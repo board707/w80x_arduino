@@ -1,3 +1,10 @@
+0.0.5 August, 14 2023
+    Fix bug with multiple definitions of pinMap table (pull request #23)
+    Add I2S & DMA using Wav_SD_Player example
+    Add LiquidCrystal library
+    Fix bug in attachInterrupt parameters order (issie #22)
+    Enforce SPI and Wire compatibility, many other compatibility changes
+    
 0.0.4 July, 10 2023
     !! Incompatible change !!
     - rename boards
