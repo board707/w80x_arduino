@@ -15,10 +15,8 @@
 #define PIN_SPI_MISO  (PB16)
 #define PIN_SPI_MOSI  (PB17)
 
+#define PINS_COUNT  (44U) // pins in total, PB19, PB20 and PB23 are not used
+#define ADC_COUNT   (4U)  // number of ADC channels
+#define PWM_COUNT   (5U)  // number of PWM channels
 
-#define PINS_COUNT          (44U)           // Количество выводов на плате. Выводы PB19,PB20,PB23 не используются
-#define ADC_COUNT           (4U)            // Количество каналов АЦП
-#define PWM_COUNT           (5U)            // Количество каналов ШИМ
-
-
-#endif /* _VARIANT_ARDUINO_Air103_ */
+#endif /* _VARIANT_ARDUINO_W801_ */
