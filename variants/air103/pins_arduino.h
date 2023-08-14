@@ -22,8 +22,8 @@ enum pins
 // add A0 as alias to A1 for compatibility
 #define A0 A1
 
-// pin mux macros for W806
-#define MUX_PA0 (DIO)                       // Boot
+// pin mux macros for Air103
+#define MUX_PA0 (DIO | PWM2 | _SPI_SS)      // Boot
 #define MUX_PA1 (DIO | ADC1 | PWM3)         // JTAG_CK
 #define MUX_PA2 (DIO | ADC4 | PWM0)
 #define MUX_PA3 (DIO | ADC3 | PWM1)

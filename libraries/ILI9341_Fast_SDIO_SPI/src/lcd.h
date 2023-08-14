@@ -1,17 +1,17 @@
 /*
-  Драйвер дисплея на базе ILI9341
-  Тестировалось на 2,4" и 3,2" TFT SPI VER1.0 240x320
-  с платой Air103
+  TFT driver ILI9341
+  Tested on 2,4" и 3,2" TFT SPI VER1.0 240x320
+  with Air103 board
 */
 #include "Arduino.h"
 #include "driver.h"
 
-// Пины для управления дисплеем. Можно выбирать любые.
+// This can be any pins
 #define LCD_DC_PIN		PB9		// RS/DC
 #define LCD_RST_PIN		PB10	// RST
-#define LCD_CS_PIN		PB11	// CS
+#define LCD_CS_PIN		PB14	// CS
 
-// Разрешение дисплея по узкому краю
+// TFT resolution
 #define LCD_WIDTH        240
 #define LCD_HIGH         320
 
@@ -24,7 +24,7 @@
 #define TFT_MAD_MH  0x04
 #define TFT_MAD_RGB 0x08
 
-// Базовые цвета - могут не совпасть с ожиданиями :). Зависит от гамма коррекции
+// Base colors, may not be as expected, use gamma-correction.
 #define BLACK                      0x0000
 #define BLUE                       0x001F
 #define RED                        0xF800
@@ -38,12 +38,12 @@
 #define GREENYELLOW                0x9E66
 #define PURPLE                     0x8010
 
-// Ориентация дисплея
+// TFT orientation
 typedef enum {
   scr_normal = 0, scr_CW = 1, scr_CCW = 2, scr_180 = 3
 } ScrOrientation_TypeDef;
 
-uint16_t _width, _height;	//Ширина,высота после изменения ориентации
+uint16_t _width, _height;	//Width and height after rotation
 
 void Lcd_Pin_Init(void) {
   pinMode(LCD_DC_PIN, OUTPUT);
@@ -51,7 +51,7 @@ void Lcd_Pin_Init(void) {
   pinMode(LCD_CS_PIN, OUTPUT);
 }
 
-void Lcd_Hard_Reset(void)	// Аппаратный сброс
+void Lcd_Hard_Reset(void)	
 {
   digitalWrite(LCD_RST_PIN, HIGH);
   delay(5);
@@ -91,7 +91,7 @@ void Lcd_Write_Com(uint8_t cmd) {
   Lcd_Set_DC_CS(true, true);
 }
 
-void Lcd_Soft_Reset()	//Программный сброс
+void Lcd_Soft_Reset()	
 {
   Lcd_Write_Com(0x01);
   Lcd_Write_Data(0x01);
