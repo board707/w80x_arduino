@@ -13,6 +13,35 @@
                 {
                     "name": "w80x_arduino csky plain C/C++ core",
                     "architecture": "XT804",
+                    "version": "0.0.5",
+                    "category": "Contributed",
+                    "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.5a/w80x_arduino-0.0.5a.tar.gz",
+                    "archiveFileName": "w80x_arduino-0.0.5a.tar.gz",
+                     "checksum": "SHA-256:1ec9f82b2a9d89ebc13037fd45dccbad9fca5e1a97d8de8f2263ac32181d77b6",
+                     "size": "7577595",
+                    "help": {
+                    "online": "https://github.com/board707/w80x_arduino/issues"
+                    },
+                    "boards": [
+                        {"name": "w80x_duino"},
+                        {"name": "HLK-W806"}
+                    ],
+                    "toolsDependencies": [
+                        {
+                            "name": "csky",
+                            "version": "2021.04.23",
+                            "packager": "w80x_duino"
+                        },
+                        {
+                            "name": "w80x_tool",
+                            "version": "v1.0",
+                            "packager": "w80x_duino"
+                        }
+                    ]
+                },
+                {
+                    "name": "w80x_arduino csky plain C/C++ core",
+                    "architecture": "XT804",
                     "version": "0.0.4",
                     "category": "Contributed",
                     "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.4a/w80x_arduino-0.0.4a.tar.gz",
