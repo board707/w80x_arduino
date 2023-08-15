@@ -15,10 +15,10 @@
                     "architecture": "XT804",
                     "version": "0.0.5",
                     "category": "Contributed",
-                    "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.5a/w80x_arduino-0.0.5a.tar.gz",
-                    "archiveFileName": "w80x_arduino-0.0.5a.tar.gz",
-                     "checksum": "SHA-256:1ec9f82b2a9d89ebc13037fd45dccbad9fca5e1a97d8de8f2263ac32181d77b6",
-                     "size": "7577595",
+                    "url": "https://github.com/board707/w80x_arduino/releases/download/v0.0.5b/w80x_arduino-0.0.5b.tar.gz",
+                    "archiveFileName": "w80x_arduino-0.0.5b.tar.gz",
+                     "checksum": "SHA-256:cc1d2dbeeeb4d6fc2d1fcf29803082a0241cda04faa63e164e8e44698d87a2a9",
+                     "size": "7599441",
                     "help": {
                     "online": "https://github.com/board707/w80x_arduino/issues"
                     },
