@@ -36,7 +36,7 @@ The libraries listed below tested to be used with w80x controllers:
 * **AdafruitGFX** and its companion libraries
 * **SD.h** and other related libraries - SdFat.h, SdFile.h etc 
 * **LiquidCrytal** screen library
-* Basic support of **LVGL** library using ILI9341 Fast SDIO->SPI driver
+* Basic support of **LVGL** library using ILI9341_Fast_SPI driver (see [#27](https://github.com/board707/w80x_arduino/discussions/27))
 
 ## Ported Libraries
 Below are links to w80x-ported versions of some arduino libraries:
