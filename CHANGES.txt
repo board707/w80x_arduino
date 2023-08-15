@@ -1,4 +1,11 @@
-0.0.5 August, 14 2023
+0.0.5b August, 15 2023
+    Error fix and update to 0.0.5a
+    Add Ili9341_Fast_SPI SDIO-SPI example
+    Add basic LVGL example
+    Add definitions of PRId32 & PRIu32 types, required for LVGL
+    Some minor fixes
+    
+0.0.5a August, 14 2023
     Fix bug with multiple definitions of pinMap table (pull request #23)
     Add I2S & DMA using Wav_SD_Player example
     Add LiquidCrystal library
