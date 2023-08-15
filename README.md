@@ -25,7 +25,7 @@ The ticked options have been implemented and tested, the unticked ones are under
 - [x] [EEPROM](libraries/EEPROM/Readme.md) library
 - [x] Stream, Print and String classes
 - [x] I2S interface (see libraries/I2S/examples/Wav_SD_Player example)
-- [ ] SDIO interface
+- [x] SDIO -> SPI interface
 - [x] [DMA](doc/W_DMA.md)
 
 To detailed development info see the [CHANGES.txt](CHANGES.txt) file.
@@ -33,9 +33,9 @@ To detailed development info see the [CHANGES.txt](CHANGES.txt) file.
 ## Library Compatibility List
 The libraries listed below tested to be used with w80x controllers:
 
-* AdafruitGFX and its companion libraries
-* SD.h and other related libraries - SdFat.h, SdFile.h etc 
-* LiquidCrytal screen library
+* **AdafruitGFX** and its companion libraries
+* **SD.h** and other related libraries - SdFat.h, SdFile.h etc 
+* **LiquidCrytal** screen library
 * Basic support of **LVGL** library using ILI9341 Fast SDIO->SPI driver
 
 ## Ported Libraries
@@ -51,6 +51,10 @@ Below are links to w80x-ported versions of some arduino libraries:
 2. Enter the following URL in the additional development board manager URL:
 
 > https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_index.json
+
+  In case of `Error: 13 INTERNAL: can not install w80x_duino:csky@2021.04.23 tool` use an alternative:
+
+> https://raw.githubusercontent.com/board707/w80x_arduino/hal-v0.6.0/package_w80x_test_index.json
 
   If this doesn't work, try any of these link addresses:
 
