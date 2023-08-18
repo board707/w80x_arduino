@@ -276,6 +276,13 @@ void HardSPI::setClockDivider(uint8_t div) {
 	}
 }
 
+
+SPI_HandleTypeDef* HardSPI::getHalhandle() {
+    return &(this->hspi);
+}
+
+
+
 /*
 *   Base SPI class
 *
@@ -502,4 +509,9 @@ uint16_t SoftSPI::transfer16(uint16_t data)
 	}
 
 	return out.val;
+}
+
+__attribute__((isr)) void SPI_LS_IRQHandler(void)
+{
+    HAL_SPI_IRQHandler(&SPI.hspi);
 }
