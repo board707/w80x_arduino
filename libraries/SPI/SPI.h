@@ -115,6 +115,8 @@ class Base_SPI {
 
 class HardSPI : public Base_SPI {
     
+    public:
+     SPI_HandleTypeDef hspi;
     private:
     uint8_t _ss = PIN_SPI_SS;
     bool _use_hard_cs = false;
@@ -122,7 +124,7 @@ class HardSPI : public Base_SPI {
     uint8_t clock_polarity ;
     uint8_t clock_phase ;
 	uint32_t timeOut = 1000;
-	SPI_HandleTypeDef hspi;
+	
     
 	
 	public:
@@ -148,6 +150,7 @@ class HardSPI : public Base_SPI {
         //void setBitOrder(uint8_t);
         //void setDataMode(uint8_t);
         void setClockDivider(uint8_t);
+        SPI_HandleTypeDef* getHalhandle();
 		
 };
 
@@ -169,5 +172,15 @@ class SoftSPI : public Base_SPI {
 		uint16_t transfer16(uint16_t data);
 };
 extern HardSPI SPI;
+
+#ifdef __cplusplus
+extern "C"  {
+#endif
+
+void SPI_LS_IRQHandler(void); 
+
+#ifdef __cplusplus
+}
+#endif
 //extern Base_SPI* SPI;
 #endif
