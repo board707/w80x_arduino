@@ -107,8 +107,9 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
   */
  /* Heap should align to DRAM_HEAP_ALIGNMENT */
  #define DRAM_HEAP_BASE              PSRAM_ADDR_START
+
  /* Size should be smaller than ~DRAM_HEAP_MAGIC */
- #define DRAM_HEAP_SIZE              (2*1024 * 1024)
+ #define DRAM_HEAP_SIZE              (2*1024 * 1024)         // default heap size
 
  #define ALIGN(x,a)                  (((x) + (a) - 1) & ~((a) - 1))
  #define DRAM_HEAP_ALIGNMENT         4
@@ -141,14 +142,15 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
  /* For statistic. */
  static size_t s_heap_free_size      = DRAM_HEAP_SIZE;
  static size_t s_heap_free_size_min  = DRAM_HEAP_SIZE;
+ static size_t s_dram_heap_size      = DRAM_HEAP_SIZE;
  /* Init heap, with one free block */
- static void dram_heap_init(void)
+ void dram_heap_init(size_t heap_size)
  {
      ih_blk_head_t *free_blk;
 
      if (  DRAM_HEAP_BASE%DRAM_HEAP_ALIGNMENT != 0
-        || DRAM_HEAP_SIZE > (~DRAM_HEAP_MAGIC)
-        || DRAM_HEAP_SIZE < DRAM_HEAP_BLK_MIN*2 )
+        || heap_size > (~DRAM_HEAP_MAGIC)
+        || heap_size < DRAM_HEAP_BLK_MIN*2 )
      {
          printf("[dram_heap] fatal error: heap parameter invalid!\n");
          return;
@@ -157,7 +159,7 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
  	s_freelist_head.next = (void *) DRAM_HEAP_BASE;
  	s_freelist_head.magic_size = (size_t) 0;
 
- 	s_freelist_tail = (void *)(DRAM_HEAP_BASE + DRAM_HEAP_SIZE - DRAM_HEAP_BLK_HEAD_SIZE);
+ 	s_freelist_tail = (void *)(DRAM_HEAP_BASE + heap_size - DRAM_HEAP_BLK_HEAD_SIZE);
  	s_freelist_tail->next = NULL;
  	s_freelist_tail->magic_size = 0;
 
@@ -168,6 +170,7 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
 
  	s_heap_free_size     = free_blk->magic_size;
  	s_heap_free_size_min = free_blk->magic_size;
+    s_dram_heap_size      = heap_size;
  }
 
  static void dram_heap_freeblk_insert(ih_blk_head_t *blk_insert)
@@ -223,7 +226,7 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
  	if (s_freelist_tail == NULL)
      {
      	// printf("heap init\r\n");
-     	dram_heap_init();
+     	dram_heap_init(DRAM_HEAP_SIZE);
      }
 
  	if  ((alloc_size == 0)
@@ -322,7 +325,7 @@ __attribute__((weak)) void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram)
     else return 0*/
  int dram_heap_check_addr(void* addr)
  {
-     if ((size_t)addr - DRAM_HEAP_BASE < DRAM_HEAP_SIZE)
+     if ((size_t)addr - DRAM_HEAP_BASE < s_dram_heap_size)
      {
          return 1;
      }

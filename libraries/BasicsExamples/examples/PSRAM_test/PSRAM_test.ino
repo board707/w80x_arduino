@@ -13,6 +13,9 @@ uint8_t *psram_buf ;
 void setup()
 {
   Serial.begin(115200);
+  // setup PSRAM HEAP size
+  dram_heap_init(1024 * 1024);
+  
   psram_buf = (uint8_t *)dram_heap_malloc(100);
   PSRAM_Init();
 }

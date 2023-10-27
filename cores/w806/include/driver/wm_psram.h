@@ -39,6 +39,7 @@ void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram);
 // Added pin configurations
 void HAL_PSRAM_ConfigPin(uint8_t mode);
 // Added dynamic memory allocation
+void dram_heap_init(size_t heap_size);
 void *dram_heap_malloc(size_t alloc_size);
 void dram_heap_free(void *pfree);
 size_t dram_heap_free_size(void);
