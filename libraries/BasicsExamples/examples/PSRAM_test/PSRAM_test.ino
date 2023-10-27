@@ -1,17 +1,22 @@
 #include "Arduino.h"
 
-// Tested on Air103 board with PS6404L-3SQR-SN chip
+// Tested on Air103,W806,W801 boards with APS6404L-3SQR-SN chip
+// For W806,W801 use pins PB0...PB5
 
 PSRAM_HandleTypeDef hpsram;
 
 static void PSRAM_Init(void);
 
 
-static uint8_t *psram_buf = (uint8_t *)PSRAM_ADDR_START;
+uint8_t *psram_buf ;
 
 void setup()
 {
   Serial.begin(115200);
+  // setup PSRAM HEAP size
+  dram_heap_init(1024 * 1024);
+  
+  psram_buf = (uint8_t *)dram_heap_malloc(100);
   PSRAM_Init();
 }
  
@@ -45,16 +50,9 @@ void loop()
 
 static void PSRAM_Init(void)
 {
-  __HAL_RCC_PSRAM_CLK_ENABLE();
-  __HAL_RCC_GPIO_CLK_ENABLE();
-  // For Air103
-  __HAL_AFIO_REMAP_PSRAM_CS(GPIOB, GPIO_PIN_27);
-  __HAL_AFIO_REMAP_PSRAM_CLK(GPIOA, GPIO_PIN_15);
-  __HAL_AFIO_REMAP_PSRAM_D0(GPIOB, GPIO_PIN_2);
-  __HAL_AFIO_REMAP_PSRAM_D1(GPIOB, GPIO_PIN_3);
-  __HAL_AFIO_REMAP_PSRAM_D2(GPIOB, GPIO_PIN_4);
-  __HAL_AFIO_REMAP_PSRAM_D3(GPIOB, GPIO_PIN_5);
-
+  // 0 - Air103
+  // 1 - W801,W806
+  HAL_PSRAM_ConfigPin(1);
   hpsram.Instance = PSRAM;
   hpsram.Init.Div = 3;
   hpsram.Init.Mode = PSRAM_MODE_QSPI;

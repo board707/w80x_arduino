@@ -36,6 +36,15 @@ HAL_StatusTypeDef HAL_PSRAM_Init(PSRAM_HandleTypeDef *hpsram);
 HAL_StatusTypeDef HAL_PSRAM_DeInit(PSRAM_HandleTypeDef *hpsram);
 void HAL_PSRAM_MspInit(PSRAM_HandleTypeDef *hpsram);
 void HAL_PSRAM_MspDeInit(PSRAM_HandleTypeDef *hpsram);
+// Added pin configurations
+void HAL_PSRAM_ConfigPin(uint8_t mode);
+// Added dynamic memory allocation
+void dram_heap_init(size_t heap_size);
+void *dram_heap_malloc(size_t alloc_size);
+void dram_heap_free(void *pfree);
+size_t dram_heap_free_size(void);
+size_t dram_heap_free_size_min(void);
+int dram_heap_check_addr(void* addr);
 
 #ifdef __cplusplus
 }
