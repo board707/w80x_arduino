@@ -8,13 +8,67 @@ menu.erase=Erase Flash
 #menu.os_variant=OS
 
 ##############################################################
+air101.name=Air101
+air101.upload.tool=serial_upload
+air101.upload.protocol=xmodem
+air101.upload.maximum_size=2048576
+air101.upload.maximum_data_size=294912
+air101.build.mcu=ck804ef
+air101.build.board=XT804_Air101
+air101.build.core=w806
+air101.build.variant=air101
+air101.build.mcpu=ck804ef
+air101.serial.disableRTS=true
+#---------------------------------------
+# CPU Frequency
+air101.menu.cpu_frq.240MHZ=240MHZ
+air101.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+air101.menu.cpu_frq.160MHZ=160MHZ
+air101.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+air101.menu.cpu_frq.80MHZ=80MHZ
+air101.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+air101.menu.cpu_frq.40MHZ=40MHZ
+air101.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+air101.menu.cpu_frq.2MHZ=2MHZ
+air101.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+#---------------------------------------
+# Release /Optimise
+air101.menu.opt.default=Default (-O2 -g3)
+air101.menu.opt.maxspeed=Maximum speed (-O3)
+air101.menu.opt.maxspeed.build.flags.optimize=-O3
+air101.menu.opt.minsize=Minimum code size ( -Os)
+air101.menu.opt.minsize.build.flags.optimize=-Os
+air101.menu.opt.debug=Debug (-g)
+air101.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+air101.menu.upload_speed.baud115200=115200
+air101.menu.upload_speed.baud115200.upload.speed=115200
+air101.menu.upload_speed.baud460800=460800
+air101.menu.upload_speed.baud460800.upload.speed=460800
+air101.menu.upload_speed.baud921600=921600
+air101.menu.upload_speed.baud921600.upload.speed=921600
+air101.menu.upload_speed.baud1000000=1000000
+air101.menu.upload_speed.baud1000000.upload.speed=1000000
+air101.menu.upload_speed.baud2000000=2000000
+air101.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+air101.menu.erase.yes=erase all flash
+air101.menu.erase.yes.erase.flash=all
+air101.menu.erase.no=no erase
+air101.menu.erase.no.erase.flash=none
+##############################################################
+
+##############################################################
 w801.name=W801
 w801.upload.tool=serial_upload
 w801.upload.protocol=xmodem
 w801.upload.maximum_size=2048576
 w801.upload.maximum_data_size=294912
 w801.build.mcu=ck804ef
-w801.build.board=HT804_W801
+w801.build.board=XT804_W801
 w801.build.core=w806
 w801.build.variant=w801
 w801.build.mcpu=ck804ef
@@ -63,70 +117,13 @@ w801.menu.erase.no.erase.flash=none
 ##############################################################
 
 ##############################################################
-w805.name=W805
-w805.upload.tool=serial_upload
-w805.upload.protocol=xmodem
-w805.upload.maximum_size=1048576
-w805.upload.maximum_data_size=294912
-w805.build.mcu=ck804ef
-w805.build.board=HT804_W805
-w805.build.core=w806
-w805.build.variant=w805
-w805.build.mcpu=ck804ef
-w805.serial.disableRTS=true
-
-#---------------------------------------
-# Release /Optimise
-w805.menu.opt.default=Default (-O2 -g3)
-#w805.menu.opt.release.build.flags.optimize=-Os -flto
-w805.menu.opt.maxspeed=Maximum speed (-O3)
-w805.menu.opt.maxspeed.build.flags.optimize=-O3
-w805.menu.opt.minsize=Minimum code size ( -Os)
-w805.menu.opt.minsize.build.flags.optimize=-Os
-w805.menu.opt.debug=Debug (-g)
-w805.menu.opt.debug.build.flags.optimize=-Og
-
-#---------------------------------------
-# Upload Speed
-w805.menu.upload_speed.baud115200=115200
-w805.menu.upload_speed.baud115200.upload.speed=115200
-w805.menu.upload_speed.baud460800=460800
-w805.menu.upload_speed.baud460800.upload.speed=460800
-w805.menu.upload_speed.baud921600=921600
-w805.menu.upload_speed.baud921600.upload.speed=921600
-w805.menu.upload_speed.baud1000000=1000000
-w805.menu.upload_speed.baud1000000.upload.speed=1000000
-w805.menu.upload_speed.baud2000000=2000000
-w805.menu.upload_speed.baud2000000.upload.speed=2000000
-#---------------------------------------
-# Erase Flash
-w805.menu.erase.yes=erase all flash
-w805.menu.erase.yes.erase.flash=all
-w805.menu.erase.no=no erase
-w805.menu.erase.no.erase.flash=none
-#---------------------------------------
-# CPU Frequency
-w805.menu.cpu_frq.240MHZ=240MHZ
-w805.menu.cpu_frq.240MHZ.build.f_cpu=240000000
-w805.menu.cpu_frq.160MHZ=160MHZ
-w805.menu.cpu_frq.160MHZ.build.f_cpu=160000000
-w805.menu.cpu_frq.80MHZ=80MHZ
-w805.menu.cpu_frq.80MHZ.build.f_cpu=80000000
-w805.menu.cpu_frq.40MHZ=40MHZ
-w805.menu.cpu_frq.40MHZ.build.f_cpu=40000000
-w805.menu.cpu_frq.2MHZ=2MHZ
-w805.menu.cpu_frq.2MHZ.build.f_cpu=2000000
-##############################################################
-
-
-##############################################################
 w806.name=W806
 w806.upload.tool=serial_upload
 w806.upload.protocol=xmodem
 w806.upload.maximum_size=1048576
 w806.upload.maximum_data_size=294912
 w806.build.mcu=ck804ef
-w806.build.board=HT804_W806
+w806.build.board=XT804_W806
 w806.build.core=w806
 w806.build.variant=w806
 w806.build.mcpu=ck804ef
@@ -182,7 +179,7 @@ air103.upload.protocol=xmodem
 air103.upload.maximum_size=1048576
 air103.upload.maximum_data_size=294912
 air103.build.mcu=ck804ef
-air103.build.board=HT804_Air103
+air103.build.board=XT804_Air103
 air103.build.core=w806
 air103.build.variant=air103
 air103.build.mcpu=ck804ef
