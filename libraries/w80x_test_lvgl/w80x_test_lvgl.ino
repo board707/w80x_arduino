@@ -1,68 +1,54 @@
 /*Using LVGL with Arduino requires some extra steps:
  *Be sure to read the docs here: https://docs.lvgl.io/master/get-started/platforms/arduino.html  */
 
+/*
+  Connect your TFT display like this:
+  TFT_VCC   to power
+  TFT_GND   to ground
+  TFT_CS    to ground
+  TFT_LED   to power 
+  TFT_SCL   PB6   
+  TFT_MOSI  PB7   
+  TFT_DC    PB8
+  TFT_RST   PB9
+*/
+
 #include <lvgl.h>
-#include "ILI9341_Fast.h"
-/*To use the built-in examples and demos of LVGL uncomment the includes below respectively.
- *You also need to copy `lvgl/examples` to `lvgl/src/examples`. Similarly for the demos `lvgl/demos` to `lvgl/src/demos`.
- Note that the `lv_examples` library is for LVGL v7 and you shouldn't install it for this version (since LVGL v8)
- as the examples and demos are now part of the main LVGL library. */
+#include "ILI9341_Fast_SDIO.h"
+#include "Arduino.h"
 
-/*Change to your screen resolution*/
-static const uint16_t screenWidth  = 320;
-static const uint16_t screenHeight = 240;
+static const uint16_t screenWidth  = LCD_WIDTH;
+static const uint16_t screenHeight = LCD_HEIGHT;
 
-static lv_disp_draw_buf_t draw_buf;
+
+static lv_disp_draw_buf_t draw_buf ;
 static lv_color_t buf[ screenWidth * screenHeight / 10 ];
 
-#define TFT_CS PB14
-#define TFT_DC  PB9
-#define TFT_RST PB10
-
-ILI9341 tft = ILI9341(TFT_DC, TFT_RST, TFT_CS);
-
-#if LV_USE_LOG != 0
-/* Serial debugging */
-void my_print(const char * buf)
-{
-    Serial.printf(buf);
-    Serial.flush();
-}
-#endif
+#define TFT_DC  PB8
+#define TFT_RST PB9
 
 /* Display flushing */
-// По пиксельный вывод. Это не оптимально, надо блочный вывод через ДМА
 void my_disp_flush( lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p )
 {
-  for(int y=area->y1;y<=area->y2;y++){
-    for(int x=area->x1;x<=area->x2;x++){
-      tft.drawPixel(x,y,color_p->full);
-      color_p++;
-      }
-  }
-    lv_disp_flush_ready( disp_drv );
+  Lcd_Draw_Rect(area->x1,area->y1,area->x2 - area->x1 + 1,area->y2 - area->y1 + 1,(uint16_t*)color_p);
+  lv_disp_flush_ready( disp_drv );
 }
 
 void setup()
 {
     Serial.begin( 115200 ); /* prepare for possible serial debug */
-
+    
     String LVGL_Arduino = "Hello Arduino! ";
     LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
 
     Serial.println( LVGL_Arduino );
     Serial.println( "I am LVGL_Arduino" );
-
+    
     lv_init();
 
-#if LV_USE_LOG != 0
-    lv_log_register_print_cb( my_print ); /* register print function for debugging */
-#endif
-
-    tft.begin();          /* TFT init */
-    tft.setRotation( 3 ); /* Landscape orientation, flipped */
-
-    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * screenHeight / 10 );
+    Lcd_Init(TFT_DC, TFT_RST);          /* TFT init. TFT_CS pin on GND*/
+    Lcd_Orientation(3); /* Landscape orientation, flipped */
+    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * screenHeight/10 );
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;
@@ -74,12 +60,23 @@ void setup()
     disp_drv.draw_buf = &draw_buf;
     lv_disp_drv_register( &disp_drv );
 
-    /* Create simple label */
-    lv_obj_t *label = lv_label_create( lv_scr_act() );
-    lv_label_set_text( label, "Hello w80x_Arduino and LVGL!");
-    lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
- 
     Serial.println( "Setup done" );
+    
+    lv_obj_t * label1 = lv_label_create(lv_scr_act());
+    lv_label_set_long_mode(label1, LV_LABEL_LONG_WRAP);     /*Break the long lines*/
+    lv_label_set_recolor(label1, true);                      /*Enable re-coloring by commands in the text*/
+    lv_label_set_text(label1, "#0000ff Re-color# #ff00ff words# #ff0000 of a# label, align the lines to the center "
+                      "and wrap long text automatically.");
+    lv_obj_set_width(label1, 150);  /*Set smaller width to make the lines wrap*/
+    lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_align(label1, LV_ALIGN_CENTER, 0, -40);
+
+    lv_obj_t * label2 = lv_label_create(lv_scr_act());
+    lv_label_set_long_mode(label2, LV_LABEL_LONG_SCROLL_CIRCULAR);     /*Circular scroll*/
+    lv_obj_set_width(label2, 150);
+    lv_label_set_text(label2, "It is a circularly scrolling text. ");
+    lv_obj_align(label2, LV_ALIGN_CENTER, 0, 40);
+
 }
 
 void loop()

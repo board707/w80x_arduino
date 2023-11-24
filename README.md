@@ -8,7 +8,7 @@ This is a port of the WinnerMicro W806 SDK to the Arduino world. It uses T-HEAD 
 
 - W806 ([pinout](doc/W806_pinout.png)) 
 - W801 ([pinout](doc/W801_pinout.png)) 
-- Air_101 (W806 clone) ([pinout](doc/Air101_pinout.JPG)) 
+- Air_101 (W800 clone) ([pinout](doc/Air101_pinout.JPG)) 
 - Air_103 (W806 clone) ([pinout](doc/Air103_pinout.png)) 
 
 ## Package development - what works and what not
