@@ -62,6 +62,60 @@ air101.menu.erase.no.erase.flash=none
 ##############################################################
 
 ##############################################################
+w800.name=W800
+w800.upload.tool=serial_upload
+w800.upload.protocol=xmodem
+w800.upload.maximum_size=2048576
+w800.upload.maximum_data_size=294912
+w800.build.mcu=ck804ef
+w800.build.board=XT804_W800
+w800.build.core=w806
+w800.build.variant=w800
+w800.build.mcpu=ck804ef
+w800.serial.disableRTS=true
+#---------------------------------------
+# CPU Frequency
+w800.menu.cpu_frq.240MHZ=240MHZ
+w800.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+w800.menu.cpu_frq.160MHZ=160MHZ
+w800.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+w800.menu.cpu_frq.80MHZ=80MHZ
+w800.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+w800.menu.cpu_frq.40MHZ=40MHZ
+w800.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+w800.menu.cpu_frq.2MHZ=2MHZ
+w800.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+#---------------------------------------
+# Release /Optimise
+w800.menu.opt.default=Default (-O2 -g3)
+w800.menu.opt.maxspeed=Maximum speed (-O3)
+w800.menu.opt.maxspeed.build.flags.optimize=-O3
+w800.menu.opt.minsize=Minimum code size ( -Os)
+w800.menu.opt.minsize.build.flags.optimize=-Os
+w800.menu.opt.debug=Debug (-g)
+w800.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+w800.menu.upload_speed.baud115200=115200
+w800.menu.upload_speed.baud115200.upload.speed=115200
+w800.menu.upload_speed.baud460800=460800
+w800.menu.upload_speed.baud460800.upload.speed=460800
+w800.menu.upload_speed.baud921600=921600
+w800.menu.upload_speed.baud921600.upload.speed=921600
+w800.menu.upload_speed.baud1000000=1000000
+w800.menu.upload_speed.baud1000000.upload.speed=1000000
+w800.menu.upload_speed.baud2000000=2000000
+w800.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+w800.menu.erase.yes=erase all flash
+w800.menu.erase.yes.erase.flash=all
+w800.menu.erase.no=no erase
+w800.menu.erase.no.erase.flash=none
+##############################################################
+
+##############################################################
 w801.name=W801
 w801.upload.tool=serial_upload
 w801.upload.protocol=xmodem
@@ -114,6 +168,60 @@ w801.menu.erase.yes=erase all flash
 w801.menu.erase.yes.erase.flash=all
 w801.menu.erase.no=no erase
 w801.menu.erase.no.erase.flash=none
+##############################################################
+
+##############################################################
+w802.name=W802
+w802.upload.tool=serial_upload
+w802.upload.protocol=xmodem
+w802.upload.maximum_size=2048576
+w802.upload.maximum_data_size=294912
+w802.build.mcu=ck804ef
+w802.build.board=XT804_W802
+w802.build.core=w806
+w802.build.variant=w802
+w802.build.mcpu=ck804ef
+w802.serial.disableRTS=true
+#---------------------------------------
+# CPU Frequency
+w802.menu.cpu_frq.240MHZ=240MHZ
+w802.menu.cpu_frq.240MHZ.build.f_cpu=240000000
+w802.menu.cpu_frq.160MHZ=160MHZ
+w802.menu.cpu_frq.160MHZ.build.f_cpu=160000000
+w802.menu.cpu_frq.80MHZ=80MHZ
+w802.menu.cpu_frq.80MHZ.build.f_cpu=80000000
+w802.menu.cpu_frq.40MHZ=40MHZ
+w802.menu.cpu_frq.40MHZ.build.f_cpu=40000000
+w802.menu.cpu_frq.2MHZ=2MHZ
+w802.menu.cpu_frq.2MHZ.build.f_cpu=2000000
+#---------------------------------------
+# Release /Optimise
+w802.menu.opt.default=Default (-O2 -g3)
+w802.menu.opt.maxspeed=Maximum speed (-O3)
+w802.menu.opt.maxspeed.build.flags.optimize=-O3
+w802.menu.opt.minsize=Minimum code size ( -Os)
+w802.menu.opt.minsize.build.flags.optimize=-Os
+w802.menu.opt.debug=Debug (-g)
+w802.menu.opt.debug.build.flags.optimize=-Og
+
+#---------------------------------------
+# Upload Speed
+w802.menu.upload_speed.baud115200=115200
+w802.menu.upload_speed.baud115200.upload.speed=115200
+w802.menu.upload_speed.baud460800=460800
+w802.menu.upload_speed.baud460800.upload.speed=460800
+w802.menu.upload_speed.baud921600=921600
+w802.menu.upload_speed.baud921600.upload.speed=921600
+w802.menu.upload_speed.baud1000000=1000000
+w802.menu.upload_speed.baud1000000.upload.speed=1000000
+w802.menu.upload_speed.baud2000000=2000000
+w802.menu.upload_speed.baud2000000.upload.speed=2000000
+#---------------------------------------
+# Erase Flash
+w802.menu.erase.yes=erase all flash
+w802.menu.erase.yes.erase.flash=all
+w802.menu.erase.no=no erase
+w802.menu.erase.no.erase.flash=none
 ##############################################################
 
 ##############################################################
