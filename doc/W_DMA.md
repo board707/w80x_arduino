@@ -35,6 +35,11 @@ The method returns a pointer to preconfigured DMA handle.
 
 The method returns `HAL_OK` if success or `HAL_ERROR` in case of any issue.
 
-Congratulation! Now the DMA channel is configured and initialized, you can attach it to selected peripheral transfer. See the `I2S/examples/Wav_SD_Player/Wav_SD_Player.ino` sketch for example of using the DMA.
+Congratulation! Now the DMA channel is configured and initialized, you can attach it to selected peripheral transfer. 
+
+#### Examples of using:
+
+* [Wav_SD_Player.ino](/libraries/I2S/examples/Wav_SD_Player/Wav_SD_Player.ino)
+* [Spi_tx_dma.ino](/libraries/SPI/Spi_tx_dma/Spi_tx_dma.ino)
 
 
