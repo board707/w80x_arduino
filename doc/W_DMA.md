@@ -24,6 +24,8 @@ Where `dma_ch` is channel number, obtained in step 1. Parameter `request_src` sh
 * DMA_REQUEST_SOURCE_ADC_CH3      
 * DMA_REQUEST_SOURCE_I2S_RX  
 * DMA_REQUEST_SOURCE_I2S_TX
+* DMA_REQUEST_SOURCE_SDIO_RX
+* DMA_REQUEST_SOURCE_SDIO_TX
 
 The method returns a pointer to preconfigured DMA handle.
 

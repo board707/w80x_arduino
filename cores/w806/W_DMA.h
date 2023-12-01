@@ -11,6 +11,9 @@
  */
 #include "./include/driver/wm_hal.h"
 
+#define DMA_REQUEST_SOURCE_SDIO_RX     0xFF01UL
+#define DMA_REQUEST_SOURCE_SDIO_TX     0xFF02UL
+
 extern DMA_HandleTypeDef hdma_channel[8];
 
 
@@ -45,6 +48,8 @@ extern "C"  {
      *                  DMA_REQUEST_SOURCE_ADC_CH3      
      *                  DMA_REQUEST_SOURCE_I2S_RX  
      *                  DMA_REQUEST_SOURCE_I2S_TX
+     *                  DMA_REQUEST_SOURCE_SDIO_RX
+     *                  DMA_REQUEST_SOURCE_SDIO_TX
      * 
      * @param[in] ch dma chammel number, byte
      * @param[in] request_src periph and direction mode

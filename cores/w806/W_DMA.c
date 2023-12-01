@@ -29,6 +29,7 @@ DMA_HandleTypeDef*  dma_simple_config(uint8_t ch, uint32_t request_src) {
         case DMA_REQUEST_SOURCE_ADC_CH2: 
         case DMA_REQUEST_SOURCE_ADC_CH3:      
         case DMA_REQUEST_SOURCE_I2S_RX:   
+        case DMA_REQUEST_SOURCE_SDIO_RX:
            hdma_channel[ch].Init.Direction = DMA_PERIPH_TO_MEMORY;
            hdma_channel[ch].Init.DestInc = DMA_DINC_ENABLE;
            hdma_channel[ch].Init.SrcInc = DMA_SINC_DISABLE;
@@ -36,6 +37,7 @@ DMA_HandleTypeDef*  dma_simple_config(uint8_t ch, uint32_t request_src) {
 
         case DMA_REQUEST_SOURCE_SPI_TX:
         case DMA_REQUEST_SOURCE_I2S_TX:
+        case DMA_REQUEST_SOURCE_SDIO_TX:
            hdma_channel[ch].Init.Direction = DMA_MEMORY_TO_PERIPH;
            hdma_channel[ch].Init.DestInc = DMA_DINC_DISABLE;
            hdma_channel[ch].Init.SrcInc = DMA_SINC_ENABLE;
@@ -44,7 +46,10 @@ DMA_HandleTypeDef*  dma_simple_config(uint8_t ch, uint32_t request_src) {
        
        hdma_channel[ch].Init.DataAlignment = DMA_DATAALIGN_WORD;
        hdma_channel[ch].Init.Mode = DMA_MODE_NORMAL_SINGLE;
-       hdma_channel[ch].Init.RequestSourceSel = request_src;
+       if ((request_src == DMA_REQUEST_SOURCE_SDIO_RX) || (request_src == DMA_REQUEST_SOURCE_SDIO_TX))
+        hdma_channel[ch].Init.RequestSourceSel = DMA_REQUEST_SOURCE_SDIO;
+       else 
+        hdma_channel[ch].Init.RequestSourceSel = request_src;
 
        return &(hdma_channel[ch]);
 }
