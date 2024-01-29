@@ -6,8 +6,10 @@ This is a port of the WinnerMicro W806 SDK to the Arduino world. It uses T-HEAD 
 
 ## Boards
 
-- W806 ([pinout](doc/W806_pinout.png)) 
+- W800
 - W801 ([pinout](doc/W801_pinout.png)) 
+- W802
+- W806 ([pinout](doc/W806_pinout.png)) 
 - Air_101 (W800 clone) ([pinout](doc/Air101_pinout.JPG)) 
 - Air_103 (W806 clone) ([pinout](doc/Air103_pinout.png)) 
 

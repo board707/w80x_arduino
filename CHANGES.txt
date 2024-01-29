@@ -1,3 +1,9 @@
+0.0.6 January, 29 2024
+    Add W800, W802 and Air_101 boards
+    Add SDIO as DMA request source to W_DMA library
+    Add SPI_TX_DMA example
+    Some minor fixes
+    
 0.0.5b August, 15 2023
     Error fix and update to 0.0.5a
     Add Ili9341_Fast_SPI SDIO-SPI example
