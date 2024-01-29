@@ -4,6 +4,7 @@
 #define LED_BUILTIN_1 PB8
 #define LED_BUILTIN_2 PB9
 #define LED_BUILTIN_3 PB10
+#define LED_BUILTIN LED_BUILTIN_1
 
 // SPI
 #define PIN_SPI_SS    (PB4) 
